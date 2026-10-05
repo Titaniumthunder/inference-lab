@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.venv/
+# clobbered by a duplicate launch (contains null bytes); see LAB_LOG.md
+results/server_compiled-bf16-3b.log
