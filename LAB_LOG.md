@@ -235,3 +235,43 @@ runner run_trtllm.sh, separate venv ~/.venv-trtllm so ~/.venv is untouched).
 Stopped per the two-attempt rule. Nothing measured; no TensorRT-LLM numbers exist. Possible next tries (not done): install Ray and
 use TLLM_DISABLE_MPI=1, or exclude only docker0 (`OMPI_MCA_btl_tcp_if_exclude=docker0,lo`) instead of restricting to loopback,
 or the official NGC container (needs Docker GPU support in WSL).
+
+## 17. Mini scheduler with a paged KV cache (2026-10-09, mini_sched/)
+Plain-PyTorch engine for Qwen2.5-3B BF16: 16-token KV blocks with a free-list allocator, a hand-written Qwen2 forward pass that
+scatters K/V into slots and attends over each sequence's blocks (padded SDPA, GQA), and a vLLM-style continuous-batching
+scheduler (decode first, preempt newest by recompute, FCFS admission under max_num_seqs 64 / 4,096-token budget / free blocks).
+`policy="static"` (admit only when the batch is empty) is the baseline with identical model code. See mini_sched/README.md.
+
+**Correctness** (mini_sched/test_mini.py, 6 prompts of 20 to 600 tokens, 32 greedy tokens, vs HF generate): allocator tests pass;
+continuous batching with mid-batch joins: 5/6 exact, 1 diverges at token 1; with a 70-block pool forcing 2 preemptions: 3/6 exact,
+3 diverge at tokens 1, 2, 6. Every divergence is an exact tie under HF itself (teacher-forced logit gap 0.000), so the HF choice
+there is arbitrary too. Found on the way: with BF16 logits, a 5-prompt prefill turned a 0.125 gap into an exact tie (batch-shape
+rounding), so sampled-position logits are computed in FP32.
+
+**Per-step speed** (static batches, 256-token prompts, 128 new tokens, 3 trials each, label mini-xseg in results/mini_sched.csv):
+| Batch | TPOT mini (ms) | TPOT HF / vLLM, section 15 (ms) | tok/s mini |
+|---|---|---|---|
+| 1 | 52.1 to 60.9 | 28.00 / 9.67 | 16.4 to 19.2 |
+| 8 | 56.9 to 61.7 | 29.22 / 10.69 | 128.0 to 138.5 |
+| 32 | 82.4 to 83.1 | 32.30 / 11.33 | 363.6 to 367.5 |
+| 64 | 108.1 to 113.7 | 33.69 / 12.42 | 517.3 to 540.2 |
+The mini engine is ~2x slower than HF and ~5 to 9x slower than vLLM per step. Unverified guess: ~20 extra kernel launches per layer
+(gathers, scatters, masked attention) with high launch cost under WSL2; no CUDA graphs. Item 6 profiling can check it.
+
+**Continuous vs static batching** (Poisson arrivals for 30 s, same prompts for both policies, single run each, all requests finished):
+| Rate (req/s) | tok/s continuous / static | TTFT p50 continuous / static (ms) | TTFT p99 continuous / static (ms) | TPOT p50 c / s (ms) |
+|---|---|---|---|---|
+| 1 | 95.5 / 96.2 | 141 / 5017 | 854 / 7832 | 58.2 / 59.1 |
+| 2 | 215.0 / 178.4 | 145 / 6164 | 268 / 11745 | 80.3 / 82.9 |
+| 4 | 310.6 / 300.1 | 188 / 5345 | 289 / 11903 | 105.1 / 84.1 |
+- Continuous batching cuts median TTFT 28x to 43x: a new request starts at the next step instead of waiting for the running batch
+  to finish. Throughput is similar (open loop; both keep up). TPOT is higher at rate 4 because batches are larger (peak 60 vs 44).
+- Paged KV memory at the peak: 3,760 / 9,728 / 19,200 tokens (0.13 / 0.33 / 0.66 GiB at 36,864 B/token) vs 45,056 / 122,880 /
+  245,760 tokens (1.55 / 4.22 / 8.44 GiB) if each running sequence reserved max_model_len 4,096: 12.0x to 12.8x less. Caveat: peak
+  blocks and peak batch need not coincide; it compares against a reservation policy, not a measured contiguous engine.
+- **Allocator stall (fixed):** the first Poisson run (label `mini`, rows kept in results/mini_sched.csv, logs
+  results/mini_sched_poisson.log) gave continuous 112.7 tok/s and TPOT p50 558 ms at rate 4, worse than static. Per-step timing
+  showed 32 of 313 steps taking >0.5 s (~1 s each) and 299 device allocations; `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`
+  cut that to 1 slow step (warmup) and the 20 s test run from 53.9 to 31.2 s wall. Now set in mini_sched/__init__.py. All numbers
+  above are from the rerun (label mini-xseg). **Lead for item 6:** vLLM's activations also go through the PyTorch caching
+  allocator; slow cudaMalloc under WSL2 is a candidate contributor to the overload collapse (untested).

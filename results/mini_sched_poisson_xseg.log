@@ -1,0 +1,9 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  41%|████      | 179/434 [00:00<00:00, 1789.29it/s]Loading weights:  82%|████████▏ | 358/434 [00:00<00:00, 1789.55it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 2134.46it/s]
+rate  1.0 continuous finished 28/28     95.5 tok/s  TTFT p50/p99      141/     854 ms  TPOT p50   58.2 ms  peak batch 11  preempt 0
+rate  1.0 static     finished 28/28     96.2 tok/s  TTFT p50/p99     5017/    7832 ms  TPOT p50   59.1 ms  peak batch 10  preempt 0
+rate  2.0 continuous finished 66/66    215.0 tok/s  TTFT p50/p99      145/     268 ms  TPOT p50   80.3 ms  peak batch 30  preempt 0
+rate  2.0 static     finished 66/66    178.4 tok/s  TTFT p50/p99     6164/   11745 ms  TPOT p50   82.9 ms  peak batch 26  preempt 0
+rate  4.0 continuous finished 102/102    310.6 tok/s  TTFT p50/p99      188/     289 ms  TPOT p50  105.1 ms  peak batch 60  preempt 0
+rate  4.0 static     finished 102/102    300.1 tok/s  TTFT p50/p99     5345/   11903 ms  TPOT p50   84.1 ms  peak batch 44  preempt 0
+appended 6 rows to results/mini_sched.csv
