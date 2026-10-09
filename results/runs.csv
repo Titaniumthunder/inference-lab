@@ -25,3 +25,9 @@ bf16-7b-offload-eager,598.95,790.64,1.320,INVALID
 bf16-3b-eager-ppl,21.29,20.50,0.963,VALID
 seqs128-ovl-rep1,14.12,14.72,1.042,VALID
 seqs128-ovl-rep2,13.80,104.99,7.609,INVALID
+chunked-off-rep1,12.21,12.28,1.006,VALID
+chunked-on-rep1,12.21,12.16,0.995,VALID
+chunked-off-rep2,12.09,12.19,1.008,VALID
+chunked-on-rep2,12.24,12.23,0.999,VALID
+chunked-off-rep3,12.00,12.25,1.020,VALID
+chunked-on-rep3,12.11,11.87,0.980,VALID

@@ -148,3 +148,24 @@ Source: results/main.csv, results/runs.csv, server logs results/server_seqs128-o
   video decode ~4% x2, Chrome Remote Desktop ~4% 3D, dwm, WebView). Fresh-server canaries were 13.7 to 14.1 ms vs 10.8 to
   11.9 ms in all earlier compiled 3B runs (results/canary.csv), about 23% slower. Absolute numbers from this queue are not
   comparable with earlier sections. Contention may also have contributed to the collapse; rep 1 survived under the same conditions.
+
+## 13. Chunked prefill off vs on (2026-10-08, queue_chunked.sh)
+3B BF16 compiled, standard sweep, 3 interleaved off/on pairs, all 6 canaries VALID (ratios 0.98 to 1.02). Mean of 3 [min-max].
+| Rate | ITL p50 off / on (ms) | ITL p99 off / on | TTFT p50 off / on (ms) | TTFT p99 off / on | tok/s off / on |
+|---|---|---|---|---|---|
+| 1 | 12.1 [12.0-12.2] / 12.1 [12.0-12.1] | 19.5 / 19.2 | 46.3 / 46.5 | 59.3 / 64.0 | 121.0 / 121.1 |
+| 4 | 12.5 [12.4-12.6] / 12.6 [12.5-12.8] | 26.0 / 26.9 | 50.1 / 49.7 | 67.3 / 68.0 | 500.3 / 500.5 |
+| 8 | 13.1 [13.0-13.2] / 13.1 [13.0-13.1] | 30.5 / 29.8 | 53.4 / 53.5 | 80.3 / 80.9 | 872.3 / 873.0 |
+| 16 | 15.6 [15.4-15.9] / 15.6 [15.6-15.7] | 45.7 / 45.1 | 68.2 / 68.1 | 125.2 / 126.5 | 1947.9 / 1950.6 |
+Source: results/main.csv (labels chunked-off-rep1..3, chunked-on-rep1..3), results/runs.csv.
+
+- **No measurable difference** on this workload: all off/on ratios are within 0.93 to 1.02 and every off range overlaps the on range.
+  Expected: prompts are ~250 tokens with 128 output tokens, so a prefill never stalls decodes for long. Chunked prefill
+  should matter with long prompts (e.g. the 1,540-token prefix workload with caching off, section 10). Not tested.
+- Confound: turning chunked prefill off also raises the per-step token budget from 2,048 to 4,096 (vLLM sets it to
+  max(max_model_len, default); server logs show compile_ranges_endpoints [4096] vs [2048]).
+- vLLM warns "This model does not officially support disabling chunked prefill ... may crash or produce incorrect outputs"
+  (generic warning for any generation model). No crashes; outputs were not checked.
+- Caveat: Wallpaper Engine was still using the GPU (video decode, checked before launch). Fresh canaries were 12.0 to 12.2 ms,
+  vs 10.8 to 11.9 ms before tonight and 13.7 to 14.1 ms during section 12. Pairs were interleaved, so the off/on comparison holds;
+  absolute numbers are not comparable with sections 4 and 9.
