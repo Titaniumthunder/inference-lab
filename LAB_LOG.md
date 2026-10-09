@@ -74,3 +74,57 @@ a lead not yet tested. Practical workaround: fresh server per configuration, rat
 Hugging Face `generate` vs vLLM; quantization on an 8B model (FP8, INT4, NVFP4); prefix caching, chunked prefill, speculative decoding,
 `--max-num-seqs` sweep; profiling and roofline analysis (the unexplained 4.3 ms and the overload slowdown); a small continuous-batching
 scheduler with a paged KV cache.
+
+## 7. Repeats (2026-10-07, overnight queue)
+3 eager + 3 compiled runs, interleaved, each with canaries (all 6 valid, ratios 0.93 to 1.02).
+ITL p50 eager vs compiled (mean of 3): 16.9/11.3 ms (1.49x), 18.0/11.8 (1.52x), 19.9/12.2 (1.62x), 27.1/14.1 (1.92x) at rates 1/4/8/16.
+TTFT p50 is 28 to 35% lower with compiled. The earlier single-run result held.
+Rate 32 did NOT reproduce: 273 to 558 tok/s now vs 1,189 to 1,358 earlier, ITL p50 400 to 800 ms. Not usable as a headline number.
+
+## 8. Tooling added
+run_config.sh (fresh server, canary, sweep, canary, verdict, auto-stop), queue scripts, serve_generic.sh (model/flags via env),
+ppl.py (WikiText-2 perplexity through the server), bench_modes.py (shared-prefix and closed-loop workloads).
+
+## 9. Quantization (Qwen2.5, compiled, 2026-10-08)
+3B BF16 (4 runs) vs 3B FP8 (3 runs), ITL p50 at rates 1/4/8/16: 11.4/11.8/12.3/14.3 -> 7.4/7.4/7.6/8.2 ms (1.5x to 1.75x faster).
+TTFT p50 34 to 41% lower. Perplexity 7.981 -> 8.054 (+0.9%). Ranges do not overlap.
+7B FP8 (3 runs): ITL 12.8/13.1/13.7/16.7 ms, perplexity 6.949. About 12% slower per token than 3B BF16 at rate 1.
+7B AWQ 4-bit: valid sweep ITL 8.2/8.3/9.1 at rates 1/4/8 (34 to 37% below FP8), 16.8 at rate 12, TTFT 14 to 18% worse, perplexity 7.276 (+4.7% vs FP8 7B).
+AWQ collapsed at rate 16 twice (166 and 650 tok/s, canary INVALID).
+7B BF16 does not fit in 16 GB. CPU-offload baseline attempt failed to start (cause not yet checked).
+
+## 10. Prefix caching and --max-num-seqs
+Prefix caching (3B, ~1,540-token shared prefix, best case): TTFT p50 31/35/38 ms on vs 133/138/544 ms off at 2/4/8 req/s.
+Off at 8 req/s also pushes ITL p50 from 11 to 142 ms (probably prefill saturation, not measured).
+Closed loop, 3B, throughput at 16/32/64/128/256 clients:
+cap 256: 1196/2278/3250/4199/2302 (collapsed at 256, canary INVALID, 3.86x)
+cap 128: 1157/2213/3121/4059/3979 (valid)
+cap 64:  1152/2125/3109/2994/2981 (valid)
+AWQ 7B at rate 16 with cap 64: 1634 tok/s, valid (uncapped collapsed twice).
+Every degraded run so far had ~255 sequences running. Caps of 128 and 64 avoided it. Root cause still unknown.
+
+## 11. 7B BF16 perplexity baseline (2026-10-08, queue_ppl7b.sh)
+Why the first attempt failed (results/server_bf16-7b-offload_20261008_132510.log): `--cpu-offload-gb 6` plus CUDA graphs.
+vLLM keeps pinned memory off on WSL2 unless `VLLM_WSL2_ENABLE_PIN_MEMORY=1`, so the offloader copies the CPU-resident weights
+to the GPU on every forward pass, and copies from unpinned memory are not allowed during CUDA-graph capture
+("Cannot copy between CPU and CUDA tensors during CUDA graph capture unless the CPU tensor is pinned").
+Enabling pinned memory was rejected: vLLM's own warning says it can make Windows unresponsive (WDDM pinned-memory cap).
+Fix used: `--enforce-eager --cpu-offload-gb 6`. No methodology files changed.
+
+| Config | Engine mode | Perplexity (WikiText-2 test, 81,880 tokens) | vs 7B BF16 | Canary of that run (runs.csv) |
+|---|---|---|---|---|
+| 7B BF16, 6 GB offloaded to CPU | eager | 6.8988 | baseline | **INVALID** (598.9 -> 790.6 ms, 1.32) |
+| 7B FP8 | compiled | 6.9494 | +0.73% | VALID (1.00) |
+| 7B AWQ 4-bit | compiled | 7.2758 | +5.46% | **INVALID** (8.62 -> 137.60 ms, 15.96) |
+| Control: 3B BF16 | eager | 7.9753 | | VALID (0.96) |
+| 3B BF16 (section 9) | compiled | 7.9808 | | VALID (0.96) |
+Source: results/ppl.csv, results/runs.csv.
+
+- Eager vs compiled numerics alone move 3B perplexity by -0.07%, about 10x smaller than the FP8 gap, so comparing the eager
+  7B BF16 run with the compiled 7B FP8 run is fair to within ~0.1%.
+- The 7B BF16 run is INVALID by the lab rule (ratio 1.32 > 1.3). Perplexity is a fixed computation over fixed text, so latency
+  drift should not change it, but this has not been checked by a repeat. The AWQ perplexity used in section 9 came from an
+  INVALID run too (not flagged there before). Latency numbers from the offload run are meaningless anyway (ITL ~600 to 790 ms,
+  6 GB crosses PCIe every step).
+- Open question: the offloaded server slowed 32% after only a rate-1 sweep (at most 98 running requests per the server log),
+  which is below the ~256-sequence pattern from sections 5 and 10. Not investigated.

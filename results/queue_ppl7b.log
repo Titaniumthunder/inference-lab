@@ -1,0 +1,29 @@
+== starting server (./serve_generic.sh)
+== server up
+[bf16-7b-offload-eager-canary-before] rate=   1  ok= 30/30     35.8 tok/s  TTFT p50/p99    1530/   2857 ms  ITL p50/p99  598.9/ 959.3 ms
+appended 1 rows to results/canary.csv
+[bf16-7b-offload-eager] rate=   1  ok=100/100     62.4 tok/s  TTFT p50/p99    2092/   2549 ms  ITL p50/p99  784.8/ 947.8 ms
+appended 1 rows to results/main.csv
+[bf16-7b-offload-eager-canary-after] rate=   1  ok= 30/30     30.8 tok/s  TTFT p50/p99    2150/   2472 ms  ITL p50/p99  790.6/ 905.1 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 598.9 ms, after 790.6 ms, ratio 1.32 -> INVALID
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+[bf16-7b-offload-eager] perplexity 6.8988 over 81880 tokens
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[bf16-3b-eager-ppl-canary-before] rate=   1  ok= 30/30    135.0 tok/s  TTFT p50/p99      75/    128 ms  ITL p50/p99   21.3/  53.9 ms
+appended 1 rows to results/canary.csv
+[bf16-3b-eager-ppl] rate=   1  ok=100/100    119.0 tok/s  TTFT p50/p99      78/    137 ms  ITL p50/p99   20.8/  55.6 ms
+appended 1 rows to results/main.csv
+[bf16-3b-eager-ppl-canary-after] rate=   1  ok= 30/30    137.4 tok/s  TTFT p50/p99      84/    140 ms  ITL p50/p99   20.5/  53.9 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 21.3 ms, after 20.5 ms, ratio 0.96 -> VALID
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+[bf16-3b-eager-ppl] perplexity 7.9753 over 81880 tokens
+== done, stopping server
+QUEUE FINISHED Thu Oct  8 10:42:14 PM PDT 2026
