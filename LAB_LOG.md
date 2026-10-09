@@ -169,3 +169,12 @@ Source: results/main.csv (labels chunked-off-rep1..3, chunked-on-rep1..3), resul
 - Caveat: Wallpaper Engine was still using the GPU (video decode, checked before launch). Fresh canaries were 12.0 to 12.2 ms,
   vs 10.8 to 11.9 ms before tonight and 13.7 to 14.1 ms during section 12. Pairs were interleaved, so the off/on comparison holds;
   absolute numbers are not comparable with sections 4 and 9.
+
+## Methodology change (2026-10-08, not yet used for any result)
+bench_modes.py: added `--mode text` for item 4 (speculative decoding). WikiText-2 *train* paragraphs (150 words, lightly
+detokenized, ~249 prompt tokens median) in the chat template as "continue this article"; every request gets a different
+paragraph (3,627 in the pool, the run aborts rather than reuse one). Adds TPOT columns and per-level speculative-decoding
+acceptance from /metrics counter deltas. Also added a guard that refuses to append rows whose columns differ from the
+CSV header. Existing prefix/closed modes are unchanged (their header still matches results/modes.csv), so no reruns needed.
+Text-mode runs write to results/spec/ (OUTDIR) because of the extra columns.
+New, not yet run: queue_spec.sh (base vs draft Qwen2.5-0.5B k=3/k=5, 2 repeats), hf_vs_vllm.py + run_hf_vs_vllm.sh (item 5).
