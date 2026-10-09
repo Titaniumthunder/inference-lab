@@ -1,0 +1,10 @@
+== server up
+[healthy-warm] rate=   1  ok= 30/30    144.7 tok/s  TTFT p50/p99      44/     64 ms  ITL p50/p99   11.5/  19.3 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/healthy/bench.csv
+[healthy-r1] rate=   1  ok= 10/10     47.1 tok/s  TTFT p50/p99   12765/  19859 ms  ITL p50/p99   12.3/  18.3 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/healthy/bench.csv
+== profiled r1: 4 files in /home/shadowlord/inference-lab/results/profiles/healthy
+[healthy-r16] rate=  16  ok=160/160    520.0 tok/s  TTFT p50/p99   25689/  30480 ms  ITL p50/p99   15.2/ 149.4 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/healthy/bench.csv
+== profiled r16: 6 files in /home/shadowlord/inference-lab/results/profiles/healthy
+== done, stopping server
