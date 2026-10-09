@@ -1,0 +1,40 @@
+GPU memory used: 446 MiB
+/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/modelopt/torch/__init__.py:36: UserWarning: transformers version 4.57.3 is incompatible with nvidia-modelopt and may cause issues. Please install recommended version with `pip install nvidia-modelopt[hf]` if working with HF models.
+  _warnings.warn(
+Traceback (most recent call last):
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/distributed/communicator.py", line 30, in <module>
+    import ray
+ModuleNotFoundError: No module named 'ray'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/shadowlord/inference-lab/hf_vs_vllm.py", line 130, in <module>
+    main()
+  File "/home/shadowlord/inference-lab/hf_vs_vllm.py", line 101, in main
+    gen = {"hf": hf_backend, "vllm": vllm_backend, "trtllm": trtllm_backend}[args.backend](args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/shadowlord/inference-lab/hf_vs_vllm.py", line 72, in trtllm_backend
+    from tensorrt_llm import LLM, SamplingParams
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/__init__.py", line 107, in <module>
+    import tensorrt_llm._torch.models as torch_models
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/models/__init__.py", line 3, in <module>
+    from .modeling_auto import AutoModelForCausalLM
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_auto.py", line 5, in <module>
+    from .modeling_utils import (MODEL_CLASS_MAPPING,
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_utils.py", line 21, in <module>
+    from ..attention_backend import AttentionMetadata
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/attention_backend/__init__.py", line 2, in <module>
+    from .interface import AttentionBackend, AttentionMetadata
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/attention_backend/interface.py", line 24, in <module>
+    from ..pyexecutor.resource_manager import KVCacheManager
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/resource_manager.py", line 15, in <module>
+    from tensorrt_llm._torch.distributed.communicator import Distributed, ReduceOp
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/distributed/__init__.py", line 3, in <module>
+    from .communicator import Distributed, MPIDist, TorchDist
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/_torch/distributed/communicator.py", line 32, in <module>
+    from tensorrt_llm import ray_stub as ray
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/tensorrt_llm/ray_stub.py", line 20, in <module>
+    raise RuntimeError(
+RuntimeError: Ray requested (TLLM_DISABLE_MPI=1), but not installed. Please install Ray.
+GPU memory used: 439 MiB

@@ -1,0 +1,33 @@
+GPU memory used: 446 MiB
+/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/modelopt/torch/__init__.py:36: UserWarning: transformers version 4.57.3 is incompatible with nvidia-modelopt and may cause issues. Please install recommended version with `pip install nvidia-modelopt[hf]` if working with HF models.
+  _warnings.warn(
+[TensorRT-LLM] TensorRT LLM version: 1.2.1
+[10/09/2026-12:05:10] [TRT-LLM] [I] Using LLM with PyTorch backend
+[10/09/2026-12:05:10] [TRT-LLM] [W] Using default gpus_per_node: 1
+[10/09/2026-12:05:10] [TRT-LLM] [I] neither checkpoint_format nor checkpoint_loader were provided, checkpoint_format will be set to HF.
+The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+You are using a model of type qwen2 to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[33;20mrank 0 using MpiPoolSession to spawn MPI processes
+[0m--------------------------------------------------------------------------
+Open MPI detected an inbound MPI TCP connection request from a peer
+that appears to be part of this MPI job (i.e., it identified itself as
+part of this Open MPI job), but it is from an IP address that is
+unexpected.  This is highly unusual.
+
+The inbound connection has been dropped, and the peer should simply
+try again with a different IP interface (i.e., the job should
+hopefully be able to continue).
+
+  Local host:          Alex
+  Local PID:           96565
+  Peer hostname:       Alex ([[35176,1],0])
+  Source IP of socket: 10.255.255.254
+  Known IPs of peer:   
+	172.31.23.243
+	172.17.0.1
+--------------------------------------------------------------------------
+[Alex:96483] 1 more process has sent help message help-mpi-btl-tcp.txt / dropped inbound connection
+[Alex:96483] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+Terminated
+GPU memory used: 487 MiB

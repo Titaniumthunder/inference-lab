@@ -221,3 +221,17 @@ which vLLM ignores). Fresh process per backend, 2 interleaved repeats x 3 trials
   HF decode is ~28 ms/token even at batch 1, i.e. Python/launch overhead without CUDA graphs.
 - Static batches only: this does not exercise continuous batching, where vLLM's advantage under mixed arrivals should be larger.
   HF used default settings (dynamic cache, no torch.compile / static cache); a tuned HF would close part of the gap.
+
+## 16. TensorRT-LLM (2026-10-09): stopped, no result
+Goal: run tensorrt_llm 1.2.1 (PyTorch backend, CUDA graphs) on the section-15 workload (backend `trtllm` in hf_vs_vllm.py,
+runner run_trtllm.sh, separate venv ~/.venv-trtllm so ~/.venv is untouched).
+| Step | Outcome | Log |
+|---|---|---|
+| Install attempt 1 (plain pip) | Installed, import failed: `libcublasLt.so.13` missing (pip picked torch 2.9.1+cu128, wheel needs CUDA 13) | results/trtllm_install_attempt1.log |
+| Install attempt 2 (torch 2.9.1+cu130 first) | Import failed on pyarrow 26 needing NumPy 2 (TRT-LLM pins 1.26); fixed with `pyarrow<20`; then needed CUDA_HOME (same fix as serve scripts). Import OK | results/trtllm_install_attempt2.log |
+| Run, default MPI | Hung >10 min at 0% GPU: OpenMPI dropped TCP connections across eth0 and the docker bridge 172.17.0.1 | results/trtllm_smoke_mpi_hang.log |
+| Run, TLLM_DISABLE_MPI=1 | Refused: needs Ray (not installed, not added) | results/trtllm_smoke_noray.log |
+| Run, MPI on loopback + shared memory | `MPI_INIT failed ... ompi_dpm_dyn_init() failed: Unreachable` (worker spawn) | results/trtllm_smoke.log |
+Stopped per the two-attempt rule. Nothing measured; no TensorRT-LLM numbers exist. Possible next tries (not done): install Ray and
+use TLLM_DISABLE_MPI=1, or exclude only docker0 (`OMPI_MCA_btl_tcp_if_exclude=docker0,lo`) instead of restricting to loopback,
+or the official NGC container (needs Docker GPU support in WSL).

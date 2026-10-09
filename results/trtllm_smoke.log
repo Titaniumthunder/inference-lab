@@ -1,0 +1,62 @@
+GPU memory used: 443 MiB
+/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/modelopt/torch/__init__.py:36: UserWarning: transformers version 4.57.3 is incompatible with nvidia-modelopt and may cause issues. Please install recommended version with `pip install nvidia-modelopt[hf]` if working with HF models.
+  _warnings.warn(
+[TensorRT-LLM] TensorRT LLM version: 1.2.1
+[10/09/2026-12:16:07] [TRT-LLM] [I] Using LLM with PyTorch backend
+[10/09/2026-12:16:07] [TRT-LLM] [W] Using default gpus_per_node: 1
+[10/09/2026-12:16:07] [TRT-LLM] [I] neither checkpoint_format nor checkpoint_loader were provided, checkpoint_format will be set to HF.
+The argument `trust_remote_code` is to be used with Auto classes. It has no effect here and is ignored.
+You are using a model of type qwen2 to instantiate a model of type . This is not supported for all configurations of models and can yield errors.
+`torch_dtype` is deprecated! Use `dtype` instead!
+[33;20mrank 0 using MpiPoolSession to spawn MPI processes
+[0m--------------------------------------------------------------------------
+At least one pair of MPI processes are unable to reach each other for
+MPI communications.  This means that no Open MPI device has indicated
+that it can be used to communicate between these processes.  This is
+an error; Open MPI requires that all MPI processes be able to reach
+each other.  This error can sometimes be the result of forgetting to
+specify the "self" BTL.
+
+  Process 1 ([[32401,2],0]) is on host: Alex
+  Process 2 ([[32401,1],0]) is on host: Alex
+  BTLs attempted: self
+
+Your MPI job is now going to abort; sorry.
+--------------------------------------------------------------------------
+[Alex:102136] [[32401,1],0] ORTE_ERROR_LOG: Unreachable in file ../../../ompi/dpm/dpm.c at line 493
+[Alex:102322] [[32401,2],0] ORTE_ERROR_LOG: Unreachable in file ../../../ompi/dpm/dpm.c at line 493
+Exception in thread Thread-1 (_manager_spawn):
+Traceback (most recent call last):
+  File "/home/shadowlord/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/threading.py", line 1075, in _bootstrap_inner
+--------------------------------------------------------------------------
+It looks like MPI_INIT failed for some reason; your parallel process is
+likely to abort.  There are many reasons that a parallel process can
+fail during MPI_INIT; some of which are due to configuration or environment
+problems.  This failure appears to be an internal failure; here's some
+additional information (which may only be relevant to an Open MPI
+developer):
+
+  ompi_dpm_dyn_init() failed
+  --> Returned "Unreachable" (-12) instead of "Success" (0)
+--------------------------------------------------------------------------
+    self.run()
+  File "/home/shadowlord/.local/share/uv/python/cpython-3.12.15-linux-x86_64-gnu/lib/python3.12/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/mpi4py/futures/_core.py", line 353, in _manager_spawn
+    comm = serialized(client_spawn)(pyexe, pyargs, nprocs, info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/shadowlord/.venv-trtllm/lib/python3.12/site-packages/mpi4py/futures/_core.py", line 1067, in client_spawn
+    comm = MPI.COMM_SELF.Spawn(python_exe, args, max_workers, info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "src/mpi4py/MPI.src/Comm.pyx", line 2560, in mpi4py.MPI.Intracomm.Spawn
+mpi4py.MPI.Exception: MPI_ERR_INTERN: internal error
+[Alex:102322] *** An error occurred in MPI_Init_thread
+[Alex:102322] *** reported by process [2123431938,0]
+[Alex:102322] *** on a NULL communicator
+[Alex:102322] *** Unknown error
+[Alex:102322] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[Alex:102322] ***    and potentially your MPI job)
+[Alex:102170] 1 more process has sent help message help-mca-bml-r2.txt / unreachable proc
+[Alex:102170] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+Terminated
+GPU memory used: 474 MiB

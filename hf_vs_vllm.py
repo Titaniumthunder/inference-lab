@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hugging Face `generate` vs the vLLM offline engine (LLM.generate), one backend per process.
+"""Hugging Face `generate` vs the vLLM offline engine (LLM.generate) vs TensorRT-LLM, one backend per process.
 
 Both backends get identical token-ID prompts (exactly --input-tokens tokens of random words with a
 unique prefix, so vLLM's prefix cache never hits), greedy decoding, exactly --output-len new tokens.
@@ -66,9 +66,27 @@ def vllm_backend(args):
     return gen
 
 
+def trtllm_backend(args):
+    # TensorRT-LLM 1.x LLM API, default PyTorch backend, CUDA graphs for the measured batch sizes.
+    # Runs from its own venv (~/.venv-trtllm), see run_trtllm.sh.
+    from tensorrt_llm import LLM, SamplingParams
+    from tensorrt_llm.llmapi import CudaGraphConfig, KvCacheConfig
+    sizes = [int(b) for b in args.batch_sizes.split(",")]
+    llm = LLM(model=args.model, max_seq_len=4096, max_batch_size=max(sizes),
+              cuda_graph_config=CudaGraphConfig(batch_sizes=sizes),
+              kv_cache_config=KvCacheConfig(free_gpu_memory_fraction=0.85))
+
+    def gen(batch, n):
+        sp = SamplingParams(max_tokens=n, min_tokens=n, ignore_eos=True, temperature=0)
+        t = time.perf_counter()
+        outs = llm.generate(batch, sp, use_tqdm=False)
+        return time.perf_counter() - t, [list(o.outputs[0].token_ids) for o in outs]
+    return gen
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--backend", choices=["hf", "vllm"], required=True)
+    ap.add_argument("--backend", choices=["hf", "vllm", "trtllm"], required=True)
     ap.add_argument("--model", default="Qwen/Qwen2.5-3B-Instruct")
     ap.add_argument("--batch-sizes", default="1,8,32,64")
     ap.add_argument("--input-tokens", type=int, default=256)
@@ -80,7 +98,7 @@ def main():
 
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(args.model)
-    gen = (hf_backend if args.backend == "hf" else vllm_backend)(args)
+    gen = {"hf": hf_backend, "vllm": vllm_backend, "trtllm": trtllm_backend}[args.backend](args)
     n, rows = args.output_len, []
     for b in map(int, args.batch_sizes.split(",")):
         gen(prompts(tok, b, args.input_tokens, f"warm{b}"), n)  # warmup, not measured
