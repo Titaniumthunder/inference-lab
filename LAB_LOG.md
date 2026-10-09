@@ -287,3 +287,32 @@ Discrepancies found while recomputing from the CSVs (docs now use the recomputed
 - Prefix caching TTFT reduction is 3.9x to 14.3x (138/35 at 4 req/s), not "4x to 14x" as CLAUDE.md says.
 - Section 14 and 17 ratios corrected (see the notes there): spec TPOT +28.1 to +34.6% (k=3), TTFT 2.4x to 4.1x; batching TTFT 28.4x to 42.5x.
 - CLAUDE.md "Findings so far" still says caps 128 and 64 avoided the collapse; section 12 refutes that for 128.
+
+## 19. Profiling (2026-10-09, profile_run.sh, profile_analyze.py, results/profiles/)
+torch profiler via vLLM `--profiler-config` (3B BF16 compiled, cap 256), fresh server per run. Profiled windows are for
+breakdowns only (profiler start delays TTFT by ~12 s; profiled batch-1 ITL 11.9 to 12.3 ms vs 11.5 ms unprofiled). Per step:
+period = start to next start; GPU busy = union of kernel/memcpy intervals in that period. Medians, results/profiles/summary.csv.
+Windows GPU users at launch: Chrome Remote Desktop 2.1%, Razer.VideoRecorder 0.5% (small; not closed).
+
+**The "unexplained ~4.3 ms" (section 4), batch-1 decode, healthy server (269 steps):**
+| Part of a 11.70 ms step | ms |
+|---|---|
+| GPU busy (474 GPU ops incl. CUDA-graph kernels) | 8.51 |
+| GPU idle between steps (CPU work not overlapped with the GPU) | 3.41 |
+Against the ~6.5 ms bandwidth floor (section 4, approximate): ~3.4 ms is GPU idle time while the CPU schedules, samples and
+processes outputs (the CPU then spends 7.5 ms/step in cudaStreamSynchronize, i.e. it waits for the GPU and the GPU waits for it,
+no overlap), and ~2 ms is kernels running below peak bandwidth (8.5 ms of GPU time vs ~6.5 ms). Batches of 25 to 34 decodes:
+period 13.3 to 14.5 ms, GPU busy 9.3 to 10.7, idle 2.8 to 4.2. Mixed prefill+decode steps: idle up to 7.2 ms.
+
+**Collapse reproduction: not reproduced (2 attempts).** Both overloads (256 closed-loop clients, 30 s) stayed healthy: 4,034.4 and
+4,001.2 tok/s (the collapsed seqs256 run in section 10 gave 2,302); unprofiled checks after: 12.2 and 12.1 ms. Stopped after 2
+attempts (the PC crashed during a collapsed run on 2026-10-08). Collapses so far happened 1 of 2 (cap 128) and 1 of 1 (cap 256)
+on 2026-10-08, partly with Wallpaper Engine on the GPU; 0 of 2 today with it closed. GPU contention as a trigger is a hypothesis.
+
+**But a milder post-overload slowdown is visible, and it is on the GPU, in cuBLAS GEMV:** batch-1 step GPU busy rose from 8.72 to
+9.85 ms and from 8.90 to 10.07 ms after the overload (same 474 ops; GPU idle unchanged at ~3 ms). Per-kernel: cuBLAS bf16 `gemvx`
+(the weight matrix-vector products) went 7.18 -> 8.24 and 7.31 -> 8.39 ms/step (+15%); flash-attention splitkv was flat
+(0.226 -> 0.238, 0.230 -> 0.236), which argues against KV-block fragmentation. GEMV is memory-bandwidth-bound, so identical work
+got ~15% less effective bandwidth after heavy load. Leading hypothesis (untested): GPU memory clock / power state after sustained
+load. Next test: log `nvidia-smi --query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu,temperature.memory` at 1 Hz through a
+canary-overload-canary sequence, and try a 60 s idle pause before the after-canary.

@@ -1,0 +1,15 @@
+== server up
+[collapse-warm] rate=   1  ok= 30/30    145.1 tok/s  TTFT p50/p99      43/     67 ms  ITL p50/p99   11.5/  20.7 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/collapse/bench.csv
+[collapse-before] rate=   1  ok= 10/10     48.3 tok/s  TTFT p50/p99   12128/  19221 ms  ITL p50/p99   11.9/  17.3 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/collapse/bench.csv
+== profiled before: 4 files in /home/shadowlord/inference-lab/results/profiles/collapse
+== overload: 256 closed-loop clients, 30 s
+[collapse-overload] closed level= 256  ok=1024/1024   4034.4 tok/s  prompt~213 tok  TTFT p50/p99     596/   4371 ms  ITL p50/p99   30.2/ 203.4 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/collapse/modes.csv
+[collapse-after] rate=   1  ok= 10/10     44.1 tok/s  TTFT p50/p99   14655/  21747 ms  ITL p50/p99   12.2/  22.0 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/collapse/bench.csv
+== profiled after: 7 files in /home/shadowlord/inference-lab/results/profiles/collapse
+[collapse-check] rate=   1  ok= 30/30    143.7 tok/s  TTFT p50/p99      50/     68 ms  ITL p50/p99   12.2/  20.2 ms
+appended 1 rows to /home/shadowlord/inference-lab/results/profiles/collapse/bench.csv
+== done, stopping server
