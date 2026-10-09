@@ -414,3 +414,14 @@ No measurement code changed, so no configs need rerunning. Known limits, measure
   the decoder engine, which utilization.gpu does not count. Utilization at Q2 was not recorded.
 - At idle on 10-09 (no vLLM, Remote Desktop 0.5% and Razer.VideoRecorder 0.8% on the GPU), 10 samples read 0,0,1,0,1,1,1,1,1,6 %:
   one 6% spike would have refused the run.
+
+## 23. Methodology change: stricter preflight with retries (2026-10-09; supersedes the thresholds in section 22)
+The preflight moved to gpu_preflight.sh (run_config.sh calls it before starting a server; it also runs on its own).
+One attempt = 10 one-second nvidia-smi samples; it fails if any sample has utilization.gpu > 3%, **utilization.decoder > 0%**
+(catches Wallpaper Engine's video decode, which utilization.gpu does not count), **memory.used > 1500 MiB** (clean idle on
+10-09: ~420 to 1,050 MiB; Wallpaper Engine idle on 10-08: 1,950 MiB), or an unreadable value. A failed attempt prints every
+failing sample with the reason, waits 20 s and re-samples; the run is refused only if all 3 attempts fail. No measurement code
+changed; no reruns needed for this change.
+Standalone test (10-09, no vLLM running): attempt 1 FAILED (util 2 to 11%, 8 of 10 samples > 3%; memory 661 to 699 MiB; decoder 0%),
+attempt 2 PASSED (util 0 to 2%, memory 601 to 605 MiB, decoder 0%). Windows users seen earlier the same day: Remote Desktop,
+Razer.VideoRecorder (section 21, Q4).

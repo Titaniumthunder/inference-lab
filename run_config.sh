@@ -12,19 +12,8 @@ if curl -sf localhost:8000/health >/dev/null; then
   echo "A server is already running. Stop it first."; exit 1
 fi
 
-# Idle-GPU preflight (LAB_LOG sections 21-22): 10 one-second nvidia-smi samples; refuse if ANY sample has utilization > 3%
-# or memory used > 2048 MiB. In WSL these numbers include Windows processes. Decoder/encoder utilization is printed but
-# not checked: Wallpaper Engine's video decode runs there and does not show up in utilization.gpu.
-busy=0
-for _ in $(seq 1 10); do
-  IFS=', ' read -r util mem dec enc <<< "$(nvidia-smi --query-gpu=utilization.gpu,memory.used,utilization.decoder,utilization.encoder --format=csv,noheader,nounits)"
-  echo "preflight: util ${util}%  mem ${mem} MiB  dec ${dec}%  enc ${enc}%"
-  if ! [[ "$util" =~ ^[0-9]+$ && "$mem" =~ ^[0-9]+$ ]] || [ "$util" -gt 3 ] || [ "$mem" -gt 2048 ]; then busy=1; fi
-  sleep 1
-done
-if [ "$busy" = 1 ]; then
-  echo "GPU not idle (a sample had utilization > 3%, memory > 2048 MiB, or an unreadable value). Not running $NAME."; exit 1
-fi
+# Idle-GPU preflight (LAB_LOG sections 21-23): thresholds, sampling and retries live in gpu_preflight.sh
+./gpu_preflight.sh || { echo "Not running $NAME: GPU not idle."; exit 1; }
 
 stop_server() {
   pkill -INT -f "vllm serve" 2>/dev/null
