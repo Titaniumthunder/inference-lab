@@ -1,0 +1,5 @@
+label,model,perplexity,tokens
+bf16-3b,Qwen/Qwen2.5-3B-Instruct,7.9808,81880
+fp8-3b,Qwen/Qwen2.5-3B-Instruct,8.0540,81880
+awq-7b,Qwen/Qwen2.5-7B-Instruct-AWQ,7.2758,81880
+fp8-7b,Qwen/Qwen2.5-7B-Instruct,6.9494,81880

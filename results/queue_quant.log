@@ -1,0 +1,70 @@
+nohup: ignoring input
+== starting server (./serve_generic.sh)
+== server up
+[bf16-3b-canary-before] rate=   1  ok= 30/30    145.0 tok/s  TTFT p50/p99      47/     59 ms  ITL p50/p99   12.0/  18.6 ms
+appended 1 rows to results/canary.csv
+[bf16-3b] rate=   1  ok=100/100    121.4 tok/s  TTFT p50/p99      42/     59 ms  ITL p50/p99   11.4/  17.3 ms
+[bf16-3b] rate=   4  ok=120/120    503.0 tok/s  TTFT p50/p99      47/     62 ms  ITL p50/p99   11.9/  23.5 ms
+[bf16-3b] rate=   8  ok=240/240    876.3 tok/s  TTFT p50/p99      50/     74 ms  ITL p50/p99   12.3/  28.8 ms
+[bf16-3b] rate=  16  ok=480/480   1965.7 tok/s  TTFT p50/p99      63/    113 ms  ITL p50/p99   14.8/  42.1 ms
+appended 4 rows to results/main.csv
+[bf16-3b-canary-after] rate=   1  ok= 30/30    145.0 tok/s  TTFT p50/p99      43/     59 ms  ITL p50/p99   11.4/  18.1 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 12.0 ms, after 11.4 ms, ratio 0.96 -> VALID
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+[bf16-3b] perplexity 7.9808 over 81880 tokens
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[fp8-3b-canary-before] rate=   1  ok= 30/30    147.3 tok/s  TTFT p50/p99      29/     46 ms  ITL p50/p99    7.6/  12.0 ms
+appended 1 rows to results/canary.csv
+[fp8-3b] rate=   1  ok=100/100    121.9 tok/s  TTFT p50/p99      30/     40 ms  ITL p50/p99    7.7/  11.9 ms
+[fp8-3b] rate=   4  ok=120/120    511.8 tok/s  TTFT p50/p99      33/     41 ms  ITL p50/p99    7.7/  16.9 ms
+[fp8-3b] rate=   8  ok=240/240    890.3 tok/s  TTFT p50/p99      34/     50 ms  ITL p50/p99    8.0/  21.4 ms
+[fp8-3b] rate=  16  ok=480/480   1998.1 tok/s  TTFT p50/p99      39/     70 ms  ITL p50/p99    8.6/  24.5 ms
+appended 4 rows to results/main.csv
+[fp8-3b-canary-after] rate=   1  ok= 30/30    147.2 tok/s  TTFT p50/p99      30/     45 ms  ITL p50/p99    7.7/  11.9 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 7.6 ms, after 7.7 ms, ratio 1.01 -> VALID
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+[fp8-3b] perplexity 8.0540 over 81880 tokens
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[awq-7b-canary-before] rate=   1  ok= 30/30    146.3 tok/s  TTFT p50/p99      59/     94 ms  ITL p50/p99    8.6/  31.1 ms
+appended 1 rows to results/canary.csv
+[awq-7b] rate=   1  ok=100/100    121.7 tok/s  TTFT p50/p99      58/     84 ms  ITL p50/p99    8.6/  22.0 ms
+[awq-7b] rate=   4  ok=120/120    508.3 tok/s  TTFT p50/p99      62/     98 ms  ITL p50/p99    8.9/  37.7 ms
+[awq-7b] rate=   8  ok=240/240    886.1 tok/s  TTFT p50/p99      70/    138 ms  ITL p50/p99   10.1/  47.9 ms
+[awq-7b] rate=  16  ok=480/480    166.5 tok/s  TTFT p50/p99     495/ 262842 ms  ITL p50/p99  712.9/8117.1 ms
+appended 4 rows to results/main.csv
+[awq-7b-canary-after] rate=   1  ok= 30/30     75.5 tok/s  TTFT p50/p99    5276/  14183 ms  ITL p50/p99  137.6/3198.6 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 8.6 ms, after 137.6 ms, ratio 15.96 -> INVALID
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+[awq-7b] perplexity 7.2758 over 81880 tokens
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[fp8-7b-canary-before] rate=   1  ok= 30/30    143.1 tok/s  TTFT p50/p99      50/     68 ms  ITL p50/p99   13.4/  21.1 ms
+appended 1 rows to results/canary.csv
+[fp8-7b] rate=   1  ok=100/100    121.0 tok/s  TTFT p50/p99      51/     65 ms  ITL p50/p99   13.4/  20.9 ms
+[fp8-7b] rate=   4  ok=120/120    497.7 tok/s  TTFT p50/p99      55/     79 ms  ITL p50/p99   13.8/  24.6 ms
+[fp8-7b] rate=   8  ok=240/240    869.7 tok/s  TTFT p50/p99      57/     91 ms  ITL p50/p99   14.4/  32.2 ms
+[fp8-7b] rate=  16  ok=480/480   1944.9 tok/s  TTFT p50/p99      91/    169 ms  ITL p50/p99   18.9/  61.1 ms
+appended 4 rows to results/main.csv
+[fp8-7b-canary-after] rate=   1  ok= 30/30    143.0 tok/s  TTFT p50/p99      51/     74 ms  ITL p50/p99   13.4/  21.3 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 13.4 ms, after 13.4 ms, ratio 1.00 -> VALID
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (299078 > 131072). Running this sequence through the model will result in indexing errors
+[fp8-7b] perplexity 6.9494 over 81880 tokens
+== done, stopping server
+QUEUE FINISHED Thu Oct  8 12:53:40 PM PDT 2026

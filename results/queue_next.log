@@ -1,0 +1,85 @@
+nohup: ignoring input
+== starting server (./serve_generic.sh)
+== server up
+[fp8-3b-rep2-canary-before] rate=   1  ok= 30/30    147.7 tok/s  TTFT p50/p99      28/     40 ms  ITL p50/p99    7.8/  12.6 ms
+appended 1 rows to results/canary.csv
+[fp8-3b-rep2] rate=   1  ok=100/100    121.7 tok/s  TTFT p50/p99      27/     35 ms  ITL p50/p99    7.3/  11.3 ms
+[fp8-3b-rep2] rate=   4  ok=120/120    512.4 tok/s  TTFT p50/p99      29/     40 ms  ITL p50/p99    7.2/  15.7 ms
+[fp8-3b-rep2] rate=   8  ok=240/240    891.8 tok/s  TTFT p50/p99      31/     45 ms  ITL p50/p99    7.4/  18.2 ms
+[fp8-3b-rep2] rate=  16  ok=480/480   2007.9 tok/s  TTFT p50/p99      36/     67 ms  ITL p50/p99    8.0/  22.2 ms
+appended 4 rows to results/main.csv
+[fp8-3b-rep2-canary-after] rate=   1  ok= 30/30    147.6 tok/s  TTFT p50/p99      27/     37 ms  ITL p50/p99    7.3/  10.6 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 7.8 ms, after 7.3 ms, ratio 0.94 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[fp8-7b-rep2-canary-before] rate=   1  ok= 30/30    143.9 tok/s  TTFT p50/p99      48/     61 ms  ITL p50/p99   12.4/  19.4 ms
+appended 1 rows to results/canary.csv
+[fp8-7b-rep2] rate=   1  ok=100/100    121.1 tok/s  TTFT p50/p99      47/     60 ms  ITL p50/p99   12.5/  19.4 ms
+[fp8-7b-rep2] rate=   4  ok=120/120    500.7 tok/s  TTFT p50/p99      50/     70 ms  ITL p50/p99   12.8/  23.1 ms
+[fp8-7b-rep2] rate=   8  ok=240/240    873.0 tok/s  TTFT p50/p99      52/     81 ms  ITL p50/p99   13.2/  25.4 ms
+[fp8-7b-rep2] rate=  16  ok=480/480   1955.2 tok/s  TTFT p50/p99      77/    151 ms  ITL p50/p99   15.8/  55.7 ms
+appended 4 rows to results/main.csv
+[fp8-7b-rep2-canary-after] rate=   1  ok= 30/30    143.7 tok/s  TTFT p50/p99      49/     73 ms  ITL p50/p99   12.5/  19.5 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 12.4 ms, after 12.5 ms, ratio 1.01 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[fp8-3b-rep3-canary-before] rate=   1  ok= 30/30    147.5 tok/s  TTFT p50/p99      27/     39 ms  ITL p50/p99    7.1/  10.6 ms
+appended 1 rows to results/canary.csv
+[fp8-3b-rep3] rate=   1  ok=100/100    121.9 tok/s  TTFT p50/p99      27/     35 ms  ITL p50/p99    7.3/  11.5 ms
+[fp8-3b-rep3] rate=   4  ok=120/120    511.9 tok/s  TTFT p50/p99      29/     41 ms  ITL p50/p99    7.3/  15.5 ms
+[fp8-3b-rep3] rate=   8  ok=240/240    891.1 tok/s  TTFT p50/p99      31/     47 ms  ITL p50/p99    7.5/  19.5 ms
+[fp8-3b-rep3] rate=  16  ok=480/480   2006.4 tok/s  TTFT p50/p99      35/     62 ms  ITL p50/p99    7.9/  21.3 ms
+appended 4 rows to results/main.csv
+[fp8-3b-rep3-canary-after] rate=   1  ok= 30/30    147.4 tok/s  TTFT p50/p99      27/     39 ms  ITL p50/p99    7.3/  12.4 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 7.1 ms, after 7.3 ms, ratio 1.02 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[fp8-7b-rep3-canary-before] rate=   1  ok= 30/30    143.8 tok/s  TTFT p50/p99      49/     74 ms  ITL p50/p99   12.4/  19.8 ms
+appended 1 rows to results/canary.csv
+[fp8-7b-rep3] rate=   1  ok=100/100    121.1 tok/s  TTFT p50/p99      46/     68 ms  ITL p50/p99   12.4/  19.6 ms
+[fp8-7b-rep3] rate=   4  ok=120/120    500.9 tok/s  TTFT p50/p99      50/     74 ms  ITL p50/p99   12.8/  22.2 ms
+[fp8-7b-rep3] rate=   8  ok=240/240    872.9 tok/s  TTFT p50/p99      54/     82 ms  ITL p50/p99   13.6/  26.8 ms
+[fp8-7b-rep3] rate=  16  ok=480/480   1953.0 tok/s  TTFT p50/p99      74/    149 ms  ITL p50/p99   15.5/  54.1 ms
+appended 4 rows to results/main.csv
+[fp8-7b-rep3-canary-after] rate=   1  ok= 30/30    143.9 tok/s  TTFT p50/p99      47/     63 ms  ITL p50/p99   12.4/  20.2 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 12.4 ms, after 12.4 ms, ratio 1.00 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[awq-7b-b-canary-before] rate=   1  ok= 30/30    146.6 tok/s  TTFT p50/p99      55/     85 ms  ITL p50/p99    8.1/  18.0 ms
+appended 1 rows to results/canary.csv
+[awq-7b-b] rate=   1  ok=100/100    121.5 tok/s  TTFT p50/p99      55/     79 ms  ITL p50/p99    8.2/  19.7 ms
+[awq-7b-b] rate=   4  ok=120/120    509.5 tok/s  TTFT p50/p99      59/     93 ms  ITL p50/p99    8.3/  36.8 ms
+[awq-7b-b] rate=   8  ok=240/240    887.2 tok/s  TTFT p50/p99      64/    128 ms  ITL p50/p99    9.1/  42.9 ms
+[awq-7b-b] rate=  12  ok=360/360   1522.4 tok/s  TTFT p50/p99     113/    247 ms  ITL p50/p99   16.8/  94.5 ms
+appended 4 rows to results/main.csv
+[awq-7b-b-canary-after] rate=   1  ok= 30/30    146.6 tok/s  TTFT p50/p99      55/     86 ms  ITL p50/p99    8.2/  30.5 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 8.1 ms, after 8.2 ms, ratio 1.01 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[awq-7b-c-canary-before] rate=   1  ok= 30/30    146.7 tok/s  TTFT p50/p99      56/     84 ms  ITL p50/p99    8.2/  34.3 ms
+appended 1 rows to results/canary.csv
+[awq-7b-c] rate=  16  ok=480/480    650.2 tok/s  TTFT p50/p99     317/  28511 ms  ITL p50/p99  140.8/2530.0 ms
+appended 1 rows to results/main.csv
+[awq-7b-c-canary-after] rate=   1  ok= 30/30    122.3 tok/s  TTFT p50/p99     718/   2195 ms  ITL p50/p99   64.2/ 861.3 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 8.2 ms, after 64.2 ms, ratio 7.80 -> INVALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+server never came up, check results/server_*.log
+QUEUE FINISHED Thu Oct  8 01:35:02 PM PDT 2026

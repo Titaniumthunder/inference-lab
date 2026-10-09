@@ -1,0 +1,8 @@
+nohup: ignoring input
+downloading Qwen/Qwen2.5-7B-Instruct
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files:   7%|▋         | 1/14 [00:00<00:01,  7.10it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 14 files:  43%|████▎     | 6/14 [00:00<00:00, 26.08it/s]Fetching 14 files:  64%|██████▍   | 9/14 [00:00<00:00, 21.30it/s]Fetching 14 files:  71%|███████▏  | 10/14 [00:20<00:00, 21.30it/s]Fetching 14 files:  79%|███████▊  | 11/14 [01:27<00:38, 12.74s/it]Fetching 14 files:  86%|████████▌ | 12/14 [01:32<00:22, 11.34s/it]Fetching 14 files: 100%|██████████| 14/14 [01:39<00:00,  8.81s/it]Fetching 14 files: 100%|██████████| 14/14 [01:39<00:00,  7.13s/it]
+done Qwen/Qwen2.5-7B-Instruct
+downloading Qwen/Qwen2.5-7B-Instruct-AWQ
+Fetching 12 files:   0%|          | 0/12 [00:00<?, ?it/s]Fetching 12 files:   8%|▊         | 1/12 [00:00<00:01,  6.22it/s]Fetching 12 files:  50%|█████     | 6/12 [00:00<00:00, 25.96it/s]Fetching 12 files:  83%|████████▎ | 10/12 [00:00<00:00, 18.58it/s]Fetching 12 files:  83%|████████▎ | 10/12 [00:19<00:00, 18.58it/s]Fetching 12 files:  92%|█████████▏| 11/12 [00:36<00:05,  5.46s/it]Fetching 12 files: 100%|██████████| 12/12 [00:45<00:00,  6.15s/it]Fetching 12 files: 100%|██████████| 12/12 [00:45<00:00,  3.80s/it]
+done Qwen/Qwen2.5-7B-Instruct-AWQ

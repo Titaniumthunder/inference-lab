@@ -1,0 +1,104 @@
+nohup: ignoring input
+== starting server (./serve_eager.sh)
+== server up
+[eager-rep1-canary-before] rate=   1  ok= 30/30    135.9 tok/s  TTFT p50/p99      74/    102 ms  ITL p50/p99   18.9/  45.6 ms
+appended 1 rows to results/canary.csv
+[eager-rep1] rate=   1  ok=100/100    120.1 tok/s  TTFT p50/p99      65/    103 ms  ITL p50/p99   17.1/  44.0 ms
+[eager-rep1] rate=   4  ok=120/120    484.2 tok/s  TTFT p50/p99      67/    116 ms  ITL p50/p99   17.1/  45.0 ms
+[eager-rep1] rate=   8  ok=240/240    836.3 tok/s  TTFT p50/p99      71/    124 ms  ITL p50/p99   21.8/  50.8 ms
+[eager-rep1] rate=  16  ok=480/480   1841.4 tok/s  TTFT p50/p99      94/    160 ms  ITL p50/p99   25.9/  69.8 ms
+appended 4 rows to results/main.csv
+[eager-rep1-canary-after] rate=   1  ok= 30/30    136.8 tok/s  TTFT p50/p99      56/    103 ms  ITL p50/p99   17.6/  47.6 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 18.9 ms, after 17.6 ms, ratio 0.93 -> VALID
+== overload run (rate 32, last on purpose)
+[eager-rep1-r32] rate=  32  ok=960/960    293.2 tok/s  TTFT p50/p99  133245/ 350859 ms  ITL p50/p99  553.2/2931.6 ms
+appended 1 rows to results/main.csv
+== done, stopping server
+== starting server (./serve_compiled.sh)
+== server up
+[compiled-rep1-canary-before] rate=   1  ok= 30/30    144.4 tok/s  TTFT p50/p99      43/     61 ms  ITL p50/p99   11.3/  18.3 ms
+appended 1 rows to results/canary.csv
+[compiled-rep1] rate=   1  ok=100/100    121.0 tok/s  TTFT p50/p99      43/     65 ms  ITL p50/p99   11.5/  18.5 ms
+[compiled-rep1] rate=   4  ok=120/120    500.9 tok/s  TTFT p50/p99      49/     66 ms  ITL p50/p99   12.3/  24.1 ms
+[compiled-rep1] rate=   8  ok=240/240    873.4 tok/s  TTFT p50/p99      51/     76 ms  ITL p50/p99   12.7/  28.2 ms
+[compiled-rep1] rate=  16  ok=480/480   1950.4 tok/s  TTFT p50/p99      65/    123 ms  ITL p50/p99   14.6/  44.7 ms
+appended 4 rows to results/main.csv
+[compiled-rep1-canary-after] rate=   1  ok= 30/30    143.8 tok/s  TTFT p50/p99      45/     64 ms  ITL p50/p99   11.5/  19.4 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 11.3 ms, after 11.5 ms, ratio 1.02 -> VALID
+== overload run (rate 32, last on purpose)
+[compiled-rep1-r32] rate=  32  ok=960/960    273.3 tok/s  TTFT p50/p99  135257/ 379984 ms  ITL p50/p99  799.3/2945.8 ms
+appended 1 rows to results/main.csv
+== done, stopping server
+== starting server (./serve_eager.sh)
+== server up
+[eager-rep2-canary-before] rate=   1  ok= 30/30    139.9 tok/s  TTFT p50/p99      63/    101 ms  ITL p50/p99   17.1/  40.8 ms
+appended 1 rows to results/canary.csv
+[eager-rep2] rate=   1  ok=100/100    120.1 tok/s  TTFT p50/p99      64/    107 ms  ITL p50/p99   17.0/  41.1 ms
+[eager-rep2] rate=   4  ok=120/120    488.3 tok/s  TTFT p50/p99      62/     97 ms  ITL p50/p99   17.2/  42.0 ms
+[eager-rep2] rate=   8  ok=240/240    841.2 tok/s  TTFT p50/p99      69/    118 ms  ITL p50/p99   19.6/  46.0 ms
+[eager-rep2] rate=  16  ok=480/480   1876.4 tok/s  TTFT p50/p99      91/    170 ms  ITL p50/p99   26.7/  64.8 ms
+appended 4 rows to results/main.csv
+[eager-rep2-canary-after] rate=   1  ok= 30/30    137.7 tok/s  TTFT p50/p99      63/    104 ms  ITL p50/p99   16.8/  41.4 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 17.1 ms, after 16.8 ms, ratio 0.98 -> VALID
+== overload run (rate 32, last on purpose)
+[eager-rep2-r32] rate=  32  ok=960/960    390.9 tok/s  TTFT p50/p99   90040/ 255493 ms  ITL p50/p99  426.8/2645.2 ms
+appended 1 rows to results/main.csv
+== done, stopping server
+== starting server (./serve_compiled.sh)
+== server up
+[compiled-rep2-canary-before] rate=   1  ok= 30/30    144.5 tok/s  TTFT p50/p99      45/     71 ms  ITL p50/p99   11.7/  21.2 ms
+appended 1 rows to results/canary.csv
+[compiled-rep2] rate=   1  ok=100/100    121.1 tok/s  TTFT p50/p99      43/     62 ms  ITL p50/p99   11.6/  18.9 ms
+[compiled-rep2] rate=   4  ok=120/120    502.4 tok/s  TTFT p50/p99      47/     61 ms  ITL p50/p99   11.8/  21.5 ms
+[compiled-rep2] rate=   8  ok=240/240    875.5 tok/s  TTFT p50/p99      49/     70 ms  ITL p50/p99   12.3/  26.2 ms
+[compiled-rep2] rate=  16  ok=480/480   1957.4 tok/s  TTFT p50/p99      63/    110 ms  ITL p50/p99   14.5/  42.3 ms
+appended 4 rows to results/main.csv
+[compiled-rep2-canary-after] rate=   1  ok= 30/30    144.6 tok/s  TTFT p50/p99      44/     59 ms  ITL p50/p99   11.3/  18.3 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 11.7 ms, after 11.3 ms, ratio 0.96 -> VALID
+== overload run (rate 32, last on purpose)
+[compiled-rep2-r32] rate=  32  ok=960/960    325.6 tok/s  TTFT p50/p99  124339/ 320849 ms  ITL p50/p99  677.8/2653.4 ms
+appended 1 rows to results/main.csv
+== done, stopping server
+== starting server (./serve_eager.sh)
+== server up
+[eager-rep3-canary-before] rate=   1  ok= 30/30    139.0 tok/s  TTFT p50/p99      71/    109 ms  ITL p50/p99   15.9/  41.8 ms
+appended 1 rows to results/canary.csv
+[eager-rep3] rate=   1  ok=100/100    119.9 tok/s  TTFT p50/p99      66/    114 ms  ITL p50/p99   16.7/  42.4 ms
+[eager-rep3] rate=   4  ok=120/120    479.5 tok/s  TTFT p50/p99      66/    115 ms  ITL p50/p99   19.6/  44.7 ms
+[eager-rep3] rate=   8  ok=240/240    843.1 tok/s  TTFT p50/p99      70/    118 ms  ITL p50/p99   18.2/  47.1 ms
+[eager-rep3] rate=  16  ok=480/480   1867.8 tok/s  TTFT p50/p99      93/    165 ms  ITL p50/p99   28.6/  67.6 ms
+appended 4 rows to results/main.csv
+[eager-rep3-canary-after] rate=   1  ok= 30/30    137.9 tok/s  TTFT p50/p99      58/    100 ms  ITL p50/p99   16.1/  42.1 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 15.9 ms, after 16.1 ms, ratio 1.01 -> VALID
+== overload run (rate 32, last on purpose)
+[eager-rep3-r32] rate=  32  ok=960/960    558.2 tok/s  TTFT p50/p99   65146/ 178284 ms  ITL p50/p99  397.7/1818.2 ms
+appended 1 rows to results/main.csv
+== done, stopping server
+== starting server (./serve_compiled.sh)
+== server up
+[compiled-rep3-canary-before] rate=   1  ok= 30/30    144.8 tok/s  TTFT p50/p99      44/     54 ms  ITL p50/p99   10.8/  17.9 ms
+appended 1 rows to results/canary.csv
+[compiled-rep3] rate=   1  ok=100/100    120.8 tok/s  TTFT p50/p99      41/     52 ms  ITL p50/p99   10.9/  16.5 ms
+[compiled-rep3] rate=   4  ok=120/120    503.0 tok/s  TTFT p50/p99      44/     62 ms  ITL p50/p99   11.3/  21.6 ms
+[compiled-rep3] rate=   8  ok=240/240    876.6 tok/s  TTFT p50/p99      47/     68 ms  ITL p50/p99   11.7/  26.1 ms
+[compiled-rep3] rate=  16  ok=480/480   1962.2 tok/s  TTFT p50/p99      58/    115 ms  ITL p50/p99   13.3/  37.7 ms
+appended 4 rows to results/main.csv
+[compiled-rep3-canary-after] rate=   1  ok= 30/30    145.0 tok/s  TTFT p50/p99      43/     55 ms  ITL p50/p99   10.9/  16.6 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 10.8 ms, after 10.9 ms, ratio 1.01 -> VALID
+== overload run (rate 32, last on purpose)
+[compiled-rep3-r32] rate=  32  ok=960/960    364.2 tok/s  TTFT p50/p99   80569/ 271883 ms  ITL p50/p99  483.8/2466.8 ms
+appended 1 rows to results/main.csv
+== done, stopping server
+QUEUE FINISHED Wed Oct  7 11:09:56 PM PDT 2026

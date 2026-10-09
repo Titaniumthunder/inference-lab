@@ -1,0 +1,85 @@
+nohup: ignoring input
+== starting server (./serve_generic.sh)
+== server up
+[prefix-on-canary-before] rate=   1  ok= 30/30    145.2 tok/s  TTFT p50/p99      42/     54 ms  ITL p50/p99   10.6/  17.6 ms
+appended 1 rows to results/canary.csv
+[prefix-on] prefix level=   2  ok=60/60     55.7 tok/s  prompt~1542 tok  TTFT p50/p99      31/     44 ms  ITL p50/p99   10.5/  19.4 ms
+[prefix-on] prefix level=   4  ok=105/105    111.7 tok/s  prompt~1542 tok  TTFT p50/p99      35/     52 ms  ITL p50/p99   10.7/  21.0 ms
+[prefix-on] prefix level=   8  ok=232/232    245.0 tok/s  prompt~1543 tok  TTFT p50/p99      38/     60 ms  ITL p50/p99   11.1/  23.7 ms
+appended 3 rows to results/modes.csv
+[prefix-on-canary-after] rate=   1  ok= 30/30    145.5 tok/s  TTFT p50/p99      40/     54 ms  ITL p50/p99   10.8/  18.0 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 10.6 ms, after 10.8 ms, ratio 1.03 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[prefix-off-canary-before] rate=   1  ok= 30/30    144.9 tok/s  TTFT p50/p99      41/     56 ms  ITL p50/p99   11.0/  16.6 ms
+appended 1 rows to results/canary.csv
+[prefix-off] prefix level=   2  ok=60/60     55.0 tok/s  prompt~1542 tok  TTFT p50/p99     133/    278 ms  ITL p50/p99   11.2/ 102.8 ms
+[prefix-off] prefix level=   4  ok=104/104    109.0 tok/s  prompt~1542 tok  TTFT p50/p99     138/    420 ms  ITL p50/p99   11.6/ 140.8 ms
+[prefix-off] prefix level=   8  ok=230/230    237.4 tok/s  prompt~1543 tok  TTFT p50/p99     544/   1227 ms  ITL p50/p99  142.4/ 166.7 ms
+appended 3 rows to results/modes.csv
+[prefix-off-canary-after] rate=   1  ok= 30/30    145.3 tok/s  TTFT p50/p99      43/     55 ms  ITL p50/p99   10.9/  17.2 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 11.0 ms, after 10.9 ms, ratio 0.99 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[seqs256-canary-before] rate=   1  ok= 30/30    145.0 tok/s  TTFT p50/p99      43/     62 ms  ITL p50/p99   11.2/  19.0 ms
+appended 1 rows to results/canary.csv
+[seqs256] closed level=  16  ok=288/288   1195.6 tok/s  prompt~211 tok  TTFT p50/p99     180/    253 ms  ITL p50/p99   11.4/  14.8 ms
+[seqs256] closed level=  32  ok=544/544   2278.1 tok/s  prompt~212 tok  TTFT p50/p99     174/    282 ms  ITL p50/p99   11.9/  23.0 ms
+[seqs256] closed level=  64  ok=768/768   3249.7 tok/s  prompt~212 tok  TTFT p50/p99     391/    683 ms  ITL p50/p99   13.1/ 136.9 ms
+[seqs256] closed level= 128  ok=1024/1024   4199.3 tok/s  prompt~212 tok  TTFT p50/p99     438/   1887 ms  ITL p50/p99   15.8/ 148.9 ms
+[seqs256] closed level= 256  ok=936/936   2302.3 tok/s  prompt~212 tok  TTFT p50/p99     672/   6589 ms  ITL p50/p99   29.9/ 426.2 ms
+appended 5 rows to results/modes.csv
+[seqs256-canary-after] rate=   1  ok= 30/30    104.6 tok/s  TTFT p50/p99     225/    803 ms  ITL p50/p99   43.3/ 214.0 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 11.2 ms, after 43.3 ms, ratio 3.86 -> INVALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[seqs128-canary-before] rate=   1  ok= 30/30    145.0 tok/s  TTFT p50/p99      44/     66 ms  ITL p50/p99   11.5/  20.4 ms
+appended 1 rows to results/canary.csv
+[seqs128] closed level=  16  ok=272/272   1157.2 tok/s  prompt~211 tok  TTFT p50/p99     172/    261 ms  ITL p50/p99   11.9/  19.3 ms
+[seqs128] closed level=  32  ok=544/544   2212.5 tok/s  prompt~212 tok  TTFT p50/p99     178/    286 ms  ITL p50/p99   12.3/  24.5 ms
+[seqs128] closed level=  64  ok=768/768   3120.5 tok/s  prompt~212 tok  TTFT p50/p99     379/    609 ms  ITL p50/p99   13.6/ 139.1 ms
+[seqs128] closed level= 128  ok=1024/1024   4059.4 tok/s  prompt~212 tok  TTFT p50/p99     449/   1998 ms  ITL p50/p99   16.4/ 153.7 ms
+[seqs128] closed level= 256  ok=1124/1124   3978.8 tok/s  prompt~212 tok  TTFT p50/p99    4354/   6083 ms  ITL p50/p99   16.6/ 157.4 ms
+appended 5 rows to results/modes.csv
+[seqs128-canary-after] rate=   1  ok= 30/30    144.8 tok/s  TTFT p50/p99      44/     57 ms  ITL p50/p99   11.5/  20.2 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 11.5 ms, after 11.5 ms, ratio 1.01 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[seqs64-canary-before] rate=   1  ok= 30/30    144.6 tok/s  TTFT p50/p99      45/     61 ms  ITL p50/p99   11.5/  22.6 ms
+appended 1 rows to results/canary.csv
+[seqs64] closed level=  16  ok=272/272   1152.0 tok/s  prompt~211 tok  TTFT p50/p99     184/    248 ms  ITL p50/p99   12.0/  15.9 ms
+[seqs64] closed level=  32  ok=525/525   2125.0 tok/s  prompt~212 tok  TTFT p50/p99     137/    283 ms  ITL p50/p99   12.5/  30.1 ms
+[seqs64] closed level=  64  ok=768/768   3108.6 tok/s  prompt~212 tok  TTFT p50/p99     412/    683 ms  ITL p50/p99   13.8/ 141.7 ms
+[seqs64] closed level= 128  ok=805/805   2993.8 tok/s  prompt~212 tok  TTFT p50/p99    2933/   3597 ms  ITL p50/p99   13.7/ 142.4 ms
+[seqs64] closed level= 256  ok=924/924   2980.6 tok/s  prompt~212 tok  TTFT p50/p99    8304/   8844 ms  ITL p50/p99   13.7/ 141.3 ms
+appended 5 rows to results/modes.csv
+[seqs64-canary-after] rate=   1  ok= 30/30    144.9 tok/s  TTFT p50/p99      46/     65 ms  ITL p50/p99   11.5/  22.7 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 11.5 ms, after 11.5 ms, ratio 1.01 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[awq-7b-cap64-canary-before] rate=   1  ok= 30/30    146.5 tok/s  TTFT p50/p99      59/     95 ms  ITL p50/p99    8.5/  29.0 ms
+appended 1 rows to results/canary.csv
+[awq-7b-cap64] rate=  12  ok=360/360   1512.8 tok/s  TTFT p50/p99     156/   1212 ms  ITL p50/p99   17.3/ 100.3 ms
+[awq-7b-cap64] rate=  16  ok=480/480   1634.4 tok/s  TTFT p50/p99    2528/   6003 ms  ITL p50/p99   20.1/ 126.1 ms
+appended 2 rows to results/main.csv
+[awq-7b-cap64-canary-after] rate=   1  ok= 30/30    146.4 tok/s  TTFT p50/p99      59/    100 ms  ITL p50/p99    8.7/  30.2 ms
+appended 1 rows to results/canary.csv
+
+CANARY ITL p50 before 8.5 ms, after 8.7 ms, ratio 1.02 -> VALID
+== done, stopping server
+QUEUE FINISHED Thu Oct  8 09:58:51 PM PDT 2026
