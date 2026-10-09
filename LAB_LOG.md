@@ -70,7 +70,7 @@ a lead not yet tested. Practical workaround: fresh server per configuration, rat
 - A first guess that VRAM was nearly full because Windows apps had grown was wrong: Windows used ~1 GB; vLLM itself used ~14.4 GiB.
 - Early eager-vs-compiled numbers were pilot data (shared prompts); they were redone and agreed within ~7% (p50 ITL) for compiled.
 
-## 7. Next
+## Plan as of 2026-10-05 (superseded by CLAUDE.md "Remaining work")
 Hugging Face `generate` vs vLLM; quantization on an 8B model (FP8, INT4, NVFP4); prefix caching, chunked prefill, speculative decoding,
 `--max-num-seqs` sweep; profiling and roofline analysis (the unexplained 4.3 ms and the overload slowdown); a small continuous-batching
 scheduler with a paged KV cache.
@@ -192,7 +192,9 @@ users above 0.5%); baseline canaries back to 10.1 to 10.3 ms. Values: both repea
 Draft acceptance rate: k=3 0.497 to 0.516 (mean acceptance length 2.49 to 2.55); k=5 0.372 to 0.391 (2.86 to 2.96).
 Canaries (results/spec/runs.csv): base 0.99, 0.97; k=3 **1.68 INVALID**, 1.07; k=5 0.90, 1.23.
 
-- **Speculative decoding with this draft is slower at every load**: TPOT +26 to 37% (k=3) and +85 to 102% (k=5); TTFT 2.3x to 4x
+- **Speculative decoding with this draft is slower at every load**: TPOT p50 +28.1% to +34.6% (k=3) and +90.9% to +99.2% (k=5),
+  means of 2 repeats at rates 1 to 8 (corrected 2026-10-09: an earlier draft of this line said +26 to 37% / +85 to 102%, computed
+  from rounded values; pair-by-pair ranges are +25.3 to +38.7% and +89.6 to +108.7%); TTFT 2.4x to 4.1x
   worse; at 16 req/s both spec configs exceed capacity and the queue explodes (no-spec handles it at 2,103 tok/s).
 - Derived, not profiled: time per engine step = TPOT x mean acceptance length = ~33.5 ms for k=3 at rate 1 vs ~10.5 ms without
   spec, i.e. ~7.7 ms per 0.5B draft step, ~70% of a 3B target step for a model 6x smaller. Small-batch decode here is dominated
@@ -264,7 +266,7 @@ The mini engine is ~2x slower than HF and ~5 to 9x slower than vLLM per step. Un
 | 1 | 95.5 / 96.2 | 141 / 5017 | 854 / 7832 | 58.2 / 59.1 |
 | 2 | 215.0 / 178.4 | 145 / 6164 | 268 / 11745 | 80.3 / 82.9 |
 | 4 | 310.6 / 300.1 | 188 / 5345 | 289 / 11903 | 105.1 / 84.1 |
-- Continuous batching cuts median TTFT 28x to 43x: a new request starts at the next step instead of waiting for the running batch
+- Continuous batching cuts median TTFT 28.4x to 42.5x: a new request starts at the next step instead of waiting for the running batch
   to finish. Throughput is similar (open loop; both keep up). TPOT is higher at rate 4 because batches are larger (peak 60 vs 44).
 - Paged KV memory at the peak: 3,760 / 9,728 / 19,200 tokens (0.13 / 0.33 / 0.66 GiB at 36,864 B/token) vs 45,056 / 122,880 /
   245,760 tokens (1.55 / 4.22 / 8.44 GiB) if each running sequence reserved max_model_len 4,096: 12.0x to 12.8x less. Caveat: peak
@@ -275,3 +277,13 @@ The mini engine is ~2x slower than HF and ~5 to 9x slower than vLLM per step. Un
   cut that to 1 slow step (warmup) and the 20 s test run from 53.9 to 31.2 s wall. Now set in mini_sched/__init__.py. All numbers
   above are from the rerun (label mini-xseg). **Lead for item 6:** vLLM's activations also go through the PyTorch caching
   allocator; slow cudaMalloc under WSL2 is a candidate contributor to the overload collapse (untested).
+
+## 18. Docs pass (2026-10-09)
+plot.py `--summary` writes results/summary_{quantization,engines,speculative,batching}.png from the CSVs and prints every plotted
+value. README rewritten around current results; RESUME_BULLETS.md drafted (measured numbers only, sources cited).
+Discrepancies found while recomputing from the CSVs (docs now use the recomputed values):
+- Section 9 ITL means: 3B BF16 11.4/11.8/12.3/14.3 vs 11.3/11.8/12.2/14.3 recomputed over bf16-3b + compiled-rep1..3; 7B FP8
+  12.8/13.1/13.7/16.7 vs 12.7/13.1/13.8/16.7. Within 0.1 ms; probably a different run set or rounding. FP8 speedup is 1.53x to 1.74x.
+- Prefix caching TTFT reduction is 3.9x to 14.3x (138/35 at 4 req/s), not "4x to 14x" as CLAUDE.md says.
+- Section 14 and 17 ratios corrected (see the notes there): spec TPOT +28.1 to +34.6% (k=3), TTFT 2.4x to 4.1x; batching TTFT 28.4x to 42.5x.
+- CLAUDE.md "Findings so far" still says caps 128 and 64 avoided the collapse; section 12 refutes that for 128.
