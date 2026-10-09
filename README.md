@@ -70,6 +70,11 @@ on the harness's random-word prompts it looked much higher (0.77 to 0.92 per pos
   and stays slow until restarted. It happens with `--max-num-seqs` 256 and also 128 (1 of 2 runs), with KV usage at most ~40% and no
   preemptions. Ruled out so far: KV exhaustion, thermal throttling, WSL memory pressure, VRAM paging (LAB_LOG sections 5, 10, 12).
   Rate-32 numbers are not reproducible and are not used as results.
+- **Where decode time goes** (torch profiler, batch 1, LAB_LOG section 19): of an 11.70 ms step the GPU is busy 8.51 ms and idle
+  3.41 ms while the CPU schedules and processes outputs without overlap. That idle time plus kernels running below peak bandwidth
+  explains the gap to the ~6.5 ms bandwidth floor. After a heavy overload the same step's cuBLAS GEMV kernels ran ~15% slower
+  (attention unchanged), pointing at a GPU memory/power state rather than the scheduler; the full collapse did not reproduce in
+  2 profiled attempts.
 - **KV-cache formula** `2 x layers x kv_heads x head_dim x bytes` = 36,864 B/token predicts vLLM's reported capacity exactly (section 2).
 
 ## Method
