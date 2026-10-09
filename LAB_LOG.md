@@ -380,13 +380,13 @@ So the earlier runs may also have been slowed by something; whether they were is
 |---|---|---|---|
 | Eager vs compiled, repeats (4, 7) | 10-05, 10-07 | none direct; compiled canaries 10.84 to 11.72 | unknown |
 | Quantization 3B/7B, AWQ, 7B offload attempt (9) | 10-08 11:07 to 13:35 | none direct; bf16-3b canary 11.97 | unknown |
-| Prefix caching, max-num-seqs closed loop, AWQ cap64 (10) | 10-08 21:37 to 21:59 | none direct; canaries 10.57 to 11.49 | unknown |
+| Prefix caching, max-num-seqs closed loop, AWQ cap64 (10) | 10-08 21:37 (first server) to after 21:56 (last server start) | none direct; canaries 10.57 to 11.49 | unknown |
 | 7B BF16 ppl + 3B eager ppl control (11) | 10-08 22:28 to 22:42 | none direct; eager canary 21.29 vs 15.89 to 18.88 in section 7 (but different flags) | likely contaminated (indirect); perplexity values not affected (fixed computation) |
 | Overload cap 128 x2, cap-256 control (12) | 10-08 22:43 to 23:07 | Q1 | **contaminated** (Wallpaper Engine + Remote Desktop) |
 | Chunked prefill 3 pairs (13) | 10-08 23:18 to 23:47 | Q2 at launch only; all 6 canaries 12.00 to 12.24 | **contaminated** (Wallpaper Engine at launch; elevated canaries throughout suggest it stayed) |
 | Spec smoke, spec decoding (14) | 10-09 09:44 to 10:48 | Q3 at launch; base canaries 10.09, 10.27 | clean at launch; during: unknown |
 | HF vs vLLM (15) | 10-09 ~10:48 to 10:54 | Q3 (1 h earlier) | unknown |
-| TensorRT-LLM (16) | 10-09 11:2x to 12:16 | n/a | no measurements |
+| TensorRT-LLM (16) | 10-09, attempt-1 log written 11:44, last log 12:16 | n/a | no measurements |
 | mini_sched tests + benchmarks (17) | 10-09 ~12:20 to 12:43 | none; Q4 six minutes later saw Remote Desktop + Razer recorder | unknown (possibly contaminated) |
 | Profiling healthy + 2 collapse attempts (19) | 10-09 12:49 to 13:00 | Q4 at launch | **contaminated (minor)**: Remote Desktop 2.1%, Razer 0.5% |
 
