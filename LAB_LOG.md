@@ -40,7 +40,7 @@ Compiled rates 1 to 16 reproduced between a v1 sweep and a v2 sweep (p50 ITL wit
 | 8 | 19.6 / 11.7 | 1.68x | 1.77x | 66 / 47 |
 | 16 | 25.6 / 13.3 | 1.92x | 1.65x | 85 / 57 |
 Single-stream decode at 1 req/s: ~61 tok/s eager (~39% of the ~154 tok/s bandwidth ceiling), ~93 tok/s compiled (~60%).
-CUDA graphs and compilation remove 5.7 ms of the 10 ms gap (~57%); about 4.3 ms is unexplained and needs profiling.
+CUDA graphs and compilation remove 5.7 ms of the 10 ms gap (~57%); about 4.3 ms is unexplained and needs profiling. **[superseded 2026-10-09, see section 20]**
 
 ## 5. Overload behaviour (32 req/s) and a persistent slowdown
 Output throughput at 32 req/s in different runs: 1,982 (cached prompts, probably flattered), 1,358, 1,189, and 1,309 tok/s,
@@ -77,31 +77,31 @@ scheduler with a paged KV cache.
 
 ## 7. Repeats (2026-10-07, overnight queue)
 3 eager + 3 compiled runs, interleaved, each with canaries (all 6 valid, ratios 0.93 to 1.02).
-ITL p50 eager vs compiled (mean of 3): 16.9/11.3 ms (1.49x), 18.0/11.8 (1.52x), 19.9/12.2 (1.62x), 27.1/14.1 (1.92x) at rates 1/4/8/16.
-TTFT p50 is 28 to 35% lower with compiled. The earlier single-run result held.
-Rate 32 did NOT reproduce: 273 to 558 tok/s now vs 1,189 to 1,358 earlier, ITL p50 400 to 800 ms. Not usable as a headline number.
+ITL p50 eager vs compiled (mean of 3): 16.9/11.3 ms (1.49x), 18.0/11.8 (1.52x), 19.9/12.2 (1.62x), 27.1/14.1 (1.92x) at rates 1/4/8/16. **[superseded 2026-10-09, see section 20]**
+TTFT p50 is 28 to 35% lower with compiled. The earlier single-run result held. **[superseded 2026-10-09, see section 20]**
+Rate 32 did NOT reproduce: 273 to 558 tok/s now vs 1,189 to 1,358 earlier, ITL p50 400 to 800 ms. Not usable as a headline number. **[superseded 2026-10-09, see section 20]**
 
 ## 8. Tooling added
 run_config.sh (fresh server, canary, sweep, canary, verdict, auto-stop), queue scripts, serve_generic.sh (model/flags via env),
 ppl.py (WikiText-2 perplexity through the server), bench_modes.py (shared-prefix and closed-loop workloads).
 
 ## 9. Quantization (Qwen2.5, compiled, 2026-10-08)
-3B BF16 (4 runs) vs 3B FP8 (3 runs), ITL p50 at rates 1/4/8/16: 11.4/11.8/12.3/14.3 -> 7.4/7.4/7.6/8.2 ms (1.5x to 1.75x faster).
+3B BF16 (4 runs) vs 3B FP8 (3 runs), ITL p50 at rates 1/4/8/16: 11.4/11.8/12.3/14.3 -> 7.4/7.4/7.6/8.2 ms (1.5x to 1.75x faster). **[superseded 2026-10-09, see section 20]**
 TTFT p50 34 to 41% lower. Perplexity 7.981 -> 8.054 (+0.9%). Ranges do not overlap.
-7B FP8 (3 runs): ITL 12.8/13.1/13.7/16.7 ms, perplexity 6.949. About 12% slower per token than 3B BF16 at rate 1.
-7B AWQ 4-bit: valid sweep ITL 8.2/8.3/9.1 at rates 1/4/8 (34 to 37% below FP8), 16.8 at rate 12, TTFT 14 to 18% worse, perplexity 7.276 (+4.7% vs FP8 7B).
+7B FP8 (3 runs): ITL 12.8/13.1/13.7/16.7 ms, perplexity 6.949. About 12% slower per token than 3B BF16 at rate 1. **[superseded 2026-10-09, see section 20]**
+7B AWQ 4-bit: valid sweep ITL 8.2/8.3/9.1 at rates 1/4/8 (34 to 37% below FP8), 16.8 at rate 12, TTFT 14 to 18% worse, perplexity 7.276 (+4.7% vs FP8 7B). **[superseded 2026-10-09, see section 20]**
 AWQ collapsed at rate 16 twice (166 and 650 tok/s, canary INVALID).
-7B BF16 does not fit in 16 GB. CPU-offload baseline attempt failed to start (cause not yet checked).
+7B BF16 does not fit in 16 GB. CPU-offload baseline attempt failed to start (cause not yet checked). **[superseded 2026-10-09, see section 20]**
 
 ## 10. Prefix caching and --max-num-seqs
-Prefix caching (3B, ~1,540-token shared prefix, best case): TTFT p50 31/35/38 ms on vs 133/138/544 ms off at 2/4/8 req/s.
+Prefix caching (3B, ~1,540-token shared prefix, best case): TTFT p50 31/35/38 ms on vs 133/138/544 ms off at 2/4/8 req/s. **[superseded 2026-10-09, see section 20]**
 Off at 8 req/s also pushes ITL p50 from 11 to 142 ms (probably prefill saturation, not measured).
 Closed loop, 3B, throughput at 16/32/64/128/256 clients:
 cap 256: 1196/2278/3250/4199/2302 (collapsed at 256, canary INVALID, 3.86x)
 cap 128: 1157/2213/3121/4059/3979 (valid)
 cap 64:  1152/2125/3109/2994/2981 (valid)
 AWQ 7B at rate 16 with cap 64: 1634 tok/s, valid (uncapped collapsed twice).
-Every degraded run so far had ~255 sequences running. Caps of 128 and 64 avoided it. Root cause still unknown.
+Every degraded run so far had ~255 sequences running. Caps of 128 and 64 avoided it. Root cause still unknown. **[superseded 2026-10-09, see section 20]**
 
 ## 11. 7B BF16 perplexity baseline (2026-10-08, queue_ppl7b.sh)
 Why the first attempt failed (results/server_bf16-7b-offload_20261008_132510.log): `--cpu-offload-gb 6` plus CUDA graphs.
@@ -146,7 +146,7 @@ Source: results/main.csv, results/runs.csv, server logs results/server_seqs128-o
   Not rerun. Whether the crash was related to the collapsed overload state is unknown.
 - **Caveat, GPU contention:** during this queue, Windows processes were also using the GPU (Wallpaper Engine `wallpaper32`
   video decode ~4% x2, Chrome Remote Desktop ~4% 3D, dwm, WebView). Fresh-server canaries were 13.7 to 14.1 ms vs 10.8 to
-  11.9 ms in all earlier compiled 3B runs (results/canary.csv), about 23% slower. Absolute numbers from this queue are not
+  11.9 ms in all earlier compiled 3B runs (results/canary.csv), about 23% slower. Absolute numbers from this queue are not **[superseded 2026-10-09, see section 20]**
   comparable with earlier sections. Contention may also have contributed to the collapse; rep 1 survived under the same conditions.
 
 ## 13. Chunked prefill off vs on (2026-10-08, queue_chunked.sh)
@@ -167,7 +167,7 @@ Source: results/main.csv (labels chunked-off-rep1..3, chunked-on-rep1..3), resul
 - vLLM warns "This model does not officially support disabling chunked prefill ... may crash or produce incorrect outputs"
   (generic warning for any generation model). No crashes; outputs were not checked.
 - Caveat: Wallpaper Engine was still using the GPU (video decode, checked before launch). Fresh canaries were 12.0 to 12.2 ms,
-  vs 10.8 to 11.9 ms before tonight and 13.7 to 14.1 ms during section 12. Pairs were interleaved, so the off/on comparison holds;
+  vs 10.8 to 11.9 ms before tonight and 13.7 to 14.1 ms during section 12. Pairs were interleaved, so the off/on comparison holds; **[superseded 2026-10-09, see section 20]**
   absolute numbers are not comparable with sections 4 and 9.
 
 ## Methodology change (2026-10-08, not yet used for any result)
@@ -194,7 +194,7 @@ Canaries (results/spec/runs.csv): base 0.99, 0.97; k=3 **1.68 INVALID**, 1.07; k
 
 - **Speculative decoding with this draft is slower at every load**: TPOT p50 +28.1% to +34.6% (k=3) and +90.9% to +99.2% (k=5),
   means of 2 repeats at rates 1 to 8 (corrected 2026-10-09: an earlier draft of this line said +26 to 37% / +85 to 102%, computed
-  from rounded values; pair-by-pair ranges are +25.3 to +38.7% and +89.6 to +108.7%); TTFT 2.4x to 4.1x
+  from rounded values; pair-by-pair ranges are +25.3 to +38.7% and +89.6 to +108.7%); TTFT 2.4x to 4.1x **[superseded 2026-10-09, see section 20]**
   worse; at 16 req/s both spec configs exceed capacity and the queue explodes (no-spec handles it at 2,103 tok/s).
 - Derived, not profiled: time per engine step = TPOT x mean acceptance length = ~33.5 ms for k=3 at rate 1 vs ~10.5 ms without
   spec, i.e. ~7.7 ms per 0.5B draft step, ~70% of a 3B target step for a model 6x smaller. Small-batch decode here is dominated
@@ -266,7 +266,7 @@ The mini engine is ~2x slower than HF and ~5 to 9x slower than vLLM per step. Un
 | 1 | 95.5 / 96.2 | 141 / 5017 | 854 / 7832 | 58.2 / 59.1 |
 | 2 | 215.0 / 178.4 | 145 / 6164 | 268 / 11745 | 80.3 / 82.9 |
 | 4 | 310.6 / 300.1 | 188 / 5345 | 289 / 11903 | 105.1 / 84.1 |
-- Continuous batching cuts median TTFT 28.4x to 42.5x: a new request starts at the next step instead of waiting for the running batch
+- Continuous batching cuts median TTFT 28.4x to 42.5x: a new request starts at the next step instead of waiting for the running batch **[superseded 2026-10-09, see section 20]**
   to finish. Throughput is similar (open loop; both keep up). TPOT is higher at rate 4 because batches are larger (peak 60 vs 44).
 - Paged KV memory at the peak: 3,760 / 9,728 / 19,200 tokens (0.13 / 0.33 / 0.66 GiB at 36,864 B/token) vs 45,056 / 122,880 /
   245,760 tokens (1.55 / 4.22 / 8.44 GiB) if each running sequence reserved max_model_len 4,096: 12.0x to 12.8x less. Caveat: peak
@@ -282,10 +282,10 @@ The mini engine is ~2x slower than HF and ~5 to 9x slower than vLLM per step. Un
 plot.py `--summary` writes results/summary_{quantization,engines,speculative,batching}.png from the CSVs and prints every plotted
 value. README rewritten around current results; RESUME_BULLETS.md drafted (measured numbers only, sources cited).
 Discrepancies found while recomputing from the CSVs (docs now use the recomputed values):
-- Section 9 ITL means: 3B BF16 11.4/11.8/12.3/14.3 vs 11.3/11.8/12.2/14.3 recomputed over bf16-3b + compiled-rep1..3; 7B FP8
-  12.8/13.1/13.7/16.7 vs 12.7/13.1/13.8/16.7. Within 0.1 ms; probably a different run set or rounding. FP8 speedup is 1.53x to 1.74x.
-- Prefix caching TTFT reduction is 3.9x to 14.3x (138/35 at 4 req/s), not "4x to 14x" as CLAUDE.md says.
-- Section 14 and 17 ratios corrected (see the notes there): spec TPOT +28.1 to +34.6% (k=3), TTFT 2.4x to 4.1x; batching TTFT 28.4x to 42.5x.
+- Section 9 ITL means: 3B BF16 11.4/11.8/12.3/14.3 vs 11.3/11.8/12.2/14.3 recomputed over bf16-3b + compiled-rep1..3; 7B FP8 **[superseded 2026-10-09, see section 20]**
+  12.8/13.1/13.7/16.7 vs 12.7/13.1/13.8/16.7. Within 0.1 ms; probably a different run set or rounding. FP8 speedup is 1.53x to 1.74x. **[superseded 2026-10-09, see section 20]**
+- Prefix caching TTFT reduction is 3.9x to 14.3x (138/35 at 4 req/s), not "4x to 14x" as CLAUDE.md says. **[superseded 2026-10-09, see section 20]**
+- Section 14 and 17 ratios corrected (see the notes there): spec TPOT +28.1 to +34.6% (k=3), TTFT 2.4x to 4.1x; batching TTFT 28.4x to 42.5x. **[superseded 2026-10-09, see section 20]**
 - CLAUDE.md "Findings so far" still says caps 128 and 64 avoided the collapse; section 12 refutes that for 128.
 
 ## 19. Profiling (2026-10-09, profile_run.sh, profile_analyze.py, results/profiles/)
@@ -316,3 +316,40 @@ on 2026-10-08, partly with Wallpaper Engine on the GPU; 0 of 2 today with it clo
 got ~15% less effective bandwidth after heavy load. Leading hypothesis (untested): GPU memory clock / power state after sustained
 load. Next test: log `nvidia-smi --query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu,temperature.memory` at 1 Hz through a
 canary-overload-canary sequence, and try a 60 s idle pause before the after-canary.
+
+## 20. Corrections (2026-10-09)
+Every number in sections 1-19 that appears in a summary was recomputed from the CSVs (results/main.csv, modes.csv, canary.csv,
+runs.csv, spec/modes.csv, mini_sched.csv). Policy from now on: ratios and percentages are **truncated** to the decimals shown,
+never rounded up; exact values are given here. Superseded lines above are tagged in place and not deleted.
+
+| Where | Old claim | Status | Exact value / source |
+|---|---|---|---|
+| 4 | "about 4.3 ms is unexplained" | Superseded by 19 | Batch-1 step: GPU busy 8.51 ms, GPU idle 3.41 ms of 11.70 ms (profiled) |
+| 7 | ITL ratios 1.49x/1.52x/1.62x/1.92x | Last one rounded up | 1.496 / 1.524 / 1.627 / 1.916 -> range **1.49x to 1.91x** |
+| 7 | TTFT "28 to 35% lower" | Upper bound rounded up | 34.2 / 28.3 / 29.7 / 33.0% -> **28.3 to 34.2%** |
+| 7 | rate-32 "ITL p50 400 to 800 ms" | Rounded | 397.7 to 799.3 ms (tok/s 273 to 558 is correct: 273.3 to 558.2) |
+| 9 | 3B BF16 ITL 11.4/11.8/12.3/14.3 | Source unknown | Mean of the 4 valid runs (bf16-3b, compiled-rep1..3): 11.35/11.83/12.24/14.30. bf16-3b alone: 11.41/11.90/12.32/14.79. Neither matches the old line exactly |
+| 9 | FP8 "1.5x to 1.75x faster" | Upper bound rounded up | 1.523 / 1.601 / 1.611 / 1.747 -> **1.52x to 1.74x** |
+| 9 | FP8 TTFT "34 to 41% lower" | OK (truncated) | 34.7 / 35.2 / 35.6 / 41.6% |
+| 9 | 7B FP8 ITL 12.8/13.1/13.7/16.7 | Rounded | 12.74 / 13.10 / 13.76 / 16.72 |
+| 9 | AWQ "34 to 37% below FP8" | Both bounds rounded up | 35.5 / 36.3 / 33.5% -> **33.5 to 36.3%** |
+| 9 | AWQ "TTFT 14 to 18% worse" | Lower bound rounded up | 15.5 / 13.4 / 18.6% -> **13.4 to 18.6%** |
+| 9 | AWQ perplexity 7.276 (+4.7% vs FP8) | Value OK; run was INVALID | runs.csv awq-7b ratio 15.959; flagged in 11 |
+| 9 | 7B BF16 "cause not yet checked" | Superseded by 11 | Unpinned CPU weights cannot be copied during CUDA-graph capture |
+| 10 | prefix TTFT 31/35/38 vs 133/138/544 | Rounded | 30.8/35.0/38.3 vs 133.0/138.2/543.9 ms; ratio **3.9x to 14.1x** (3.952 to 14.188) |
+| 10 | "Caps of 128 and 64 avoided it" | **Superseded by 12** | n=1 closed-loop run per cap. Poisson cap 128: 1 of 2 runs collapsed (seqs128-ovl-rep2, INVALID 7.609) with 127-128 running, not ~255 |
+| 12 | "10.8 to 11.9 ms in all earlier compiled 3B runs" | Wrong range | canary-before of all compiled 3B BF16 runs before 2026-10-08 22:24 (hr075, compiled-rep1..3, bf16-3b, prefix-on/off, seqs256/128/64): 10.57 to 11.97 ms |
+| 13 | "10.8 to 11.9 ms before tonight" | Same error | 10.57 to 11.97 ms |
+| 14 | "TTFT 2.4x to 4.1x worse" (my 2026-10-09 fix) | Lower bound rounded up | per repeat, rates 1-8: k=3 2.350 to 2.637, k=5 3.525 to 4.171 -> **2.3x to 4.1x** |
+| 17 | "TTFT 28.4x to 42.5x" | Upper bound understated | 35.515 / 42.608 / 28.433 -> **28.4x to 42.6x** |
+| 18 | prefix "3.9x to 14.3x" | Wrong (used rounded inputs) | **3.9x to 14.1x** |
+| 18 | FP8 "1.53x to 1.74x" | Lower bound rounded up | **1.52x to 1.74x** |
+| CLAUDE.md | "--max-num-seqs ... Caps 128 and 64 avoided it" | Not confirmed | Cause unknown (sections 12, 19); CLAUDE.md updated |
+
+Consistency between old and new sections, beyond numbers:
+- Section 5's refuted hypotheses still stand. New since: the collapse also happens at 128 running (12); it did not reproduce in 2
+  profiled cap-256 attempts with Wallpaper Engine closed (19); post-overload GEMV slowdown is a new, untested lead (19).
+- Section 8 lists bench_modes.py with two modes; it now has a third (text mode; see the "Methodology change" note between sections 13 and 14).
+- Section 6 "corrections" and this section do not conflict.
+- README.md and RESUME_BULLETS.md still contain several of the old values above (1.92x, 1.53x, 14.3x, 2.4x, 42.5x); not edited
+  yet (out of scope for this pass). Section 21 lists them together with the contamination dependencies.
