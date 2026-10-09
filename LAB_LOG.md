@@ -405,3 +405,12 @@ So the earlier runs may also have been slowed by something; whether they were is
 | Overload collapse "1 of 2 runs at cap 128" (README) | section 12 | **contaminated**: the cap-128 collapse happened with Wallpaper Engine + Remote Desktop on the GPU | contention as a trigger is untested |
 | Decode-step breakdown 8.51 / 3.41 / 11.70 ms, GEMV +15% (README) | section 19 | **contaminated (minor)**; before/after comparison is within the same server | profiler overhead |
 | "Wallpaper Engine made fresh canaries ~23% slower" (README Method) | section 12 | n/a | measured +20.2% to +23.0% with Remote Desktop also active; attribution to Wallpaper Engine alone not established |
+
+## 22. Methodology change: idle-GPU preflight in run_config.sh (2026-10-09)
+Before starting a server, run_config.sh now takes 10 one-second nvidia-smi samples and refuses to run if any sample has
+utilization.gpu > 3%, memory.used > 2048 MiB, or an unreadable value. Decoder/encoder utilization is printed, not checked.
+No measurement code changed, so no configs need rerunning. Known limits, measured while writing it:
+- Wallpaper Engine passed both thresholds in the logs we have: idle memory 1,950 MiB at Q2 (section 21), and its video decode runs on
+  the decoder engine, which utilization.gpu does not count. Utilization at Q2 was not recorded.
+- At idle on 10-09 (no vLLM, Remote Desktop 0.5% and Razer.VideoRecorder 0.8% on the GPU), 10 samples read 0,0,1,0,1,1,1,1,1,6 %:
+  one 6% spike would have refused the run.
