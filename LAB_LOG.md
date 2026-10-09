@@ -178,3 +178,46 @@ acceptance from /metrics counter deltas. Also added a guard that refuses to appe
 CSV header. Existing prefix/closed modes are unchanged (their header still matches results/modes.csv), so no reruns needed.
 Text-mode runs write to results/spec/ (OUTDIR) because of the extra columns.
 New, not yet run: queue_spec.sh (base vs draft Qwen2.5-0.5B k=3/k=5, 2 repeats), hf_vs_vllm.py + run_hf_vs_vllm.sh (item 5).
+
+## 14. Speculative decoding, realistic text (2026-10-09, queue_spec.sh, results/spec/)
+3B BF16 compiled target, draft Qwen2.5-0.5B-Instruct (`method: draft_model`), `--mode text` (WikiText-2 continuation, ~248
+prompt tokens, 128 output tokens), Poisson 1/4/8/16 req/s, 2 interleaved repeats. Wallpaper Engine closed (no Windows GPU
+users above 0.5%); baseline canaries back to 10.1 to 10.3 ms. Values: both repeats.
+| Rate | TPOT p50 no spec (ms) | k=3 | k=5 | TTFT p50 no spec / k=3 / k=5 (ms) | tok/s at 16: no spec / k=3 / k=5 |
+|---|---|---|---|---|---|
+| 1 | 10.6, 10.3 | 13.3, 13.5 | 20.6, 19.6 | 38-39 / 90-99 / 137-154 | |
+| 4 | 11.1, 11.0 | 14.5, 14.4 | 23.2, 20.8 | 41-42 / 103-107 / 162-170 | |
+| 8 | 12.3, 12.1 | 16.0, 16.8 | 23.3, 23.2 | 46-47 / 120-121 / 181-186 | |
+| 16 | 15.5, 15.2 | 1165, 970 (collapsed) | 196, 3430 (collapsed) | | 2103, 2106 / 191, 234 / 788, 52 |
+Draft acceptance rate: k=3 0.497 to 0.516 (mean acceptance length 2.49 to 2.55); k=5 0.372 to 0.391 (2.86 to 2.96).
+Canaries (results/spec/runs.csv): base 0.99, 0.97; k=3 **1.68 INVALID**, 1.07; k=5 0.90, 1.23.
+
+- **Speculative decoding with this draft is slower at every load**: TPOT +26 to 37% (k=3) and +85 to 102% (k=5); TTFT 2.3x to 4x
+  worse; at 16 req/s both spec configs exceed capacity and the queue explodes (no-spec handles it at 2,103 tok/s).
+- Derived, not profiled: time per engine step = TPOT x mean acceptance length = ~33.5 ms for k=3 at rate 1 vs ~10.5 ms without
+  spec, i.e. ~7.7 ms per 0.5B draft step, ~70% of a 3B target step for a model 6x smaller. Small-batch decode here is dominated
+  by per-layer fixed costs (the 0.5B has 24 layers vs 36), not by weight bytes, so a small draft is not cheap. Same idea as the
+  unexplained ~4.3 ms in section 4; profiling (item 6) should check it.
+- Random-word prompts would have flattered spec decoding: in the smoke test the random-word canary intervals showed per-position
+  acceptance 0.77 to 0.92 vs ~0.5 on real text (server log results/server_smoke-spec-k3_*.log). Smoke run is in results/smoke/.
+- spec-k3-rep1 is INVALID (after-canary 43.6 vs 25.9 ms) following the rate-16 collapse; rep 2 recovered. Spec-config canaries
+  measure ITL per streamed chunk (several tokens), so they are only comparable within a run.
+- Not tried: EAGLE-style heads, n-gram drafting, larger --max-num-batched-tokens (vLLM warned the 2,048 budget "may lead to
+  suboptimal performance" with spec decoding).
+
+## 15. Hugging Face generate vs vLLM (2026-10-09, run_hf_vs_vllm.sh, results/hf_vs_vllm.csv)
+Qwen2.5-3B BF16, in-process on both sides (HF `generate` with sdpa vs vLLM `LLM.generate`, compiled + CUDA graphs), no HTTP.
+Identical 256-token prompts, greedy, exactly 128 new tokens, repetition_penalty 1.0 on HF (Qwen's generation_config sets 1.05,
+which vLLM ignores). Fresh process per backend, 2 interleaved repeats x 3 trials = 6 per cell, medians [tok/s min-max].
+| Batch | TPOT HF / vLLM (ms) | TTFT HF / vLLM (ms) | tok/s HF | tok/s vLLM | vLLM speedup |
+|---|---|---|---|---|---|
+| 1 | 28.00 / 9.67 | 32.1 / 22.4 | 35.6 [33.2-39.5] | 102.4 [100.6-103.3] | 2.87x |
+| 8 | 29.22 / 10.69 | 141.4 / 134.5 | 266.3 [231.6-291.6] | 685.3 [667.2-711.5] | 2.57x |
+| 32 | 32.30 / 11.33 | 551.9 / 486.6 | 881.5 [770.2-894.5] | 2130.2 [2088.4-2166.3] | 2.42x |
+| 64 | 33.69 / 12.42 | 1104.3 / 948.4 | 1522.0 [1458.3-1626.6] | 3222.0 [3156.8-3308.6] | 2.12x |
+- Correctness: the B=1 greedy outputs are identical, all 128 of 128 tokens, between HF and vLLM, and each backend reproduced
+  itself across processes (results/hf_vs_vllm_tokens_*.json).
+- The gap is mostly decode (TPOT 2.7x to 2.9x); prefill (TTFT) is only 1.05x to 1.43x, as expected for compute-bound prefill.
+  HF decode is ~28 ms/token even at batch 1, i.e. Python/launch overhead without CUDA graphs.
+- Static batches only: this does not exercise continuous batching, where vLLM's advantage under mixed arrivals should be larger.
+  HF used default settings (dynamic cache, no torch.compile / static cache); a tuned HF would close part of the gap.

@@ -1,0 +1,7 @@
+name,canary_before_ms,canary_after_ms,ratio,verdict
+spec-base-rep1,10.09,10.03,0.994,VALID
+spec-k3-rep1,25.93,43.57,1.680,INVALID
+spec-k5-rep1,52.70,47.21,0.896,VALID
+spec-base-rep2,10.27,10.00,0.973,VALID
+spec-k3-rep2,29.14,31.14,1.069,VALID
+spec-k5-rep2,48.46,59.69,1.232,VALID

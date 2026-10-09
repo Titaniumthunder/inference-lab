@@ -1,0 +1,2 @@
+name,canary_before_ms,canary_after_ms,ratio,verdict
+smoke-spec-k3,24.96,27.35,1.096,VALID

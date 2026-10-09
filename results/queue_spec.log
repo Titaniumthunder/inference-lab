@@ -1,0 +1,91 @@
+== starting server (./serve_generic.sh)
+== server up
+[spec-base-rep1-canary-before] rate=   1  ok= 30/30    145.5 tok/s  TTFT p50/p99      38/     53 ms  ITL p50/p99   10.1/  15.6 ms
+appended 1 rows to results/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[spec-base-rep1] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99      38/     55 ms  ITL p50/p99   10.3/  15.9 ms  TPOT p50   10.6 ms  accept 
+[spec-base-rep1] text level=   4  ok=133/133    546.0 tok/s  prompt~246 tok  TTFT p50/p99      41/     69 ms  ITL p50/p99   10.4/  21.8 ms  TPOT p50   11.1 ms  accept 
+[spec-base-rep1] text level=   8  ok=271/271   1108.7 tok/s  prompt~246 tok  TTFT p50/p99      47/     73 ms  ITL p50/p99   11.1/  26.2 ms  TPOT p50   12.3 ms  accept 
+[spec-base-rep1] text level=  16  ok=517/517   2103.2 tok/s  prompt~248 tok  TTFT p50/p99      58/    113 ms  ITL p50/p99   12.8/  38.8 ms  TPOT p50   15.5 ms  accept 
+appended 4 rows to results/spec/modes.csv
+[spec-base-rep1-canary-after] rate=   1  ok= 30/30    145.9 tok/s  TTFT p50/p99      39/     53 ms  ITL p50/p99   10.0/  15.7 ms
+appended 1 rows to results/spec/canary.csv
+
+CANARY ITL p50 before 10.1 ms, after 10.0 ms, ratio 0.99 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[spec-k3-rep1-canary-before] rate=   1  ok= 30/30    146.3 tok/s  TTFT p50/p99      81/    168 ms  ITL p50/p99   25.9/  62.1 ms
+appended 1 rows to results/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[spec-k3-rep1] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99      90/    188 ms  ITL p50/p99   26.0/  72.1 ms  TPOT p50   13.3 ms  accept 0.5067367729214591
+[spec-k3-rep1] text level=   4  ok=133/133    539.1 tok/s  prompt~246 tok  TTFT p50/p99     103/    197 ms  ITL p50/p99   29.7/  76.6 ms  TPOT p50   14.5 ms  accept 0.5161081188908837
+[spec-k3-rep1] text level=   8  ok=271/271   1079.5 tok/s  prompt~246 tok  TTFT p50/p99     120/    219 ms  ITL p50/p99   33.5/  82.0 ms  TPOT p50   16.0 ms  accept 0.5139641619061569
+[spec-k3-rep1] text level=  16  ok=514/514    191.4 tok/s  prompt~248 tok  TTFT p50/p99    9133/ 286331 ms  ITL p50/p99 1643.1/5746.9 ms  TPOT p50 1165.2 ms  accept 0.4972491419341813
+appended 4 rows to results/spec/modes.csv
+[spec-k3-rep1-canary-after] rate=   1  ok= 30/30    145.1 tok/s  TTFT p50/p99     121/    198 ms  ITL p50/p99   43.6/  86.2 ms
+appended 1 rows to results/spec/canary.csv
+
+CANARY ITL p50 before 25.9 ms, after 43.6 ms, ratio 1.68 -> INVALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[spec-k5-rep1-canary-before] rate=   1  ok= 30/30    144.6 tok/s  TTFT p50/p99     146/    286 ms  ITL p50/p99   52.7/ 115.3 ms
+appended 1 rows to results/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[spec-k5-rep1] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99     154/    282 ms  ITL p50/p99   48.0/ 118.2 ms  TPOT p50   20.6 ms  accept 0.37492537313432833
+[spec-k5-rep1] text level=   4  ok=133/133    516.1 tok/s  prompt~246 tok  TTFT p50/p99     170/    327 ms  ITL p50/p99   56.6/ 127.0 ms  TPOT p50   23.2 ms  accept 0.3844262295081967
+[spec-k5-rep1] text level=   8  ok=271/271   1012.4 tok/s  prompt~246 tok  TTFT p50/p99     186/    332 ms  ITL p50/p99   58.6/ 125.0 ms  TPOT p50   23.3 ms  accept 0.39111035711256253
+[spec-k5-rep1] text level=  16  ok=514/514    788.3 tok/s  prompt~248 tok  TTFT p50/p99   25815/  48256 ms  ITL p50/p99  538.8/3642.2 ms  TPOT p50  196.1 ms  accept 0.3775089527469648
+appended 4 rows to results/spec/modes.csv
+[spec-k5-rep1-canary-after] rate=   1  ok= 30/30    146.3 tok/s  TTFT p50/p99     151/    278 ms  ITL p50/p99   47.2/ 115.5 ms
+appended 1 rows to results/spec/canary.csv
+
+CANARY ITL p50 before 52.7 ms, after 47.2 ms, ratio 0.90 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[spec-base-rep2-canary-before] rate=   1  ok= 30/30    146.0 tok/s  TTFT p50/p99      40/     56 ms  ITL p50/p99   10.3/  15.7 ms
+appended 1 rows to results/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[spec-base-rep2] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99      39/     49 ms  ITL p50/p99   10.0/  15.8 ms  TPOT p50   10.3 ms  accept 
+[spec-base-rep2] text level=   4  ok=133/133    545.9 tok/s  prompt~246 tok  TTFT p50/p99      42/     61 ms  ITL p50/p99   10.2/  21.6 ms  TPOT p50   11.0 ms  accept 
+[spec-base-rep2] text level=   8  ok=271/271   1110.1 tok/s  prompt~246 tok  TTFT p50/p99      46/     73 ms  ITL p50/p99   10.8/  25.9 ms  TPOT p50   12.1 ms  accept 
+[spec-base-rep2] text level=  16  ok=517/517   2106.4 tok/s  prompt~248 tok  TTFT p50/p99      56/    101 ms  ITL p50/p99   12.7/  38.1 ms  TPOT p50   15.2 ms  accept 
+appended 4 rows to results/spec/modes.csv
+[spec-base-rep2-canary-after] rate=   1  ok= 30/30    145.8 tok/s  TTFT p50/p99      39/     46 ms  ITL p50/p99   10.0/  15.2 ms
+appended 1 rows to results/spec/canary.csv
+
+CANARY ITL p50 before 10.3 ms, after 10.0 ms, ratio 0.97 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[spec-k3-rep2-canary-before] rate=   1  ok= 30/30    144.8 tok/s  TTFT p50/p99     109/    185 ms  ITL p50/p99   29.1/  69.5 ms
+appended 1 rows to results/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[spec-k3-rep2] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99      99/    196 ms  ITL p50/p99   26.0/  71.4 ms  TPOT p50   13.5 ms  accept 0.5133289270764485
+[spec-k3-rep2] text level=   4  ok=133/133    538.1 tok/s  prompt~246 tok  TTFT p50/p99     107/    202 ms  ITL p50/p99   29.0/  77.3 ms  TPOT p50   14.4 ms  accept 0.5068087625814092
+[spec-k3-rep2] text level=   8  ok=271/271   1079.9 tok/s  prompt~246 tok  TTFT p50/p99     121/    218 ms  ITL p50/p99   37.0/  85.5 ms  TPOT p50   16.8 ms  accept 0.5100425015179113
+[spec-k3-rep2] text level=  16  ok=514/514    234.1 tok/s  prompt~248 tok  TTFT p50/p99   11240/ 232030 ms  ITL p50/p99 1550.1/4467.5 ms  TPOT p50  969.5 ms  accept 0.4973250561485856
+appended 4 rows to results/spec/modes.csv
+[spec-k3-rep2-canary-after] rate=   1  ok= 30/30    147.3 tok/s  TTFT p50/p99     109/    179 ms  ITL p50/p99   31.1/  70.5 ms
+appended 1 rows to results/spec/canary.csv
+
+CANARY ITL p50 before 29.1 ms, after 31.1 ms, ratio 1.07 -> VALID
+== done, stopping server
+== starting server (./serve_generic.sh)
+== server up
+[spec-k5-rep2-canary-before] rate=   1  ok= 30/30    145.0 tok/s  TTFT p50/p99     147/    252 ms  ITL p50/p99   48.5/ 114.4 ms
+appended 1 rows to results/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[spec-k5-rep2] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99     137/    277 ms  ITL p50/p99   44.5/ 115.9 ms  TPOT p50   19.6 ms  accept 0.3723396366332963
+[spec-k5-rep2] text level=   4  ok=133/133    525.2 tok/s  prompt~246 tok  TTFT p50/p99     162/    313 ms  ITL p50/p99   53.3/ 120.6 ms  TPOT p50   20.8 ms  accept 0.3820377615240687
+[spec-k5-rep2] text level=   8  ok=271/271   1056.6 tok/s  prompt~246 tok  TTFT p50/p99     181/    499 ms  ITL p50/p99   58.8/ 140.6 ms  TPOT p50   23.2 ms  accept 0.3889348762564406
+[spec-k5-rep2] text level=  16  ok=514/514     51.5 tok/s  prompt~248 tok  TTFT p50/p99  128858/1161679 ms  ITL p50/p99 14709.6/16746.4 ms  TPOT p50 3430.2 ms  accept 0.3734755833116489
+appended 4 rows to results/spec/modes.csv
+[spec-k5-rep2-canary-after] rate=   1  ok= 30/30    143.0 tok/s  TTFT p50/p99     275/    599 ms  ITL p50/p99   59.7/ 306.6 ms
+appended 1 rows to results/spec/canary.csv
+
+CANARY ITL p50 before 48.5 ms, after 59.7 ms, ratio 1.23 -> VALID
+== done, stopping server
+QUEUE FINISHED Fri Oct  9 10:48:14 AM PDT 2026

@@ -1,0 +1,12 @@
+== starting server (./serve_generic.sh)
+== server up
+[smoke-spec-k3-canary-before] rate=   1  ok= 30/30    144.1 tok/s  TTFT p50/p99      92/    159 ms  ITL p50/p99   25.0/  69.8 ms
+appended 1 rows to results/smoke/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[smoke-spec-k3] text level=   2  ok=60/60    226.2 tok/s  prompt~248 tok  TTFT p50/p99     103/    183 ms  ITL p50/p99   30.1/  75.9 ms  TPOT p50   15.2 ms  accept 0.49514563106796117
+appended 1 rows to results/smoke/modes.csv
+[smoke-spec-k3-canary-after] rate=   1  ok= 30/30    145.5 tok/s  TTFT p50/p99      99/    180 ms  ITL p50/p99   27.3/  70.8 ms
+appended 1 rows to results/smoke/canary.csv
+
+CANARY ITL p50 before 25.0 ms, after 27.3 ms, ratio 1.10 -> VALID
+== done, stopping server
