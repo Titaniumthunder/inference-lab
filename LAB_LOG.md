@@ -353,3 +353,55 @@ Consistency between old and new sections, beyond numbers:
 - Section 6 "corrections" and this section do not conflict.
 - README.md and RESUME_BULLETS.md still contain several of the old values above (1.92x, 1.53x, 14.3x, 2.4x, 42.5x); not edited
   yet (out of scope for this pass). Section 21 lists them together with the contamination dependencies.
+
+## 21. Contamination audit (2026-10-09, nothing rerun)
+**Evidence available.** (a) Direct: four queries of Windows per-process GPU-engine counters (`Get-Counter '\GPU Engine(*)\Utilization
+Percentage'`, processes above 0.5%), times from the session record. (b) Indirect: canary-before ITL p50 of fresh servers with the
+same config (results/canary.csv, spec/canary.csv). Nothing else in the logs records other GPU users; anything not covered is "unknown".
+
+| # | Time | Processes on the GPU besides WSL (vmwp) |
+|---|---|---|
+| Q1 | 10-08 ~22:47 (during seqs128-ovl-rep1/rep2) | wallpaper32 (Wallpaper Engine) videodecode 4.2% + 3.4%, 3D 0.9%; remoting_desktop (Chrome Remote Desktop) 3D 3.6%; dwm 3.6%; msedgewebview2 2.2%; claude 1.8% |
+| Q2 | 10-08 ~23:15 (after the crash/reboot, before chunked runs) | wallpaper32 videodecode 4.3% + 3.1%, 3D 0.8%; dwm 2.7%; System copy 1.2%. No remoting_desktop |
+| Q3 | 10-09 ~09:44 (before smoke/spec runs) | none above 0.5% |
+| Q4 | 10-09 ~12:49 (before profiling) | remoting_desktop 2.1%; Razer.VideoRecorder 0.5%; dwm 1.7%; claude 1.4%; System 4.0% |
+
+**How "~23%" was measured.** Not an A/B test. It compares canary-before ITL p50 of fresh compiled 3B BF16 servers in the Q1 window
+with same-flag servers earlier the same evening: seqs128-ovl-rep1 14.12 and rep2 13.80 vs seqs128 11.48 ms (+23.0%, +20.2%);
+seqs256-ovl 13.65 vs seqs256 11.23 ms (+21.5%). So the measured range is **+20.2% to +23.0%**, and "~23%" quoted the maximum.
+During Q1 both Wallpaper Engine **and** Chrome Remote Desktop were active, so attributing it to Wallpaper Engine alone is not
+established. With Wallpaper Engine only (Q2 window), chunked-on canaries were 12.11 to 12.24 ms: +7.8% to +8.9% vs the mean of the
+six default-config canaries from 10-07/08 (11.235 ms), +1.2% to +2.3% vs their maximum (11.97).
+**Also:** the clean 10-09 baseline (Q3; spec-base 10.09 and 10.27 ms, default config) is 8.6% to 10.2% *faster* than that 10-07/08 mean.
+So the earlier runs may also have been slowed by something; whether they were is unknown.
+
+**Runs and their status**
+| Runs (section) | Time | Evidence | Status |
+|---|---|---|---|
+| Eager vs compiled, repeats (4, 7) | 10-05, 10-07 | none direct; compiled canaries 10.84 to 11.72 | unknown |
+| Quantization 3B/7B, AWQ, 7B offload attempt (9) | 10-08 11:07 to 13:35 | none direct; bf16-3b canary 11.97 | unknown |
+| Prefix caching, max-num-seqs closed loop, AWQ cap64 (10) | 10-08 21:37 to 21:59 | none direct; canaries 10.57 to 11.49 | unknown |
+| 7B BF16 ppl + 3B eager ppl control (11) | 10-08 22:28 to 22:42 | none direct; eager canary 21.29 vs 15.89 to 18.88 in section 7 (but different flags) | likely contaminated (indirect); perplexity values not affected (fixed computation) |
+| Overload cap 128 x2, cap-256 control (12) | 10-08 22:43 to 23:07 | Q1 | **contaminated** (Wallpaper Engine + Remote Desktop) |
+| Chunked prefill 3 pairs (13) | 10-08 23:18 to 23:47 | Q2 at launch only; all 6 canaries 12.00 to 12.24 | **contaminated** (Wallpaper Engine at launch; elevated canaries throughout suggest it stayed) |
+| Spec smoke, spec decoding (14) | 10-09 09:44 to 10:48 | Q3 at launch; base canaries 10.09, 10.27 | clean at launch; during: unknown |
+| HF vs vLLM (15) | 10-09 ~10:48 to 10:54 | Q3 (1 h earlier) | unknown |
+| TensorRT-LLM (16) | 10-09 11:2x to 12:16 | n/a | no measurements |
+| mini_sched tests + benchmarks (17) | 10-09 ~12:20 to 12:43 | none; Q4 six minutes later saw Remote Desktop + Razer recorder | unknown (possibly contaminated) |
+| Profiling healthy + 2 collapse attempts (19) | 10-09 12:49 to 13:00 | Q4 at launch | **contaminated (minor)**: Remote Desktop 2.1%, Razer 0.5% |
+
+**Numbers in README.md and RESUME_BULLETS.md and what they depend on**
+| Number (where) | Runs | Contamination | Other issue (section 20) |
+|---|---|---|---|
+| Compiled vs eager 1.49x to 1.92x (README, bullet 1) | section 7 | unknown | upper bound should be 1.91x |
+| FP8 ITL table, 1.53x to 1.74x, 7B FP8 / AWQ ITL (README, bullet 2) | section 9 | unknown | lower bound should be 1.52x |
+| Perplexities 6.8988 / +0.73% / +5.46% / +0.92% (README, bullet 2) | sections 9, 11 | 7B BF16 run likely contaminated; perplexity is not a timing number | 7B BF16 and AWQ runs INVALID |
+| HF vs vLLM 2.12x to 2.87x, TPOT 2.7x to 2.9x (README, bullet 5) | section 15 | unknown | none |
+| mini_sched tok/s, TTFT 28.4x to 42.5x, 12x KV memory (README, bullet 3) | section 17 | unknown | upper bound should be 42.6x; KV memory ratio does not depend on timing |
+| Allocator stall 112.7 -> 310.6 tok/s (bullet 4) | section 17, two separate runs 10 min apart | unknown for both | cross-run comparison |
+| Speculative decoding +28.1% to +34.6% TPOT, TTFT 2.4x to 4.1x, acceptance 0.50 to 0.52 (README, bullet 6) | section 14 | clean at launch, unknown during; both arms interleaved | TTFT lower bound should be 2.3x; acceptance rates do not depend on timing |
+| Prefix caching 3.9x to 14.3x (README, bullet 7) | section 10 | unknown | upper bound should be 14.1x |
+| Chunked prefill "no measurable difference" (README) | section 13 | **contaminated**; pairs interleaved, so the relative claim stands, absolute values are not comparable | none |
+| Overload collapse "1 of 2 runs at cap 128" (README) | section 12 | **contaminated**: the cap-128 collapse happened with Wallpaper Engine + Remote Desktop on the GPU | contention as a trigger is untested |
+| Decode-step breakdown 8.51 / 3.41 / 11.70 ms, GEMV +15% (README) | section 19 | **contaminated (minor)**; before/after comparison is within the same server | profiler overhead |
+| "Wallpaper Engine made fresh canaries ~23% slower" (README Method) | section 12 | n/a | measured +20.2% to +23.0% with Remote Desktop also active; attribution to Wallpaper Engine alone not established |
