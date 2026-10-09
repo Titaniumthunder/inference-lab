@@ -23,3 +23,5 @@ seqs64,11.49,11.55,1.005,VALID
 awq-7b-cap64,8.49,8.67,1.021,VALID
 bf16-7b-offload-eager,598.95,790.64,1.320,INVALID
 bf16-3b-eager-ppl,21.29,20.50,0.963,VALID
+seqs128-ovl-rep1,14.12,14.72,1.042,VALID
+seqs128-ovl-rep2,13.80,104.99,7.609,INVALID

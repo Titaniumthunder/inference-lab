@@ -128,3 +128,23 @@ Source: results/ppl.csv, results/runs.csv.
   6 GB crosses PCIe every step).
 - Open question: the offloaded server slowed 32% after only a rate-1 sweep (at most 98 running requests per the server log),
   which is below the ~256-sequence pattern from sections 5 and 10. Not investigated.
+
+## 12. Overload with --max-num-seqs 128 (2026-10-08, queue_overload128.sh)
+3B BF16 compiled, Poisson 24 and 32 req/s inside the sweep, so the after-canary measures the post-overload state.
+| Run | 24 req/s tok/s | 32 req/s tok/s | TTFT p50 at 32 (ms) | ITL p50 at 32 (ms) | Canary (ms) | Verdict |
+|---|---|---|---|---|---|---|
+| seqs128-ovl-rep1 | 2488.0 | 2717.9 | 5838 | 31.6 | 14.1 -> 14.7 (1.04) | VALID |
+| seqs128-ovl-rep2 | 317.8 | 224.0 | 229074 | 254.9 | 13.8 -> 105.0 (7.61) | **INVALID** |
+Source: results/main.csv, results/runs.csv, server logs results/server_seqs128-ovl_20261008_224323.log / _224621.log.
+
+- **The cap does not reliably fix the collapse.** Rep 2 degraded as soon as the batch filled: 127 running, 369 tok/s generation
+  (rep 1 at the same point: 126 running, 2,590 tok/s). Up to 832 waiting, KV usage at most 21.1%, no preemptions.
+- This refutes section 10's "every degraded run had ~255 sequences running": the collapse also happens at 128 and is stochastic
+  (one of two runs). The closed-loop cap-128 result in section 10 was one lucky-or-not run.
+- Cap-256 control: started, then the PC crashed at about 23:07 during its overload sweep while that server was collapsed
+  (256 running, 128 to 205 tok/s; partial log results/server_seqs256-ovl_20261008_230111.log). No result rows, no verdict.
+  Not rerun. Whether the crash was related to the collapsed overload state is unknown.
+- **Caveat, GPU contention:** during this queue, Windows processes were also using the GPU (Wallpaper Engine `wallpaper32`
+  video decode ~4% x2, Chrome Remote Desktop ~4% 3D, dwm, WebView). Fresh-server canaries were 13.7 to 14.1 ms vs 10.8 to
+  11.9 ms in all earlier compiled 3B runs (results/canary.csv), about 23% slower. Absolute numbers from this queue are not
+  comparable with earlier sections. Contention may also have contributed to the collapse; rep 1 survived under the same conditions.
