@@ -630,3 +630,25 @@ healthy (1), I 7B BF16 perplexity (1, last). Estimate: E 6 x 4.9 to 5.0 min (cle
 5.0, 4.9) = 29.4 to 30.0; F 3 x 2.8 to 3.0 = 8.4 to 9.0; G 3 x <= 4.2 = <= 12.6; H 3.0; I 10.0; preflight 17 x 10 to 70 s =
 2.8 to 19.8. Total ~66.2 to 84.4 min (~1 h 06 to 1 h 25), plus up to ~19.7 min per refused run. Block E deviates from the
 request ("+ --async-scheduling"): async is already on by default (section 30), so the meaningful arm is --no-async-scheduling.
+
+## 31. queue_clean2.sh final plan (2026-10-10)
+Decisions (Alex): E = default vs --no-async-scheduling; add mini_sched --part steps; allocator stall as block J if non-invasive;
+chunked prefill as block K. Order E, F, G, G2 (steps), H, K, J, I. 29 runs. `DRY=1 ./queue_clean2.sh` prints the command list.
+- **J needs no code change:** mini_sched/__init__.py uses os.environ.setdefault, so PYTORCH_CUDA_ALLOC_CONF=expandable_segments:False
+  in the environment restores the default allocator; default behaviour is unchanged. Nothing else in the repo or the shell
+  environment sets PYTORCH_CUDA_ALLOC_CONF (checked). Caveat: J is compared with G about 1 h earlier, not interleaved.
+- run_mini_sched.sh: the label check now also catches LABEL-steps (what --part steps writes); runner-only change.
+- K: same flags as queue_chunked.sh (off = --no-enable-chunked-prefill, on = default), pair order now rotates.
+Estimates (derived where marked):
+| Block | Runs | Basis | Est. min |
+|---|---|---|---|
+| E async | 6 | clean compiled runs 4.9 to 5.0 each | 29.4 to 30.0 |
+| F HF vs vLLM | 6 | 2.8 to 3.0 per pair (section 29) | 8.4 to 9.0 |
+| G mini poisson | 3 | <= 4.2 each (section 29) | <= 12.6 |
+| G2 mini steps | 3 | derived: 124.9 s measured walls (mini-xseg-steps) + 4 warm-up trials ~42 s (assumed = t0) + load ~5 s = ~2.9 min, close to the 3 min limit | ~8.6 |
+| H profile | 1 | 3.0 (section 29) | 3.0 |
+| K chunked | 6 | 4.85 to 5.3 each (section 29) | 29.1 to 31.8 |
+| J mini no-xseg | 3 | derived: old stall run walls 329.8 s (label mini) + ~5 s load = ~5.6 min | ~16.6 |
+| I 7B ppl | 1 | 10.0 (section 29) | 10.0 |
+| Preflight | 29 | 10 to 70 s each | 4.8 to 33.8 |
+| **Total** | **29** | | **~122.5 to 155.4 (~2 h 03 to 2 h 35)** |
