@@ -481,3 +481,11 @@ Standalone test (no vLLM, 17:46:02 to 17:46:17, 15 rows): util 0 to 4%, decoder/
 PERFORMANCE` at 17:46:35: only "Reliability" Active). Exit code of the test script was preserved (7) and no nvidia-smi process
 was left. Also tested: unwritable OUTDIR and a failing nvidia-smi; the script continued and exited 0 both times.
 Observation, not explained: at idle the GPU sat in P0 at ~2.7 GHz SM and ~56 W.
+
+## 26. Preflight refusal exit code 75 + queue retry (2026-10-09)
+gpu_preflight.sh now exits 75 (EX_TEMPFAIL) instead of 1 when all 3 attempts fail. run_config.sh passes 75 through and turns
+any other preflight failure into 1. queue_clean.sh wraps every run in run(): on exit 75 (nothing was run) it waits 300 s and
+retries the same run, up to 3 retries (4 attempts); 75 after the last retry, or any other nonzero exit, stops the queue as before.
+Worst case per refused run: 4 x ~70 s preflight + 3 x 300 s wait = ~19.7 min, not included in the section-24 estimate.
+No measurement code changed; no reruns needed. Tested without GPU work: stubbed run_config (exit codes 75,75,0 -> continues;
+75 x4 -> stops after retry 3/3; 75,2 -> stops; 3 -> stops) and stubbed preflight (0/75/1 -> run_config exit 0/75/1). bash -n OK.

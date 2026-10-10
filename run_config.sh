@@ -13,7 +13,9 @@ if curl -sf localhost:8000/health >/dev/null; then
 fi
 
 # Idle-GPU preflight (LAB_LOG sections 21-23): thresholds, sampling and retries live in gpu_preflight.sh
-./gpu_preflight.sh || { echo "Not running $NAME: GPU not idle."; exit 1; }
+# Refusal exits 75 (queue_clean.sh retries on 75); any other preflight failure exits 1.
+./gpu_preflight.sh; PF=$?
+[ "$PF" = 0 ] || { echo "Not running $NAME: GPU not idle (preflight exit $PF)."; [ "$PF" = 75 ] && exit 75; exit 1; }
 
 stop_server() {
   pkill -INT -f "vllm serve" 2>/dev/null

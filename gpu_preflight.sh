@@ -3,7 +3,7 @@
 # One attempt = 10 one-second nvidia-smi samples. An attempt fails if ANY sample has utilization.gpu > 3%,
 # utilization.decoder > 0% (Wallpaper Engine's video decode shows up only there), memory.used > 1500 MiB, or an
 # unreadable value. In WSL these numbers include Windows processes. A failed attempt waits 20 s and re-samples;
-# exit 1 only if all 3 attempts fail. Exit 0 as soon as one attempt passes.
+# exit 75 (EX_TEMPFAIL, "try again later") only if all 3 attempts fail. Exit 0 as soon as one attempt passes.
 MAX_UTIL=3; MAX_DEC=0; MAX_MEM_MIB=1500; SAMPLES=10; ATTEMPTS=3; WAIT_S=20
 for attempt in $(seq 1 $ATTEMPTS); do
   reasons=()
@@ -26,4 +26,4 @@ for attempt in $(seq 1 $ATTEMPTS); do
   [ "$attempt" -lt $ATTEMPTS ] && { echo "waiting ${WAIT_S} s before re-sampling"; sleep $WAIT_S; }
 done
 echo "preflight REFUSED: GPU not idle in all $ATTEMPTS attempts"
-exit 1
+exit 75
