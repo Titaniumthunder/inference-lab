@@ -467,3 +467,17 @@ Totals: low = 43.8 + 30.9 + 18.0 + 41.4 + 5.0 = 139.1 min; high = 46.8 + 30.9 + 
 (4) Block B: 7B FP8 at rate 16 in the old runs was VALID 3/3 and did not collapse (results/main.csv fp8-7b, -rep2, -rep3:
 480/480 ok each, 15.19 to 15.27 req/s achieved, ITL p50 15.49 to 18.91 ms; results/runs.csv canary ratios 0.998, 1.009, 1.001).
 FP8 keeps RATES=1,4,8,12,16.
+
+## 25. Methodology change: GPU sidecar logger in run_config.sh (2026-10-09)
+After the preflight passes and until the EXIT trap, run_config.sh runs `nvidia-smi --query-gpu=... --format=csv -l 1` in the
+background, appending to $OUTDIR/gpu_<NAME>.csv (if that file exists, gpu_<NAME>_<timestamp>.csv instead, so nothing is
+overwritten). Fields: timestamp, utilization.gpu, utilization.decoder, utilization.encoder, memory.used, clocks.sm, clocks.mem,
+power.draw, temperature.gpu, clocks_event_reasons.active (driver 616.64 supports this name; clocks_throttle_reasons.active is
+its alias). The EXIT trap now runs stop_server, then kills the logger. Logging is best effort: errors are discarded and never
+change run_config.sh's exit code. No measurement code changed. Possible cost: one NVML query per second on the host; its effect
+on benchmark numbers was not measured. Purpose: open item 2 (clocks/power/temps through canary -> sweep -> canary).
+Standalone test (no vLLM, 17:46:02 to 17:46:17, 15 rows): util 0 to 4%, decoder/encoder 0%, memory 617 to 629 MiB, SM 2662 to
+2700 MHz, mem clock 15001 MHz, power 55.38 to 56.58 W, temp 49 to 50 C, event reasons 0x400 every row (`nvidia-smi -q -d
+PERFORMANCE` at 17:46:35: only "Reliability" Active). Exit code of the test script was preserved (7) and no nvidia-smi process
+was left. Also tested: unwritable OUTDIR and a failing nvidia-smi; the script continued and exited 0 both times.
+Observation, not explained: at idle the GPU sat in P0 at ~2.7 GHz SM and ~56 W.

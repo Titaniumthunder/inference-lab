@@ -20,7 +20,16 @@ stop_server() {
   for _ in $(seq 1 30); do pgrep -f "vllm serve" >/dev/null || return; sleep 1; done
   pkill -9 -f "vllm serve" 2>/dev/null; pkill -9 -f EngineCor 2>/dev/null
 }
-trap stop_server EXIT
+# GPU sidecar logger (LAB_LOG section 25): 1 Hz nvidia-smi from after the preflight until exit. Best effort: a logging
+# failure never fails the run. Never overwrites an existing log (adds a timestamp suffix instead).
+GPU_FIELDS=timestamp,utilization.gpu,utilization.decoder,utilization.encoder,memory.used,clocks.sm,clocks.mem,power.draw,temperature.gpu,clocks_event_reasons.active
+GPULOG=$OUTDIR/gpu_$NAME.csv
+[ -e "$GPULOG" ] && GPULOG=$OUTDIR/gpu_${NAME}_$(date +%Y%m%d_%H%M%S).csv
+GPULOG_PID=
+{ nvidia-smi --query-gpu=$GPU_FIELDS --format=csv -l 1 >> "$GPULOG" 2>/dev/null & GPULOG_PID=$!; } 2>/dev/null || true
+stop_gpulog() { [ -n "$GPULOG_PID" ] && kill "$GPULOG_PID" 2>/dev/null; wait "$GPULOG_PID" 2>/dev/null; return 0; }
+
+trap 'stop_server; stop_gpulog' EXIT
 
 echo "== starting server ($SERVE)"
 "$SERVE" >/dev/null 2>&1 &
