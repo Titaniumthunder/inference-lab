@@ -652,3 +652,65 @@ Estimates (derived where marked):
 | I 7B ppl | 1 | 10.0 (section 29) | 10.0 |
 | Preflight | 29 | 10 to 70 s each | 4.8 to 33.8 |
 | **Total** | **29** | | **~122.5 to 155.4 (~2 h 03 to 2 h 35)** |
+
+## 32. Clean rerun results 2 (2026-10-10, queue_clean2.sh)
+**Queue events.** First server 13:39:40 (results/server_clean2-async-default_20261010_133940.log), QUEUE FINISHED 15:42:37
+(results/queue_clean2.log): 29 of 29 runs, ~2 h 03 (estimate was 2 h 03 to 2 h 35). All 13 canary-checked runs VALID (ratios 0.97 to
+1.04, results/clean/runs.csv), including the 7B BF16 offload perplexity run (542.07 -> 562.55 ms, 1.038; it was INVALID at 1.32 on
+10-08). Preflight: no refusals; 8 runs needed a 2nd attempt (7) or 3rd attempt (1); every failing sample was utilization.gpu 4%.
+GPU sidecar (results/clean/gpu_summary_20261010_154555.md): no run flagged for clocks or event reasons (busy median SM 2790 to
+2812 MHz, 0x400 in 100% of samples, decoder/encoder 0 everywhere). One implausible sample: 437 C in gpu_clean-mini-rep2.csv at
+14:26:21.976 (0.25 s after the previous sample, between readings of 40 and 41 C), treated as a logging glitch, excluded from max temp
+and flagged; the CSV is unchanged. Allocator-stall reps (J rep1, rep3) show more busy samples at lower power (busy median 79.8 and
+94.8 W vs 136.3 W in rep2): GPU "busy" while doing less work.
+Full tables: results/clean/summary_20261010_154516.md (summarize_clean.py). Profiling: results/profiles/summary.csv rows for
+results/profiles/clean-healthy (profile_analyze.py).
+
+**Block E, async scheduling** (default = on, section 30, vs --no-async-scheduling; 3B BF16 compiled; medians of 3, all VALID):
+| Rate | ITL p50 on / off (ms) | TPOT p50 on / off | TTFT p50 on / off (ms) | TTFT p99 on / off | tok/s on / off |
+|---|---|---|---|---|---|
+| 1 | 10.07 / 10.56 | 10.34 / 10.81 | 37.17 / 28.54 | 49.63 / 41.01 | 121.39 / 121.42 |
+| 4 | 10.15 / 10.77 | 10.78 / 11.44 | 40.46 / 31.54 | 55.91 / 43.71 | 506.81 / 505.61 |
+| 8 | 10.60 / 11.19 | 11.49 / 12.23 | 42.41 / 33.00 | 61.19 / 51.09 | 881.36 / 879.61 |
+| 16 | 11.87 / 12.63 | 13.98 / 15.32 | 51.62 / 39.89 | 101.38 / 82.81 | 1975.67 / 1969.38 |
+**What E shows:** async scheduling is a trade-off on this setup, not a free win. With it on (the default), per-token latency is
+lower at every rate (ITL p50 -4.6% to -6.0%, TPOT p50 -4.3% to -8.7%) but time to first token is higher (TTFT p50 +28.2% to +30.2%,
+i.e. ~8.6 to 11.7 ms; TTFT p99 +19.7% to +27.9%). Per-rate ranges do not overlap for ITL p50 or TTFT p50. Throughput is unchanged
+(open loop; both keep up). All earlier vLLM results were measured with it on. Mechanism of the TTFT increase not measured.
+Profiling (clean, async on) still shows GPU idle 2.61 ms per batch-1 step, so async does not remove the CPU gap here.
+
+**Block K, chunked prefill** (off = --no-enable-chunked-prefill, on = default): at rates 1 to 8 all off/on median ratios are within
+0.96 to 1.04 and ranges overlap. At rate 16, chunked-on is slightly faster with non-overlapping ranges: ITL p50 11.74 [11.33-11.85]
+vs 12.24 [12.03-12.24] ms (-4.0%), TPOT p50 13.95 [13.31-13.97] vs 14.29 [14.23-14.35] (-2.3%). Same confound as section 13 (off
+also doubles the per-step token budget).
+
+**Block J, allocator stall:** expandable segments off reproduced the rate-4 stall in 2 of 3 reps: continuous 140.63 and 137.24 tok/s
+(TPOT p50 394.88, 432.93 ms) vs 320.90 in the 3rd rep, and 326.24 to 330.88 with expandable segments on (block G). The 2 stalled reps
+both ran continuous before static at rate 4; in those processes static at rate 4 then also degraded (TTFT p50 19,935 and 19,764 ms
+vs 5,690 to 6,374 elsewhere). The rep that ran static first stalled in neither. n=3, not interleaved with G (~1 h apart), and per-step
+stall counts were not re-measured.
+
+**Old vs clean, numbers not covered in section 28** (old = README / RESUME_BULLETS as of 2026-10-09; clean = medians, truncated)
+| Claim (where) | Old | Clean | Same / changed |
+|---|---|---|---|
+| HF tok/s B=1/8/32/64 (README engines table) | 35.6 / 266.3 / 881.5 / 1522.0 (median of 6) | 33.71 / 242.74 / 844.92 / 1530.82 (median of 9) | changed (slightly) |
+| vLLM tok/s B=1/8/32/64 (README) | 102.4 / 685.3 / 2130.2 / 3222.0 | 100.93 / 692.54 / 2148.65 / 3275.73 | changed (slightly) |
+| vLLM speedup vs HF (README, bullet 5) | 2.87x / 2.57x / 2.42x / 2.12x (2.1x to 2.9x) | 2.99x / 2.85x / 2.54x / 2.13x (2.13x to 2.99x) | changed (higher at B=1-32) |
+| Decode TPOT ratio HF/vLLM (README, bullet 5) | 2.7x to 2.9x | 2.74x to 3.03x | changed (upper bound) |
+| Prefill TTFT ratio HF/vLLM (README) | 1.05x to 1.43x | 1.04x to 1.16x | changed (upper bound much lower) |
+| Identical greedy outputs B=1 (README, bullet 5) | 128/128 | 128/128 in all 6 clean processes, and equal to the old output | same |
+| mini_sched tok/s B=1/8/32/64 (README engines table) | 17.5 / 132.6 / 364.4 / 531.0 | 18.00 / 134.45 / 383.76 / 533.31 (median of 9) | changed (slightly) |
+| TTFT p50 continuous / static, rates 1/2/4 (README batching table) | 141/5017, 145/6164, 188/5345 ms | 120.74/4682.48, 137.89/5109.43, 157.31/5850.52 | changed |
+| tok/s continuous / static (README batching table) | 95.5/96.2, 215.0/178.4, 310.6/300.1 | 96.98/85.11, 221.79/201.81, 328.14/277.29 | changed (static lower) |
+| Continuous vs static TTFT reduction (README, bullet 3) | 28.4x to 42.5x (corrected 42.6x, section 20) | 37.05x to 38.78x | changed (narrower) |
+| Paged vs reserved KV (README, bullet 3) | 12.0x to 12.8x | 11.79x to 12.83x per run (medians 12.23x to 12.82x) | changed; **and the old "12.0x" was rounded up: old rate-1 value 45,056 / 3,760 = 11.982x** (results/mini_sched.csv, mini-xseg) |
+| Allocator stall, 112.7 -> 310.6 tok/s at 4 req/s (bullet 4) | 1 run each, 10 min apart | off 140.63 / 137.24 / 320.90 (stall in 2 of 3) vs on 326.24 to 330.88 | same direction; stall is intermittent |
+| 32 of 313 steps > 0.5 s (bullet 4) | measured once | not re-measured | not retested |
+| Decode step at batch 1: period / GPU busy / GPU idle (README) | 11.70 / 8.51 / 3.41 ms | 10.83 / 8.12 / 2.61 ms (277 steps) | changed |
+| GEMV +15% after overload (README) | collapse-phase profile | not rerun (no overload) | not retested |
+| Chunked prefill "no measurable difference" (README) | 3 pairs, contaminated | none at rates 1-8; at 16 chunked-on ITL p50 -4.0%, TPOT -2.3% (ranges do not overlap) | changed (small effect at 16) |
+| 7B BF16 perplexity (README, bullet 2) | 6.8988 (canary INVALID) | 6.8988 (canary VALID, 1.038) | same; now from a VALID run |
+| 7B FP8 +0.73%, AWQ +5.46% vs 7B BF16 (README, bullet 2) | base 6.8988 | base unchanged; FP8/AWQ ppl not rerun | same (AWQ ppl run still INVALID) |
+| Spec base 2,103 tok/s at 16, both spec configs collapse at 16 (README) | section 14 | not rerun (no overload) | not retested |
+| Overload collapse claims (README) | section 12 | not rerun (no overload) | not retested |
+README.md and RESUME_BULLETS.md NOT edited (waiting for Alex).
