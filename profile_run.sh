@@ -11,12 +11,17 @@ MODEL=Qwen/Qwen2.5-3B-Instruct
 DIR=$HOME/inference-lab/results/profiles/$NAME
 cd ~/inference-lab && source ~/.venv/bin/activate && mkdir -p "$DIR"
 curl -sf localhost:8000/health >/dev/null && { echo "A server is already running. Stop it first."; exit 1; }
+[ -e "$DIR/bench.csv" ] && { echo "$DIR already has results, use a new name"; exit 1; }
+# Idle-GPU preflight (exit 75 on refusal) and GPU sidecar to $DIR/gpu_$NAME.csv (LAB_LOG section 29)
+source ./lab_gpu.sh
+lab_preflight "$NAME"
+lab_sidecar_start "$DIR/gpu_$NAME.csv"
 stop_server() {
   pkill -INT -f "vllm serve" 2>/dev/null
   for _ in $(seq 1 30); do pgrep -f "vllm serve" >/dev/null || return; sleep 1; done
   pkill -9 -f "vllm serve" 2>/dev/null; pkill -9 -f EngineCor 2>/dev/null
 }
-trap stop_server EXIT
+trap 'stop_server; lab_sidecar_stop' EXIT
 export TAG=prof-$NAME
 export EXTRA="--max-num-seqs 256 --profiler-config {\"profiler\":\"torch\",\"torch_profiler_dir\":\"$DIR\",\"max_iterations\":400,\"torch_profiler_with_stack\":false}"
 ./serve_generic.sh >/dev/null 2>&1 &

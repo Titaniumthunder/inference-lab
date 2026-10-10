@@ -18,14 +18,20 @@ gpu_free() {  # no engine left, GPU back near the idle baseline
   [ "$used" -lt 2500 ] || { echo "QUEUE STOPPED: GPU not idle $(date)"; exit 1; }
 }
 pgrep -f "vllm serve" >/dev/null && { echo "a vllm server is running, stop it first"; exit 1; }
+# Idle-GPU preflight before each process (exit 75 on refusal) and a GPU sidecar per process (LAB_LOG section 29)
+source ./lab_gpu.sh
+trap lab_sidecar_stop EXIT
 gpu_free
 if [ "${1:-}" = smoke ]; then
   mkdir -p results/smoke
+  lab_preflight trtllm-smoke; lab_sidecar_start results/smoke/gpu_trtllm-smoke.csv
   $PY hf_vs_vllm.py --backend trtllm --label trtllm-smoke --batch-sizes 1 --trials 1 --out results/smoke/trtllm_smoke.csv
-  gpu_free; exit
+  lab_sidecar_stop; gpu_free; exit
 fi
 for i in 1 2; do
+  lab_preflight trtllm-rep$i; lab_sidecar_start results/gpu_trtllm-rep$i.csv
   $PY hf_vs_vllm.py --backend trtllm --label trtllm-rep$i || { echo "QUEUE STOPPED: trtllm-rep$i failed $(date)"; exit 1; }
+  lab_sidecar_stop
   gpu_free
 done
 echo "QUEUE FINISHED $(date)"

@@ -79,6 +79,7 @@ def main():
     ap.add_argument("--rates", default="1,2,4")
     ap.add_argument("--duration", type=float, default=30)
     ap.add_argument("--max-drain", type=float, default=120)
+    ap.add_argument("--policies", default="continuous,static")  # order per rate (poisson part); rotate across reps
     ap.add_argument("--label", default="mini")
     ap.add_argument("--out", default="results/mini_sched.csv")
     args = ap.parse_args()
@@ -101,7 +102,7 @@ def main():
                           f"{rows[-1]['tpot_p50_ms']:6.2f} ms  {rows[-1]['out_tok_s']:7.1f} tok/s", flush=True)
     else:
         for rate in map(float, args.rates.split(",")):
-            for policy in ("continuous", "static"):
+            for policy in args.policies.split(","):
                 rng = random.Random(int(rate * 100))
                 t, arr = 0.0, []
                 while t < args.duration:

@@ -582,3 +582,44 @@ config into queueing, and n=1 could not show it. Not proven. n_req also differed
 | Compiled 3B canary-before ITL p50 (LAB_LOG 20) | 10.57 to 11.97 ms | 10.11 to 10.25 | changed (faster, tighter) |
 Not rerun, unchanged as claims: perplexities, HF vs vLLM, mini_sched, overload collapse, profiling, chunked prefill.
 README.md and RESUME_BULLETS.md NOT edited (waiting for Alex).
+
+## 29. Clean rerun plan 2 (2026-10-10, NOT run) + methodology change: preflight/sidecar for non-run_config runners
+Experiments that feed README.md / RESUME_BULLETS.md and are not in results/clean/. Status from section 21. GPU time from old
+timestamps (server-log name = start, file mtime = end; or gaps between consecutive output files).
+| Experiment (section) | Numbers it feeds | Status | Old GPU time | Preflight + sidecar before today | Now |
+|---|---|---|---|---|---|
+| HF vs vLLM (15) | README engines table (HF/vLLM tok/s, 2.12x to 2.87x), TPOT 2.7x to 2.9x, TTFT 1.05x to 1.43x, identical greedy outputs; bullet 5 | unknown | per process from token-JSON mtimes (10-09): vllm 10:49:07 -> 10:51:13 (2.1 min), hf 10:51:13 -> 10:52:08 (0.9), vllm 10:52:08 -> 10:54:00 (1.9); ~2.8 to 3.0 min per hf+vllm pair | no (own memory check only) | run_hf_vs_vllm.sh: yes |
+| mini_sched continuous vs static (17) | README batching table (TTFT, tok/s), TTFT 28.4x to 42.5x; paged KV 12.0x to 12.8x; bullet 3 | unknown (possibly contaminated) | poisson run <= 4.2 min (steps log mtime 12:39:38 -> poisson log mtime 12:43:51, 10-09; upper bound) | no (plain python) | run_mini_sched.sh: yes |
+| mini_sched per-step speed (17) | README engines table "mini_sched tok/s" 17.5 / 132.6 / 364.4 / 531.0 | unknown | unknown (start not logged) | no | run_mini_sched.sh: yes; not in queue_clean2.sh (proposal) |
+| mini_sched allocator stall (17) | bullet 4: 112.7 -> 310.6 tok/s, 32 of 313 steps > 0.5 s | unknown, two runs 10 min apart | n/a | no | not rerun: needs a run without expandable_segments (code change), decision for Alex |
+| Profiling breakdown (19) | README: 11.70 / 8.51 / 3.41 ms, GEMV +15% after overload | contaminated (minor) | healthy: server log 12:49:18 -> mtime 12:52:20 = 3.0 min; collapse attempts ~4 min each | no | profile_run.sh: yes. Only PHASE=healthy planned (collapse = crash risk) |
+| Chunked prefill (13) | README "no measurable difference" | contaminated | 6 runs 23:18:08 -> 23:47:53 = 29.7 min (4.85 to 5.3 each) | yes (run_config.sh) | unchanged; not in queue_clean2.sh |
+| Perplexity (9, 11) | README ppl column; bullet 2: 6.8988, +0.73%, +5.46%, +0.92% | 7B BF16 run INVALID and likely contaminated; AWQ ppl run INVALID; perplexity is not a timing number | 7B BF16 offload: 22:28:39 -> 22:38:41 = 10.0 min; 3B eager control 3.5 min | yes (run_config.sh PPL=1) | unchanged; 7B BF16 in queue_clean2.sh |
+| TensorRT-LLM (16) | none (README says it never ran) | no numbers | n/a | no | run_trtllm.sh: yes |
+
+**Methodology change (runners only; no measurement code changed except one optional argument):**
+- New lab_gpu.sh (sourced): `lab_preflight NAME` runs gpu_preflight.sh and exits 75 on refusal, 1 on other failure;
+  `lab_sidecar_start CSV` / `lab_sidecar_stop` = the run_config.sh sidecar (same fields, best effort, never overwrites).
+- run_hf_vs_vllm.sh: preflight before every process, sidecar per process ($GPUDIR/gpu_<label>.csv). New single-run mode
+  `./run_hf_vs_vllm.sh BACKEND LABEL` with OUT=<csv>. Refuses a label whose results/hf_vs_vllm_tokens_<label>.json exists
+  (hf_vs_vllm.py writes that path unconditionally, so a reused label would have overwritten a results file).
+- New run_mini_sched.sh LABEL <bench_sched args>: preflight, sidecar, refuses a label already in $OUT.
+- mini_sched/bench_sched.py: new `--policies` (default "continuous,static" = the old fixed order), so reps can rotate
+  which policy runs first at each rate. Arrival times are seeded per rate, unchanged.
+- profile_run.sh: preflight + sidecar ($DIR/gpu_<name>.csv), refuses an existing results/profiles/<name>/bench.csv.
+- run_trtllm.sh: preflight + sidecar per process.
+Tests (no GPU work): bash -n on all; lab_preflight with stub preflight exit 75/1/0 -> caller exits 75/1/continues; real
+preflight + 4 s sidecar wrote 5 lines and left no nvidia-smi process; run_mini_sched.sh refused existing label mini-xseg.
+One real preflight during the tests refused (all 3 attempts failed, reasons not captured); the next one passed on attempt 1.
+No existing results depend on these runners' new behaviour; no reruns needed for the change itself.
+
+## 30. Async scheduling (2026-10-10, no GPU run)
+`vllm serve --help=all`: `--async-scheduling, --no-async-scheduling`, default None. vllm/config/vllm.py (vLLM 0.31.0, lines
+1576 to 1635): None resolves to True unless pooling model, unsupported speculative method, disable_padded_drafter_batch,
+an executor without support, ROCm DeepEP DBO, or pipeline parallelism; each of those logs a warning. Both uniproc and
+multiproc executors return supports_async_scheduling() = True; draft_model speculative decoding is supported.
+Server logs: no line in any of the 83 results/server_*.log mentions async scheduling (the engine-config line does not print
+it, and none of the "will be disabled" warnings appear). **So async scheduling was ON in every vLLM server run, by default,
+inferred from the code path; no log line states it directly.** Consequence: "compiled + --async-scheduling" equals the
+baseline. The informative A/B is default vs `--no-async-scheduling`. Also: section 19's "GPU idle ~3.4 ms per step, no
+CPU/GPU overlap" was measured with async scheduling on.
