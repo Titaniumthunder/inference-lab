@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Clean rerun of the headline vLLM experiments (LAB_LOG section 24). Every config goes through run_config.sh, so the
 # idle-GPU preflight (gpu_preflight.sh, section 23) runs before each server. Results: results/clean/ and results/clean/spec/.
-# No overload / rate-16 collapse configs. ~2 h 05 to 2 h 35: close Wallpaper Engine, Remote Desktop, recorders; PC must not sleep.
+# No overload / rate-16 collapse configs. 30 runs, ~2 h 19 to 2 h 52: close Wallpaper Engine, Remote Desktop, recorders; PC must not sleep.
 cd ~/inference-lab
 S=./serve_generic.sh
 M3=Qwen/Qwen2.5-3B-Instruct
@@ -16,9 +16,10 @@ guard() {  # $1 = run_config exit code, $2 = OUTDIR. Stop on a failed run (incl.
   return 0
 }
 
-# A. eager vs compiled vs 3B FP8: standard sweep, 3 triplets, arm order rotates
-eager()    { OUTDIR=$C ./run_config.sh clean-eager-rep$1 ./serve_eager.sh; guard $? $C; }
-compiled() { OUTDIR=$C ./run_config.sh clean-compiled-rep$1 ./serve_compiled.sh; guard $? $C; }
+# A. eager vs compiled vs 3B FP8: standard sweep, 3 triplets, arm order rotates. All three arms use serve_generic.sh,
+# so they differ only in EXTRA (eager: --enforce-eager; compiled: none; fp8: --quantization fp8).
+eager()    { OUTDIR=$C MODEL=$M3 TAG=clean-eager EXTRA="--enforce-eager" ./run_config.sh clean-eager-rep$1 $S; guard $? $C; }
+compiled() { OUTDIR=$C MODEL=$M3 TAG=clean-compiled EXTRA="" ./run_config.sh clean-compiled-rep$1 $S; guard $? $C; }
 fp8_3b()   { OUTDIR=$C MODEL=$M3 TAG=clean-fp8-3b EXTRA="--quantization fp8" ./run_config.sh clean-fp8-3b-rep$1 $S; guard $? $C; }
 eager 1; compiled 1; fp8_3b 1
 compiled 2; fp8_3b 2; eager 2
@@ -32,7 +33,7 @@ awq 2; fp8_7b 2
 fp8_7b 3; awq 3
 
 # C. prefix caching on vs off (shared ~1,540-token prefix)
-pon()  { OUTDIR=$C MODE=prefix LEVELS=2,4,8 MODEL=$M3 TAG=clean-prefix-on ./run_config.sh clean-prefix-on-rep$1 $S; guard $? $C; }
+pon()  { OUTDIR=$C MODE=prefix LEVELS=2,4,8 MODEL=$M3 TAG=clean-prefix-on EXTRA="--enable-prefix-caching" ./run_config.sh clean-prefix-on-rep$1 $S; guard $? $C; }
 poff() { OUTDIR=$C MODE=prefix LEVELS=2,4,8 MODEL=$M3 TAG=clean-prefix-off EXTRA="--no-enable-prefix-caching" ./run_config.sh clean-prefix-off-rep$1 $S; guard $? $C; }
 pon 1; poff 1
 poff 2; pon 2
@@ -46,5 +47,6 @@ spec() { OUTDIR=$CS MODE=text LEVELS=1,4,8 MODEL=$M3 TAG=clean-spec-k$1 \
            ./run_config.sh clean-spec-k$1-rep$2 $S; guard $? $CS; }
 base 1; spec 3 1; spec 5 1
 spec 5 2; base 2; spec 3 2
+spec 3 3; spec 5 3; base 3
 
 echo "QUEUE FINISHED $(date)"

@@ -437,12 +437,12 @@ Per-config wall time below = gap between consecutive server-log start times (res
 startup, both canaries, the sweep and shutdown; "derived" marks configs with no directly comparable old timing.
 | # | Experiment | Config (run_config.sh) | Old sessions | Feeds | Old wall time per config | Planned runs | Est. GPU time |
 |---|---|---|---|---|---|---|---|
-| A | Eager vs compiled vs 3B FP8 (sections 4, 7, 9) | serve_eager.sh; serve_compiled.sh; serve_generic.sh MODEL=3B EXTRA="--quantization fp8"; RATES=1,4,8,16, no OVERLOAD | 10-05 15:30 to after 15:55 (last server start); 10-07 22:02 to 23:09; 10-08 12:14 to 13:12 | README eager/compiled table and quant table 3B rows; bullets 1, 2 (ITL ratios); CLAUDE.md findings | compiled 3B standard sweep: 4.9 to 5.3 min (chunked-on/off, 10-08 23:18 to 23:47); 3B FP8: 4.8 to 5.0 (10-08 12:57 to 13:12); eager: old runs all had OVERLOAD=1 (8.1 to 11.6 min), no clean timing, derived: assumed = compiled 4.9 to 5.3 | 3 triplets = 9 | 43.8 to 46.8 min |
+| A | Eager vs compiled vs 3B FP8 (sections 4, 7, 9) | all via serve_generic.sh MODEL=3B: eager EXTRA="--enforce-eager"; compiled no EXTRA; fp8 EXTRA="--quantization fp8"; RATES=1,4,8,16, no OVERLOAD | 10-05 15:30 to after 15:55 (last server start); 10-07 22:02 to 23:09; 10-08 12:14 to 13:12 | README eager/compiled table and quant table 3B rows; bullets 1, 2 (ITL ratios); CLAUDE.md findings | compiled 3B standard sweep: 4.9 to 5.3 min (chunked-on/off, 10-08 23:18 to 23:47); 3B FP8: 4.8 to 5.0 (10-08 12:57 to 13:12); eager: old runs all had OVERLOAD=1 (8.1 to 11.6 min), no clean timing, derived: assumed = compiled 4.9 to 5.3 | 3 triplets = 9 | 43.8 to 46.8 min |
 | B | 7B FP8 vs 7B AWQ (section 9) | serve_generic.sh MODEL=7B EXTRA="--quantization fp8" RATES=1,4,8,12,16; MODEL=7B-AWQ RATES=1,4,8,12 (AWQ collapsed at 16) | 10-08 12:25 to 13:22 | README quant table 7B rows (bullet 2 uses only 7B perplexities) | 7B FP8 at 1,4,8,16: 4.9 min (10-08 13:02, 13:12); AWQ at 1,4,8,12: 4.8 min (10-08 13:17); 7B FP8 with rate 12 added: derived ~5.5 | 3 pairs = 6 | ~30.9 min |
-| C | Prefix caching on vs off (section 10) | MODE=prefix LEVELS=2,4,8; off = EXTRA="--no-enable-prefix-caching" | 10-08 21:37 to 21:43 | README other findings; bullet 7 | 3.0 min each (10-08 21:37, 21:40) | 3 pairs = 6 | 18.0 min |
-| D | Speculative decoding (section 14) | MODE=text LEVELS=1,4,8, OUTDIR=results/clean/spec; base; draft 0.5B k=3; k=5 | 10-09 09:44 to 10:48 | README spec section (TPOT, TTFT, acceptance); bullet 6 | base at 1,4,8,16: 4.3 and 4.6 min; spec runs with rate 16 took 6.0 to 25.8 min because of the collapse; at 1,4,8 only: derived <= 4.6 | 2 triplets = 6 | <= 27.6 min |
-| | Preflight | gpu_preflight.sh before each of 27 runs | | | 10 s (pass) to ~70 s (3 attempts) per run | 27 | 4.5 to 31.5 min |
-| | **Total** | | | | | **27 runs** | **~2 h 05 to 2 h 35** |
+| C | Prefix caching on vs off (section 10) | MODE=prefix LEVELS=2,4,8; on = EXTRA="--enable-prefix-caching"; off = EXTRA="--no-enable-prefix-caching" | 10-08 21:37 to 21:43 | README other findings; bullet 7 | 3.0 min each (10-08 21:37, 21:40) | 3 pairs = 6 | 18.0 min |
+| D | Speculative decoding (section 14) | MODE=text LEVELS=1,4,8, OUTDIR=results/clean/spec; base; draft 0.5B k=3; k=5 | 10-09 09:44 to 10:48 | README spec section (TPOT, TTFT, acceptance); bullet 6 | base at 1,4,8,16: 4.3 and 4.6 min; spec runs with rate 16 took 6.0 to 25.8 min because of the collapse; at 1,4,8 only: derived <= 4.6 | 3 triplets = 9 | <= 41.4 min |
+| | Preflight | gpu_preflight.sh before each of 30 runs | | | 10 s (pass) to ~70 s (3 attempts) per run | 30 | 5.0 to 35.0 min |
+| | **Total** | | | | | **30 runs** | **~2 h 19 to 2 h 52** |
 
 Not in this plan: continuous vs static batching (mini_sched, does not use vLLM); HF vs vLLM (in-process, not run_config.sh;
 run_hf_vs_vllm.sh would need the preflight added first); chunked prefill (README claim is relative and interleaved); overload
@@ -454,5 +454,16 @@ a preflight refusal, or two INVALID verdicts in a row):
 1. A: rep1 eager, compiled, fp8; rep2 compiled, fp8, eager; rep3 fp8, eager, compiled
 2. B: rep1 fp8-7b, awq; rep2 awq, fp8-7b; rep3 fp8-7b, awq
 3. C: rep1 on, off; rep2 off, on; rep3 on, off
-4. D: rep1 base, k3, k5; rep2 k5, base, k3
-Before launch: Wallpaper Engine, Remote Desktop and recorders closed; PC set not to sleep for ~2.5 h.
+4. D: rep1 base, k3, k5; rep2 k5, base, k3; rep3 k3, k5, base
+Before launch: Wallpaper Engine, Remote Desktop and recorders closed; PC set not to sleep for ~3 h.
+
+**Amended 10-09 (still NOT run).** (1) Block A: eager and compiled now run through serve_generic.sh like the FP8 arm, so the arms
+differ only in EXTRA. The old serve_eager.sh differed from serve_generic.sh in two more ways: it lacks the venv-nvcc/CUDA_HOME setup
+and lacks `--kernel_config.enable_jit_warmup=False` (a required flag per CLAUDE.md). serve_compiled.sh differs from serve_generic.sh
+only in the hard-coded model and log name. So the old eager arm (sections 4, 7) was not flag-matched; the new one is.
+(2) Block C: the "on" arm passes `--enable-prefix-caching` explicitly (it was on by default: server_prefix-on_20261008_213717.log
+shows enable_prefix_caching=True). (3) Block D: third triplet added (n=3 per arm); D is now 9 runs, total 30 runs.
+Totals: low = 43.8 + 30.9 + 18.0 + 41.4 + 5.0 = 139.1 min; high = 46.8 + 30.9 + 18.0 + 41.4 + 35.0 = 172.1 min.
+(4) Block B: 7B FP8 at rate 16 in the old runs was VALID 3/3 and did not collapse (results/main.csv fp8-7b, -rep2, -rep3:
+480/480 ok each, 15.19 to 15.27 req/s achieved, ITL p50 15.49 to 18.91 ms; results/runs.csv canary ratios 0.998, 1.009, 1.001).
+FP8 keeps RATES=1,4,8,12,16.
