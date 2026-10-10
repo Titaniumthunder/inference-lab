@@ -623,3 +623,10 @@ it, and none of the "will be disabled" warnings appear). **So async scheduling w
 inferred from the code path; no log line states it directly.** Consequence: "compiled + --async-scheduling" equals the
 baseline. The informative A/B is default vs `--no-async-scheduling`. Also: section 19's "GPU idle ~3.4 ms per step, no
 CPU/GPU overlap" was measured with async scheduling on.
+
+**queue_clean2.sh (2026-10-10, NOT launched).** 17 runs, order: E async default vs --no-async-scheduling (3 interleaved
+pairs, RATES 1,4,8,16), F HF vs vLLM (3 interleaved pairs), G mini_sched poisson (3 reps, policy order rotated), H profile
+healthy (1), I 7B BF16 perplexity (1, last). Estimate: E 6 x 4.9 to 5.0 min (clean compiled runs 10-10: server-log gaps 5.0,
+5.0, 4.9) = 29.4 to 30.0; F 3 x 2.8 to 3.0 = 8.4 to 9.0; G 3 x <= 4.2 = <= 12.6; H 3.0; I 10.0; preflight 17 x 10 to 70 s =
+2.8 to 19.8. Total ~66.2 to 84.4 min (~1 h 06 to 1 h 25), plus up to ~19.7 min per refused run. Block E deviates from the
+request ("+ --async-scheduling"): async is already on by default (section 30), so the meaningful arm is --no-async-scheduling.
