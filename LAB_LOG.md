@@ -510,8 +510,8 @@ base/k3/k5 server-log start times: 3.8, 3.9 min) + 7 preflights (10 to 70 s) = ~
 ## 28. Clean rerun results (2026-10-10)
 **Runs.** queue_clean.sh 09:44 to 11:40 (25 runs, stopped on two INVALID in a row, section 27), queue_clean_rest.sh finished
 12:35:11 (7 runs, all VALID; results/queue_clean_rest.log). 32 runs total, 30 VALID, 2 INVALID (clean-spec-k5-rep1/-rep2, tagged
-"saturation evidence at level 8, run verdict INVALID"). Preflight in the rest-queue: 5 runs needed a 2nd or 3rd attempt, and one
-was refused 3 times (12:13:59) and passed on the first retry. Every failing sample was utilization.gpu 4 to 9%; decoder 0% and
+"saturation evidence at level 8, run verdict INVALID"). Preflight in the rest-queue: 3 runs passed on attempt 2 or 3, and one was
+refused (all 3 attempts failed, 12:13:59) and passed on the first retry 300 s later. Every failing sample was utilization.gpu 4 to 9%; decoder 0% and
 memory under the limit throughout. Sidecar logs: decoder/encoder 0 in every sample of all 32 runs (results/clean/gpu_summary.md).
 Full tables: results/clean/summary_20261010_123633.md (summarize_clean.py; results/clean/summary.md is the first output, which
 missed the INVALID rows; kept, not overwritten). Values are median [min-max] of n=3 VALID reps, truncated.
