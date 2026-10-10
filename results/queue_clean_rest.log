@@ -1,0 +1,271 @@
+preflight attempt 1 sample 1: util 0%  mem 614 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 1%  mem 609 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 3%  mem 609 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 609 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 601 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 596 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 596 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 597 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 603 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 603 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-base-rep2-canary-before] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99      40/     52 ms  ITL p50/p99   10.2/  16.2 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-base-rep2] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99      41/     53 ms  ITL p50/p99   10.4/  16.8 ms  TPOT p50   10.8 ms  accept 
+[clean-spec-base-rep2] text level=   4  ok=133/133    544.9 tok/s  prompt~246 tok  TTFT p50/p99      44/     59 ms  ITL p50/p99   10.8/  24.1 ms  TPOT p50   11.5 ms  accept 
+[clean-spec-base-rep2] text level=   8  ok=271/271   1103.3 tok/s  prompt~246 tok  TTFT p50/p99      48/     86 ms  ITL p50/p99   11.4/  26.5 ms  TPOT p50   12.7 ms  accept 
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-base-rep2-canary-after] rate=   1  ok= 30/30    145.8 tok/s  TTFT p50/p99      42/     57 ms  ITL p50/p99   10.4/  16.3 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 10.2 ms, after 10.4 ms, ratio 1.02 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k5-l14-rep1-canary-before] rate=   1  ok= 30/30    144.8 tok/s  TTFT p50/p99     138/    220 ms  ITL p50/p99   48.4/ 105.7 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k5-l14-rep1] text level=   1  ok=60/60    127.8 tok/s  prompt~248 tok  TTFT p50/p99     141/    261 ms  ITL p50/p99   44.7/ 113.9 ms  TPOT p50   20.4 ms  accept 0.3702064896755162
+[clean-spec-k5-l14-rep1] text level=   4  ok=133/133    520.8 tok/s  prompt~246 tok  TTFT p50/p99     149/    273 ms  ITL p50/p99   47.2/ 117.0 ms  TPOT p50   20.3 ms  accept 0.37980003389256056
+appended 2 rows to results/clean/spec/modes.csv
+[clean-spec-k5-l14-rep1-canary-after] rate=   1  ok= 30/30    145.9 tok/s  TTFT p50/p99     157/    256 ms  ITL p50/p99   50.3/ 112.6 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 48.4 ms, after 50.3 ms, ratio 1.04 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 5%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 9 util 5% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 9%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 2%  mem 580 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 FAILED: sample 1 util 9% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 3 sample 1: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 2: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 3: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 5: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 6: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 8: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 9: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 3
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k3-rep2-canary-before] rate=   1  ok= 30/30    145.6 tok/s  TTFT p50/p99      89/    176 ms  ITL p50/p99   24.8/  66.7 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k3-rep2] text level=   1  ok=60/60    128.9 tok/s  prompt~248 tok  TTFT p50/p99     106/    188 ms  ITL p50/p99   29.2/  73.2 ms  TPOT p50   14.3 ms  accept 0.5065659881812212
+[clean-spec-k3-rep2] text level=   4  ok=133/133    540.3 tok/s  prompt~246 tok  TTFT p50/p99     104/    188 ms  ITL p50/p99   29.6/  77.5 ms  TPOT p50   14.0 ms  accept 0.5095273447166543
+[clean-spec-k3-rep2] text level=   8  ok=271/271   1080.9 tok/s  prompt~246 tok  TTFT p50/p99     121/    188 ms  ITL p50/p99   34.9/  81.3 ms  TPOT p50   16.0 ms  accept 0.5154071900220103
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-k3-rep2-canary-after] rate=   1  ok= 30/30    144.9 tok/s  TTFT p50/p99     103/    151 ms  ITL p50/p99   29.3/  73.1 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 24.8 ms, after 29.3 ms, ratio 1.18 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 5%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 8 util 5% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 4%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 FAILED: sample 6 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 3 sample 1: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 2: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 3: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 5: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 6: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 8: util 4%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 9: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 10: util 0%  mem 575 MiB  dec 0%  enc 0%
+preflight attempt 3 FAILED: sample 8 util 4% > 3%; 
+preflight REFUSED: GPU not idle in all 3 attempts
+Not running clean-spec-k5-l14-rep2: GPU not idle (preflight exit 75).
+PREFLIGHT REFUSED (exit 75): retry 1/3 of the same run in 300 s Sat Oct 10 12:13:59 PM PDT 2026
+preflight attempt 1 sample 1: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 3%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 1%  mem 575 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 3%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k5-l14-rep2-canary-before] rate=   1  ok= 30/30    145.9 tok/s  TTFT p50/p99     143/    285 ms  ITL p50/p99   44.0/ 119.4 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k5-l14-rep2] text level=   1  ok=60/60    127.7 tok/s  prompt~248 tok  TTFT p50/p99     141/    248 ms  ITL p50/p99   46.3/ 111.1 ms  TPOT p50   20.5 ms  accept 0.3674264705882353
+[clean-spec-k5-l14-rep2] text level=   4  ok=133/133    522.2 tok/s  prompt~246 tok  TTFT p50/p99     157/    282 ms  ITL p50/p99   46.4/ 116.6 ms  TPOT p50   20.2 ms  accept 0.38144049037970373
+appended 2 rows to results/clean/spec/modes.csv
+[clean-spec-k5-l14-rep2-canary-after] rate=   1  ok= 30/30    144.3 tok/s  TTFT p50/p99     148/    245 ms  ITL p50/p99   45.9/ 101.0 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 44.0 ms, after 45.9 ms, ratio 1.04 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 4%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 5 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 2
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k3-rep3-canary-before] rate=   1  ok= 30/30    146.0 tok/s  TTFT p50/p99     105/    179 ms  ITL p50/p99   24.9/  74.0 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k3-rep3] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99      96/    197 ms  ITL p50/p99   27.0/  74.6 ms  TPOT p50   13.6 ms  accept 0.5100494233937397
+[clean-spec-k3-rep3] text level=   4  ok=133/133    538.5 tok/s  prompt~246 tok  TTFT p50/p99     103/    186 ms  ITL p50/p99   29.6/  72.5 ms  TPOT p50   14.2 ms  accept 0.5120449014056524
+[clean-spec-k3-rep3] text level=   8  ok=271/271   1081.7 tok/s  prompt~246 tok  TTFT p50/p99     112/    233 ms  ITL p50/p99   32.6/  80.1 ms  TPOT p50   15.1 ms  accept 0.5171037488675041
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-k3-rep3-canary-after] rate=   1  ok= 30/30    145.5 tok/s  TTFT p50/p99      92/    185 ms  ITL p50/p99   28.4/  73.7 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 24.9 ms, after 28.4 ms, ratio 1.14 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 2%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 581 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 1%  mem 571 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 571 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-base-rep3-canary-before] rate=   1  ok= 30/30    145.6 tok/s  TTFT p50/p99      40/     52 ms  ITL p50/p99   10.3/  17.6 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-base-rep3] text level=   1  ok=60/60    129.0 tok/s  prompt~248 tok  TTFT p50/p99      40/     50 ms  ITL p50/p99   10.5/  16.4 ms  TPOT p50   10.8 ms  accept 
+[clean-spec-base-rep3] text level=   4  ok=133/133    544.9 tok/s  prompt~246 tok  TTFT p50/p99      44/     76 ms  ITL p50/p99   10.8/  23.3 ms  TPOT p50   11.4 ms  accept 
+[clean-spec-base-rep3] text level=   8  ok=271/271   1108.6 tok/s  prompt~246 tok  TTFT p50/p99      48/     75 ms  ITL p50/p99   11.2/  27.4 ms  TPOT p50   12.5 ms  accept 
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-base-rep3-canary-after] rate=   1  ok= 30/30    145.9 tok/s  TTFT p50/p99      42/     57 ms  ITL p50/p99   10.6/  18.4 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 10.3 ms, after 10.6 ms, ratio 1.03 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 1%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 5%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 3%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 4 util 5% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 1%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 3%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 4%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 2%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 2 FAILED: sample 4 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 3 sample 1: util 1%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 2: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 3: util 1%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 4: util 3%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 5: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 6: util 1%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 7: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 8: util 0%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 9: util 3%  mem 579 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 10: util 1%  mem 579 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 3
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k5-l14-rep3-canary-before] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99     125/    284 ms  ITL p50/p99   41.2/ 105.6 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k5-l14-rep3] text level=   1  ok=60/60    128.8 tok/s  prompt~248 tok  TTFT p50/p99     153/    294 ms  ITL p50/p99   47.7/ 119.7 ms  TPOT p50   20.4 ms  accept 0.3784026996625422
+[clean-spec-k5-l14-rep3] text level=   4  ok=133/133    519.3 tok/s  prompt~246 tok  TTFT p50/p99     151/    286 ms  ITL p50/p99   49.2/ 118.6 ms  TPOT p50   21.3 ms  accept 0.3825864712898279
+appended 2 rows to results/clean/spec/modes.csv
+[clean-spec-k5-l14-rep3-canary-after] rate=   1  ok= 30/30    144.1 tok/s  TTFT p50/p99     145/    229 ms  ITL p50/p99   43.6/ 101.6 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 41.2 ms, after 43.6 ms, ratio 1.06 -> VALID
+== done, stopping server
+QUEUE FINISHED Sat Oct 10 12:35:11 PM PDT 2026
