@@ -20,3 +20,16 @@ clean-prefix-off-rep2,9.92,9.98,1.006,VALID
 clean-prefix-on-rep2,10.02,10.09,1.008,VALID
 clean-prefix-on-rep3,10.17,10.12,0.995,VALID
 clean-prefix-off-rep3,10.09,10.02,0.993,VALID
+clean2-async-default-rep1,9.99,9.90,0.992,VALID
+clean2-no-async-rep1,10.46,10.41,0.995,VALID
+clean2-no-async-rep2,10.37,10.27,0.991,VALID
+clean2-async-default-rep2,9.78,10.14,1.036,VALID
+clean2-async-default-rep3,9.99,9.99,0.999,VALID
+clean2-no-async-rep3,10.82,10.66,0.986,VALID
+clean2-chunked-off-rep1,10.06,9.96,0.991,VALID
+clean2-chunked-on-rep1,10.06,10.03,0.997,VALID
+clean2-chunked-on-rep2,9.72,9.46,0.972,VALID
+clean2-chunked-off-rep2,10.01,10.13,1.013,VALID
+clean2-chunked-off-rep3,10.05,9.96,0.991,VALID
+clean2-chunked-on-rep3,10.06,10.25,1.019,VALID
+clean2-bf16-7b-offload-eager,542.07,562.55,1.038,VALID
