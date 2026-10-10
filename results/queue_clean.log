@@ -1,0 +1,708 @@
+nohup: ignoring input
+preflight attempt 1 sample 1: util 1%  mem 838 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 2%  mem 838 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 838 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 840 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 840 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 840 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 843 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 845 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 843 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 843 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-eager-rep1-canary-before] rate=   1  ok= 30/30    138.8 tok/s  TTFT p50/p99      70/    104 ms  ITL p50/p99   19.9/  44.2 ms
+appended 1 rows to results/clean/canary.csv
+[clean-eager-rep1] rate=   1  ok=100/100    119.8 tok/s  TTFT p50/p99      54/    103 ms  ITL p50/p99   16.7/  43.4 ms
+[clean-eager-rep1] rate=   4  ok=120/120    471.6 tok/s  TTFT p50/p99      63/    107 ms  ITL p50/p99   18.9/  45.7 ms
+[clean-eager-rep1] rate=   8  ok=240/240    840.5 tok/s  TTFT p50/p99      71/    122 ms  ITL p50/p99   22.1/  47.5 ms
+[clean-eager-rep1] rate=  16  ok=480/480   1888.2 tok/s  TTFT p50/p99      79/    133 ms  ITL p50/p99   24.3/  58.1 ms
+appended 4 rows to results/clean/main.csv
+[clean-eager-rep1-canary-after] rate=   1  ok= 30/30    138.4 tok/s  TTFT p50/p99      61/    109 ms  ITL p50/p99   17.6/  42.8 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 19.9 ms, after 17.6 ms, ratio 0.89 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 4%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 848 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 3 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 2%  mem 842 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 2
+== starting server (./serve_generic.sh)
+== server up
+[clean-compiled-rep1-canary-before] rate=   1  ok= 30/30    145.3 tok/s  TTFT p50/p99      38/     51 ms  ITL p50/p99   10.3/  17.3 ms
+appended 1 rows to results/clean/canary.csv
+[clean-compiled-rep1] rate=   1  ok=100/100    121.2 tok/s  TTFT p50/p99      38/     48 ms  ITL p50/p99   10.2/  15.6 ms
+[clean-compiled-rep1] rate=   4  ok=120/120    505.5 tok/s  TTFT p50/p99      41/     58 ms  ITL p50/p99   10.5/  22.7 ms
+[clean-compiled-rep1] rate=   8  ok=240/240    880.7 tok/s  TTFT p50/p99      43/     60 ms  ITL p50/p99   10.9/  24.3 ms
+[clean-compiled-rep1] rate=  16  ok=480/480   1968.0 tok/s  TTFT p50/p99      53/    102 ms  ITL p50/p99   12.4/  35.8 ms
+appended 4 rows to results/clean/main.csv
+[clean-compiled-rep1-canary-after] rate=   1  ok= 30/30    145.4 tok/s  TTFT p50/p99      39/     51 ms  ITL p50/p99   10.2/  16.3 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.3 ms, after 10.2 ms, ratio 1.00 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 850 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-fp8-3b-rep1-canary-before] rate=   1  ok= 30/30    147.8 tok/s  TTFT p50/p99      25/     38 ms  ITL p50/p99    6.7/  11.1 ms
+appended 1 rows to results/clean/canary.csv
+[clean-fp8-3b-rep1] rate=   1  ok=100/100    121.9 tok/s  TTFT p50/p99      25/     36 ms  ITL p50/p99    7.0/  10.5 ms
+[clean-fp8-3b-rep1] rate=   4  ok=120/120    512.4 tok/s  TTFT p50/p99      29/     44 ms  ITL p50/p99    7.1/  16.4 ms
+[clean-fp8-3b-rep1] rate=   8  ok=240/240    892.9 tok/s  TTFT p50/p99      29/     42 ms  ITL p50/p99    7.1/  18.4 ms
+[clean-fp8-3b-rep1] rate=  16  ok=480/480   2006.9 tok/s  TTFT p50/p99      35/     70 ms  ITL p50/p99    7.7/  21.8 ms
+appended 4 rows to results/clean/main.csv
+[clean-fp8-3b-rep1-canary-after] rate=   1  ok= 30/30    147.1 tok/s  TTFT p50/p99      27/     44 ms  ITL p50/p99    6.8/  10.9 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 6.7 ms, after 6.8 ms, ratio 1.02 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 850 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-compiled-rep2-canary-before] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99      39/     59 ms  ITL p50/p99   10.2/  17.4 ms
+appended 1 rows to results/clean/canary.csv
+[clean-compiled-rep2] rate=   1  ok=100/100    121.5 tok/s  TTFT p50/p99      39/     48 ms  ITL p50/p99   10.4/  15.8 ms
+[clean-compiled-rep2] rate=   4  ok=120/120    505.7 tok/s  TTFT p50/p99      42/     60 ms  ITL p50/p99   10.5/  21.3 ms
+[clean-compiled-rep2] rate=   8  ok=240/240    878.5 tok/s  TTFT p50/p99      46/     67 ms  ITL p50/p99   11.3/  25.0 ms
+[clean-compiled-rep2] rate=  16  ok=480/480   1970.1 tok/s  TTFT p50/p99      54/    102 ms  ITL p50/p99   12.2/  35.7 ms
+appended 4 rows to results/clean/main.csv
+[clean-compiled-rep2-canary-after] rate=   1  ok= 30/30    145.2 tok/s  TTFT p50/p99      41/     53 ms  ITL p50/p99   10.4/  18.4 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.2 ms, after 10.4 ms, ratio 1.02 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-fp8-3b-rep2-canary-before] rate=   1  ok= 30/30    147.1 tok/s  TTFT p50/p99      27/     38 ms  ITL p50/p99    7.0/  11.0 ms
+appended 1 rows to results/clean/canary.csv
+[clean-fp8-3b-rep2] rate=   1  ok=100/100    121.7 tok/s  TTFT p50/p99      25/     37 ms  ITL p50/p99    6.9/  11.5 ms
+[clean-fp8-3b-rep2] rate=   4  ok=120/120    512.7 tok/s  TTFT p50/p99      29/     44 ms  ITL p50/p99    7.1/  15.9 ms
+[clean-fp8-3b-rep2] rate=   8  ok=240/240    890.7 tok/s  TTFT p50/p99      30/     45 ms  ITL p50/p99    7.2/  18.5 ms
+[clean-fp8-3b-rep2] rate=  16  ok=480/480   2006.2 tok/s  TTFT p50/p99      33/     64 ms  ITL p50/p99    7.5/  21.1 ms
+appended 4 rows to results/clean/main.csv
+[clean-fp8-3b-rep2-canary-after] rate=   1  ok= 30/30    146.9 tok/s  TTFT p50/p99      24/     37 ms  ITL p50/p99    7.0/  11.4 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 7.0 ms, after 7.0 ms, ratio 1.00 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-eager-rep2-canary-before] rate=   1  ok= 30/30    139.1 tok/s  TTFT p50/p99      57/    109 ms  ITL p50/p99   19.2/  43.3 ms
+appended 1 rows to results/clean/canary.csv
+[clean-eager-rep2] rate=   1  ok=100/100    119.9 tok/s  TTFT p50/p99      62/    102 ms  ITL p50/p99   17.5/  42.4 ms
+[clean-eager-rep2] rate=   4  ok=120/120    481.1 tok/s  TTFT p50/p99      68/    109 ms  ITL p50/p99   21.2/  45.5 ms
+[clean-eager-rep2] rate=   8  ok=240/240    854.1 tok/s  TTFT p50/p99      69/    114 ms  ITL p50/p99   20.5/  46.8 ms
+[clean-eager-rep2] rate=  16  ok=480/480   1854.7 tok/s  TTFT p50/p99      82/    141 ms  ITL p50/p99   26.1/  58.9 ms
+appended 4 rows to results/clean/main.csv
+[clean-eager-rep2-canary-after] rate=   1  ok= 30/30    138.6 tok/s  TTFT p50/p99      68/    117 ms  ITL p50/p99   22.2/  45.9 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 19.2 ms, after 22.2 ms, ratio 1.16 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 1%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 3%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 2%  mem 854 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 854 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-fp8-3b-rep3-canary-before] rate=   1  ok= 30/30    147.0 tok/s  TTFT p50/p99      27/     37 ms  ITL p50/p99    6.9/  12.5 ms
+appended 1 rows to results/clean/canary.csv
+[clean-fp8-3b-rep3] rate=   1  ok=100/100    121.7 tok/s  TTFT p50/p99      25/     35 ms  ITL p50/p99    7.0/  11.1 ms
+[clean-fp8-3b-rep3] rate=   4  ok=120/120    513.1 tok/s  TTFT p50/p99      28/     40 ms  ITL p50/p99    7.0/  16.0 ms
+[clean-fp8-3b-rep3] rate=   8  ok=240/240    892.2 tok/s  TTFT p50/p99      30/     42 ms  ITL p50/p99    7.0/  18.3 ms
+[clean-fp8-3b-rep3] rate=  16  ok=480/480   2007.4 tok/s  TTFT p50/p99      33/     63 ms  ITL p50/p99    7.6/  21.0 ms
+appended 4 rows to results/clean/main.csv
+[clean-fp8-3b-rep3-canary-after] rate=   1  ok= 30/30    147.6 tok/s  TTFT p50/p99      26/     37 ms  ITL p50/p99    6.8/  11.7 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 6.9 ms, after 6.8 ms, ratio 0.98 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 2%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 2%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 3%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-eager-rep3-canary-before] rate=   1  ok= 30/30    136.8 tok/s  TTFT p50/p99      61/     90 ms  ITL p50/p99   16.6/  39.4 ms
+appended 1 rows to results/clean/canary.csv
+[clean-eager-rep3] rate=   1  ok=100/100    120.2 tok/s  TTFT p50/p99      57/    105 ms  ITL p50/p99   15.9/  41.0 ms
+[clean-eager-rep3] rate=   4  ok=120/120    486.3 tok/s  TTFT p50/p99      68/    111 ms  ITL p50/p99   20.2/  43.2 ms
+[clean-eager-rep3] rate=   8  ok=240/240    856.1 tok/s  TTFT p50/p99      67/    111 ms  ITL p50/p99   18.3/  47.9 ms
+[clean-eager-rep3] rate=  16  ok=480/480   1882.2 tok/s  TTFT p50/p99      81/    132 ms  ITL p50/p99   24.1/  58.6 ms
+appended 4 rows to results/clean/main.csv
+[clean-eager-rep3-canary-after] rate=   1  ok= 30/30    135.7 tok/s  TTFT p50/p99      60/    108 ms  ITL p50/p99   16.9/  41.8 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 16.6 ms, after 16.9 ms, ratio 1.02 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 3%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 855 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-compiled-rep3-canary-before] rate=   1  ok= 30/30    145.5 tok/s  TTFT p50/p99      39/     52 ms  ITL p50/p99   10.1/  17.7 ms
+appended 1 rows to results/clean/canary.csv
+[clean-compiled-rep3] rate=   1  ok=100/100    121.3 tok/s  TTFT p50/p99      38/     62 ms  ITL p50/p99   10.3/  17.1 ms
+[clean-compiled-rep3] rate=   4  ok=120/120    504.8 tok/s  TTFT p50/p99      41/     56 ms  ITL p50/p99   10.5/  20.9 ms
+[clean-compiled-rep3] rate=   8  ok=240/240    879.2 tok/s  TTFT p50/p99      44/     65 ms  ITL p50/p99   10.9/  24.7 ms
+[clean-compiled-rep3] rate=  16  ok=480/480   1971.4 tok/s  TTFT p50/p99      54/    105 ms  ITL p50/p99   12.5/  34.9 ms
+appended 4 rows to results/clean/main.csv
+[clean-compiled-rep3-canary-after] rate=   1  ok= 30/30    145.9 tok/s  TTFT p50/p99      42/     55 ms  ITL p50/p99   10.3/  17.3 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.1 ms, after 10.3 ms, ratio 1.02 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 2%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 3%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 853 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-fp8-7b-rep1-canary-before] rate=   1  ok= 30/30    143.5 tok/s  TTFT p50/p99      44/     67 ms  ITL p50/p99   11.9/  18.1 ms
+appended 1 rows to results/clean/canary.csv
+[clean-fp8-7b-rep1] rate=   1  ok=100/100    121.1 tok/s  TTFT p50/p99      43/     64 ms  ITL p50/p99   11.8/  18.6 ms
+[clean-fp8-7b-rep1] rate=   4  ok=120/120    501.3 tok/s  TTFT p50/p99      47/     79 ms  ITL p50/p99   12.0/  22.2 ms
+[clean-fp8-7b-rep1] rate=   8  ok=240/240    875.3 tok/s  TTFT p50/p99      50/     79 ms  ITL p50/p99   12.4/  26.4 ms
+[clean-fp8-7b-rep1] rate=  12  ok=360/360   1509.0 tok/s  TTFT p50/p99      59/    115 ms  ITL p50/p99   13.2/  45.2 ms
+[clean-fp8-7b-rep1] rate=  16  ok=480/480   1956.1 tok/s  TTFT p50/p99      71/    138 ms  ITL p50/p99   14.6/  50.6 ms
+appended 5 rows to results/clean/main.csv
+[clean-fp8-7b-rep1-canary-after] rate=   1  ok= 30/30    144.1 tok/s  TTFT p50/p99      46/     66 ms  ITL p50/p99   11.7/  18.4 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 11.9 ms, after 11.7 ms, ratio 0.98 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-awq-7b-rep1-canary-before] rate=   1  ok= 30/30    146.8 tok/s  TTFT p50/p99      51/     77 ms  ITL p50/p99    7.5/  29.9 ms
+appended 1 rows to results/clean/canary.csv
+[clean-awq-7b-rep1] rate=   1  ok=100/100    121.6 tok/s  TTFT p50/p99      52/     85 ms  ITL p50/p99    7.6/  19.2 ms
+[clean-awq-7b-rep1] rate=   4  ok=120/120    511.7 tok/s  TTFT p50/p99      55/     89 ms  ITL p50/p99    7.6/  33.5 ms
+[clean-awq-7b-rep1] rate=   8  ok=240/240    887.7 tok/s  TTFT p50/p99      59/    115 ms  ITL p50/p99    8.3/  39.2 ms
+[clean-awq-7b-rep1] rate=  12  ok=360/360   1529.6 tok/s  TTFT p50/p99      96/    211 ms  ITL p50/p99   13.0/  81.6 ms
+appended 4 rows to results/clean/main.csv
+[clean-awq-7b-rep1-canary-after] rate=   1  ok= 30/30    146.6 tok/s  TTFT p50/p99      51/     91 ms  ITL p50/p99    7.6/  18.5 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 7.5 ms, after 7.6 ms, ratio 1.01 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 849 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 4%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 10 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 2
+== starting server (./serve_generic.sh)
+== server up
+[clean-awq-7b-rep2-canary-before] rate=   1  ok= 30/30    146.8 tok/s  TTFT p50/p99      51/     79 ms  ITL p50/p99    7.5/  29.5 ms
+appended 1 rows to results/clean/canary.csv
+[clean-awq-7b-rep2] rate=   1  ok=100/100    121.8 tok/s  TTFT p50/p99      52/     72 ms  ITL p50/p99    7.7/  18.4 ms
+[clean-awq-7b-rep2] rate=   4  ok=120/120    510.7 tok/s  TTFT p50/p99      56/     84 ms  ITL p50/p99    7.8/  33.6 ms
+[clean-awq-7b-rep2] rate=   8  ok=240/240    888.4 tok/s  TTFT p50/p99      61/    118 ms  ITL p50/p99    8.6/  40.2 ms
+[clean-awq-7b-rep2] rate=  12  ok=360/360   1532.9 tok/s  TTFT p50/p99      95/    202 ms  ITL p50/p99   13.2/  83.2 ms
+appended 4 rows to results/clean/main.csv
+[clean-awq-7b-rep2-canary-after] rate=   1  ok= 30/30    147.2 tok/s  TTFT p50/p99      51/     82 ms  ITL p50/p99    7.6/  20.2 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 7.5 ms, after 7.6 ms, ratio 1.01 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-fp8-7b-rep2-canary-before] rate=   1  ok= 30/30    143.9 tok/s  TTFT p50/p99      46/     60 ms  ITL p50/p99   11.7/  18.3 ms
+appended 1 rows to results/clean/canary.csv
+[clean-fp8-7b-rep2] rate=   1  ok=100/100    121.2 tok/s  TTFT p50/p99      44/     59 ms  ITL p50/p99   11.8/  18.3 ms
+[clean-fp8-7b-rep2] rate=   4  ok=120/120    501.7 tok/s  TTFT p50/p99      48/     72 ms  ITL p50/p99   12.0/  22.4 ms
+[clean-fp8-7b-rep2] rate=   8  ok=240/240    874.5 tok/s  TTFT p50/p99      50/     80 ms  ITL p50/p99   12.4/  24.5 ms
+[clean-fp8-7b-rep2] rate=  12  ok=360/360   1511.6 tok/s  TTFT p50/p99      57/    106 ms  ITL p50/p99   13.5/  44.7 ms
+[clean-fp8-7b-rep2] rate=  16  ok=480/480   1962.1 tok/s  TTFT p50/p99      66/    128 ms  ITL p50/p99   14.1/  49.0 ms
+appended 5 rows to results/clean/main.csv
+[clean-fp8-7b-rep2-canary-after] rate=   1  ok= 30/30    144.3 tok/s  TTFT p50/p99      43/     74 ms  ITL p50/p99   11.8/  18.1 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 11.7 ms, after 11.8 ms, ratio 1.01 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 2%  mem 841 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-fp8-7b-rep3-canary-before] rate=   1  ok= 30/30    144.5 tok/s  TTFT p50/p99      45/     63 ms  ITL p50/p99   11.7/  18.3 ms
+appended 1 rows to results/clean/canary.csv
+[clean-fp8-7b-rep3] rate=   1  ok=100/100    121.4 tok/s  TTFT p50/p99      43/     64 ms  ITL p50/p99   11.6/  18.6 ms
+[clean-fp8-7b-rep3] rate=   4  ok=120/120    501.9 tok/s  TTFT p50/p99      46/     74 ms  ITL p50/p99   11.9/  21.7 ms
+[clean-fp8-7b-rep3] rate=   8  ok=240/240    874.8 tok/s  TTFT p50/p99      49/     83 ms  ITL p50/p99   12.4/  26.7 ms
+[clean-fp8-7b-rep3] rate=  12  ok=360/360   1513.6 tok/s  TTFT p50/p99      56/    106 ms  ITL p50/p99   13.4/  43.5 ms
+[clean-fp8-7b-rep3] rate=  16  ok=480/480   1962.0 tok/s  TTFT p50/p99      69/    126 ms  ITL p50/p99   14.2/  50.7 ms
+appended 5 rows to results/clean/main.csv
+[clean-fp8-7b-rep3-canary-after] rate=   1  ok= 30/30    144.1 tok/s  TTFT p50/p99      46/     59 ms  ITL p50/p99   11.8/  19.9 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 11.7 ms, after 11.8 ms, ratio 1.01 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-awq-7b-rep3-canary-before] rate=   1  ok= 30/30    146.7 tok/s  TTFT p50/p99      53/     91 ms  ITL p50/p99    7.6/  18.5 ms
+appended 1 rows to results/clean/canary.csv
+[clean-awq-7b-rep3] rate=   1  ok=100/100    121.7 tok/s  TTFT p50/p99      51/     73 ms  ITL p50/p99    7.6/  19.6 ms
+[clean-awq-7b-rep3] rate=   4  ok=120/120    509.7 tok/s  TTFT p50/p99      55/     90 ms  ITL p50/p99    7.9/  33.2 ms
+[clean-awq-7b-rep3] rate=   8  ok=240/240    888.9 tok/s  TTFT p50/p99      60/    112 ms  ITL p50/p99    8.7/  39.9 ms
+[clean-awq-7b-rep3] rate=  12  ok=360/360   1531.9 tok/s  TTFT p50/p99      95/    217 ms  ITL p50/p99   13.4/  90.1 ms
+appended 4 rows to results/clean/main.csv
+[clean-awq-7b-rep3-canary-after] rate=   1  ok= 30/30    146.4 tok/s  TTFT p50/p99      51/     80 ms  ITL p50/p99    7.7/  21.8 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 7.6 ms, after 7.7 ms, ratio 1.01 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-prefix-on-rep1-canary-before] rate=   1  ok= 30/30    145.6 tok/s  TTFT p50/p99      38/     56 ms  ITL p50/p99   10.2/  16.4 ms
+appended 1 rows to results/clean/canary.csv
+[clean-prefix-on-rep1] prefix level=   2  ok=60/60     55.6 tok/s  prompt~1542 tok  TTFT p50/p99      27/     43 ms  ITL p50/p99    9.9/  19.8 ms
+[clean-prefix-on-rep1] prefix level=   4  ok=105/105    111.8 tok/s  prompt~1542 tok  TTFT p50/p99      33/     46 ms  ITL p50/p99   10.2/  22.1 ms
+[clean-prefix-on-rep1] prefix level=   8  ok=232/232    245.7 tok/s  prompt~1543 tok  TTFT p50/p99      35/     57 ms  ITL p50/p99   10.2/  22.3 ms
+appended 3 rows to results/clean/modes.csv
+[clean-prefix-on-rep1-canary-after] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99      37/     48 ms  ITL p50/p99    9.9/  15.4 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.2 ms, after 9.9 ms, ratio 0.97 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 841 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-prefix-off-rep1-canary-before] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99      42/     54 ms  ITL p50/p99   10.2/  19.0 ms
+appended 1 rows to results/clean/canary.csv
+[clean-prefix-off-rep1] prefix level=   2  ok=60/60     55.6 tok/s  prompt~1542 tok  TTFT p50/p99     120/    256 ms  ITL p50/p99   10.2/  91.4 ms
+[clean-prefix-off-rep1] prefix level=   4  ok=105/105    110.8 tok/s  prompt~1542 tok  TTFT p50/p99     126/    339 ms  ITL p50/p99   10.7/ 106.1 ms
+[clean-prefix-off-rep1] prefix level=   8  ok=232/232    243.8 tok/s  prompt~1543 tok  TTFT p50/p99     301/    801 ms  ITL p50/p99   25.5/ 147.4 ms
+appended 3 rows to results/clean/modes.csv
+[clean-prefix-off-rep1-canary-after] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99      39/     53 ms  ITL p50/p99    9.9/  15.7 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.2 ms, after 9.9 ms, ratio 0.97 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 4%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 4%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 2 util 4% > 3%; sample 6 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 2
+== starting server (./serve_generic.sh)
+== server up
+[clean-prefix-off-rep2-canary-before] rate=   1  ok= 30/30    145.9 tok/s  TTFT p50/p99      39/     55 ms  ITL p50/p99    9.9/  15.9 ms
+appended 1 rows to results/clean/canary.csv
+[clean-prefix-off-rep2] prefix level=   2  ok=60/60     55.7 tok/s  prompt~1542 tok  TTFT p50/p99     121/    262 ms  ITL p50/p99   10.2/  91.4 ms
+[clean-prefix-off-rep2] prefix level=   4  ok=105/105    110.8 tok/s  prompt~1542 tok  TTFT p50/p99     127/    318 ms  ITL p50/p99   10.6/ 112.5 ms
+[clean-prefix-off-rep2] prefix level=   8  ok=232/232    243.8 tok/s  prompt~1543 tok  TTFT p50/p99     295/    784 ms  ITL p50/p99   21.8/ 153.2 ms
+appended 3 rows to results/clean/modes.csv
+[clean-prefix-off-rep2-canary-after] rate=   1  ok= 30/30    146.0 tok/s  TTFT p50/p99      41/     53 ms  ITL p50/p99   10.0/  16.6 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 9.9 ms, after 10.0 ms, ratio 1.01 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 4%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 850 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 2 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 2
+== starting server (./serve_generic.sh)
+== server up
+[clean-prefix-on-rep2-canary-before] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99      39/     55 ms  ITL p50/p99   10.0/  16.6 ms
+appended 1 rows to results/clean/canary.csv
+[clean-prefix-on-rep2] prefix level=   2  ok=60/60     55.4 tok/s  prompt~1542 tok  TTFT p50/p99      29/     44 ms  ITL p50/p99    9.9/  19.3 ms
+[clean-prefix-on-rep2] prefix level=   4  ok=105/105    111.4 tok/s  prompt~1542 tok  TTFT p50/p99      33/     44 ms  ITL p50/p99   10.4/  22.6 ms
+[clean-prefix-on-rep2] prefix level=   8  ok=232/232    245.8 tok/s  prompt~1543 tok  TTFT p50/p99      37/     51 ms  ITL p50/p99   10.4/  23.3 ms
+appended 3 rows to results/clean/modes.csv
+[clean-prefix-on-rep2-canary-after] rate=   1  ok= 30/30    145.5 tok/s  TTFT p50/p99      38/     50 ms  ITL p50/p99   10.1/  15.5 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.0 ms, after 10.1 ms, ratio 1.01 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-prefix-on-rep3-canary-before] rate=   1  ok= 30/30    146.2 tok/s  TTFT p50/p99      39/     48 ms  ITL p50/p99   10.2/  19.1 ms
+appended 1 rows to results/clean/canary.csv
+[clean-prefix-on-rep3] prefix level=   2  ok=60/60     55.5 tok/s  prompt~1542 tok  TTFT p50/p99      28/     47 ms  ITL p50/p99   10.2/  22.2 ms
+[clean-prefix-on-rep3] prefix level=   4  ok=105/105    111.6 tok/s  prompt~1542 tok  TTFT p50/p99      31/     43 ms  ITL p50/p99   10.1/  19.9 ms
+[clean-prefix-on-rep3] prefix level=   8  ok=232/232    245.9 tok/s  prompt~1543 tok  TTFT p50/p99      37/     52 ms  ITL p50/p99   10.4/  22.9 ms
+appended 3 rows to results/clean/modes.csv
+[clean-prefix-on-rep3-canary-after] rate=   1  ok= 30/30    145.8 tok/s  TTFT p50/p99      39/     49 ms  ITL p50/p99   10.1/  19.3 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.2 ms, after 10.1 ms, ratio 1.00 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 850 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 842 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 2%  mem 842 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-prefix-off-rep3-canary-before] rate=   1  ok= 30/30    145.7 tok/s  TTFT p50/p99      37/     51 ms  ITL p50/p99   10.1/  16.6 ms
+appended 1 rows to results/clean/canary.csv
+[clean-prefix-off-rep3] prefix level=   2  ok=60/60     55.7 tok/s  prompt~1542 tok  TTFT p50/p99     122/    246 ms  ITL p50/p99   10.3/  91.6 ms
+[clean-prefix-off-rep3] prefix level=   4  ok=105/105    110.9 tok/s  prompt~1542 tok  TTFT p50/p99     126/    321 ms  ITL p50/p99   10.5/ 105.9 ms
+[clean-prefix-off-rep3] prefix level=   8  ok=232/232    244.5 tok/s  prompt~1543 tok  TTFT p50/p99     281/    784 ms  ITL p50/p99   24.8/ 150.3 ms
+appended 3 rows to results/clean/modes.csv
+[clean-prefix-off-rep3-canary-after] rate=   1  ok= 30/30    145.4 tok/s  TTFT p50/p99      38/     53 ms  ITL p50/p99   10.0/  15.7 ms
+appended 1 rows to results/clean/canary.csv
+
+CANARY ITL p50 before 10.1 ms, after 10.0 ms, ratio 0.99 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 5%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 4 util 5% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 4%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 2%  mem 850 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 2 FAILED: sample 4 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 3 sample 1: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 2: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 4: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 5: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 7: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 8: util 1%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 10: util 2%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 3
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-base-rep1-canary-before] rate=   1  ok= 30/30    145.6 tok/s  TTFT p50/p99      39/     49 ms  ITL p50/p99   10.0/  15.7 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-base-rep1] text level=   1  ok=60/60    128.9 tok/s  prompt~248 tok  TTFT p50/p99      38/     50 ms  ITL p50/p99   10.2/  15.6 ms  TPOT p50   10.5 ms  accept 
+[clean-spec-base-rep1] text level=   4  ok=133/133    546.0 tok/s  prompt~246 tok  TTFT p50/p99      43/     59 ms  ITL p50/p99   10.4/  22.3 ms  TPOT p50   11.1 ms  accept 
+[clean-spec-base-rep1] text level=   8  ok=271/271   1110.7 tok/s  prompt~246 tok  TTFT p50/p99      46/     76 ms  ITL p50/p99   10.9/  27.0 ms  TPOT p50   12.0 ms  accept 
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-base-rep1-canary-after] rate=   1  ok= 30/30    145.6 tok/s  TTFT p50/p99      41/     54 ms  ITL p50/p99   10.2/  17.5 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 10.0 ms, after 10.2 ms, ratio 1.02 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 0%  mem 840 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 3%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 841 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 837 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k3-rep1-canary-before] rate=   1  ok= 30/30    146.8 tok/s  TTFT p50/p99      86/    188 ms  ITL p50/p99   25.7/  69.6 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k3-rep1] text level=   1  ok=60/60    128.8 tok/s  prompt~248 tok  TTFT p50/p99      93/    168 ms  ITL p50/p99   26.2/  71.0 ms  TPOT p50   13.3 ms  accept 0.5064039408866995
+[clean-spec-k3-rep1] text level=   4  ok=133/133    529.1 tok/s  prompt~246 tok  TTFT p50/p99     105/    193 ms  ITL p50/p99   30.8/  74.2 ms  TPOT p50   14.9 ms  accept 0.5119348915686567
+[clean-spec-k3-rep1] text level=   8  ok=271/271   1092.7 tok/s  prompt~246 tok  TTFT p50/p99     122/    214 ms  ITL p50/p99   37.8/  84.4 ms  TPOT p50   16.7 ms  accept 0.5147691705790297
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-k3-rep1-canary-after] rate=   1  ok= 30/30    145.8 tok/s  TTFT p50/p99     107/    163 ms  ITL p50/p99   30.8/  68.0 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 25.7 ms, after 30.8 ms, ratio 1.20 -> VALID
+== done, stopping server
+preflight attempt 1 sample 1: util 1%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 780 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 1%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 768 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 768 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k5-rep1-canary-before] rate=   1  ok= 30/30    145.5 tok/s  TTFT p50/p99     139/    216 ms  ITL p50/p99   45.1/ 111.3 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k5-rep1] text level=   1  ok=60/60    128.9 tok/s  prompt~248 tok  TTFT p50/p99     140/    284 ms  ITL p50/p99   48.5/ 116.4 ms  TPOT p50   21.0 ms  accept 0.37672510257366654
+[clean-spec-k5-rep1] text level=   4  ok=133/133    520.9 tok/s  prompt~246 tok  TTFT p50/p99     157/    292 ms  ITL p50/p99   47.7/ 117.7 ms  TPOT p50   20.9 ms  accept 0.3836748633879781
+[clean-spec-k5-rep1] text level=   8  ok=267/267    367.5 tok/s  prompt~246 tok  TTFT p50/p99    1409/  22615 ms  ITL p50/p99  690.3/6884.2 ms  TPOT p50  431.8 ms  accept 0.3971458405847546
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-k5-rep1-canary-after] rate=   1  ok= 30/30    142.9 tok/s  TTFT p50/p99     170/    278 ms  ITL p50/p99   62.0/ 133.1 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 45.1 ms, after 62.0 ms, ratio 1.38 -> INVALID
+== done, stopping server
+preflight attempt 1 sample 1: util 2%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 4%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 2%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 7 util 4% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 3%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 3%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 3%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 0%  mem 471 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 2
+== starting server (./serve_generic.sh)
+== server up
+[clean-spec-k5-rep2-canary-before] rate=   1  ok= 30/30    143.7 tok/s  TTFT p50/p99     155/    276 ms  ITL p50/p99   45.6/ 129.6 ms
+appended 1 rows to results/clean/spec/canary.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[clean-spec-k5-rep2] text level=   1  ok=60/60    127.0 tok/s  prompt~248 tok  TTFT p50/p99     154/    295 ms  ITL p50/p99   49.2/ 123.3 ms  TPOT p50   22.0 ms  accept 0.3734769687964339
+[clean-spec-k5-rep2] text level=   4  ok=133/133    523.6 tok/s  prompt~246 tok  TTFT p50/p99     168/    271 ms  ITL p50/p99   55.1/ 116.8 ms  TPOT p50   22.5 ms  accept 0.3814008840530432
+[clean-spec-k5-rep2] text level=   8  ok=269/269    970.7 tok/s  prompt~246 tok  TTFT p50/p99     331/    687 ms  ITL p50/p99  120.4/ 198.3 ms  TPOT p50   42.1 ms  accept 0.3925970353868563
+appended 3 rows to results/clean/spec/modes.csv
+[clean-spec-k5-rep2-canary-after] rate=   1  ok= 30/30    143.0 tok/s  TTFT p50/p99     194/    281 ms  ITL p50/p99   62.3/ 120.3 ms
+appended 1 rows to results/clean/spec/canary.csv
+
+CANARY ITL p50 before 45.6 ms, after 62.3 ms, ratio 1.37 -> INVALID
+== done, stopping server
+QUEUE STOPPED: two INVALID in a row Sat Oct 10 11:40:43 AM PDT 2026

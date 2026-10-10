@@ -489,3 +489,20 @@ retries the same run, up to 3 retries (4 attempts); 75 after the last retry, or 
 Worst case per refused run: 4 x ~70 s preflight + 3 x 300 s wait = ~19.7 min, not included in the section-24 estimate.
 No measurement code changed; no reruns needed. Tested without GPU work: stubbed run_config (exit codes 75,75,0 -> continues;
 75 x4 -> stops after retry 3/3; 75,2 -> stops; 3 -> stops) and stubbed preflight (0/75/1 -> run_config exit 0/75/1). bash -n OK.
+
+## 27. Clean queue stop and remaining runs (2026-10-10)
+queue_clean.sh ran 25 of 30 runs (first server 09:44:17, results/server_clean-eager_20261010_094417.log) and stopped at
+11:40:43 with "QUEUE STOPPED: two INVALID in a row" (results/queue_clean.log). All 21 runs in results/clean/runs.csv are VALID.
+The two INVALID runs are both k=5 speculative decoding (results/clean/spec/runs.csv):
+| run | canary before (ms) | canary after (ms) | ratio | verdict |
+|---|---|---|---|---|
+| clean-spec-k5-rep1 | 45.11 | 62.03 | 1.375 | INVALID |
+| clean-spec-k5-rep2 | 45.56 | 62.30 | 1.367 | INVALID |
+At level 8, k5 rep1 saturated: 367.45 tok/s, 2.87 req/s achieved, 93.0 s wall for a 30 s window, TTFT p50 1,409 ms (results/clean/spec/
+modes.csv), vs base rep1 1,110.70 tok/s at the same level. **Tag: clean-spec-k5-rep1 and -rep2 are "saturation evidence at level 8,
+run verdict INVALID".** They are kept in the CSVs and never used for level-1/4 numbers. The next server's canary-before (rep2 45.56 ms
+vs rep1 45.11) shows no carry-over between fresh servers.
+Remaining runs: queue_clean_rest.sh (same helpers: preflight, retry on 75, GPU sidecar), OUTDIR results/clean/spec, order
+base rep2, k5 rep1, k3 rep2, k5 rep2, k3 rep3, base rep3, k5 rep3. base/k3 at LEVELS=1,4,8; k5 at LEVELS=1,4 only, named
+clean-spec-k5-l14-rep1..3 (these are the valid k5 runs for levels 1 and 4). Estimate: 7 x ~3.9 min (gaps between the 10-10
+base/k3/k5 server-log start times: 3.8, 3.9 min) + 7 preflights (10 to 70 s) = ~28.5 to 35.5 min (derived).
