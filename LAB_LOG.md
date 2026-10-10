@@ -506,3 +506,79 @@ Remaining runs: queue_clean_rest.sh (same helpers: preflight, retry on 75, GPU s
 base rep2, k5 rep1, k3 rep2, k5 rep2, k3 rep3, base rep3, k5 rep3. base/k3 at LEVELS=1,4,8; k5 at LEVELS=1,4 only, named
 clean-spec-k5-l14-rep1..3 (these are the valid k5 runs for levels 1 and 4). Estimate: 7 x ~3.9 min (gaps between the 10-10
 base/k3/k5 server-log start times: 3.8, 3.9 min) + 7 preflights (10 to 70 s) = ~28.5 to 35.5 min (derived).
+
+## 28. Clean rerun results (2026-10-10)
+**Runs.** queue_clean.sh 09:44 to 11:40 (25 runs, stopped on two INVALID in a row, section 27), queue_clean_rest.sh finished
+12:35:11 (7 runs, all VALID; results/queue_clean_rest.log). 32 runs total, 30 VALID, 2 INVALID (clean-spec-k5-rep1/-rep2, tagged
+"saturation evidence at level 8, run verdict INVALID"). Preflight in the rest-queue: 5 runs needed a 2nd or 3rd attempt, and one
+was refused 3 times (12:13:59) and passed on the first retry. Every failing sample was utilization.gpu 4 to 9%; decoder 0% and
+memory under the limit throughout. Sidecar logs: decoder/encoder 0 in every sample of all 32 runs (results/clean/gpu_summary.md).
+Full tables: results/clean/summary_20261010_123633.md (summarize_clean.py; results/clean/summary.md is the first output, which
+missed the INVALID rows; kept, not overwritten). Values are median [min-max] of n=3 VALID reps, truncated.
+
+**Headline numbers (clean)**
+| Experiment | 1 / 4 / 8 / 16 (A, B: req/s; C: level 2 / 4 / 8; D: level 1 / 4 / 8) | Source |
+|---|---|---|
+| A ITL p50 eager (ms) | 16.70 / 20.16 / 20.52 / 24.31 | results/clean/main.csv |
+| A ITL p50 compiled (ms) | 10.32 / 10.51 / 10.89 / 12.40 | same |
+| A ITL p50 3B FP8 (ms) | 6.97 / 7.05 / 7.05 / 7.57 | same |
+| A eager / compiled ITL p50 | 1.618x / 1.917x / 1.884x / 1.959x | same |
+| A compiled TTFT p50 vs eager | -33.0% / -39.0% / -37.0% / -33.6% | same |
+| A compiled / FP8 ITL p50 | 1.479x / 1.490x / 1.543x / 1.638x | same |
+| A FP8 TTFT p50 vs compiled | -35.0% / -30.2% / -32.1% / -37.9% | same |
+| B ITL p50 7B FP8 (ms), rates 1/4/8/12/16 | 11.79 / 12.00 / 12.42 / 13.41 / 14.21 | same |
+| B ITL p50 7B AWQ (ms), rates 1/4/8/12 | 7.62 / 7.84 / 8.64 / 13.23 | same |
+| B AWQ TTFT p50 vs FP8, rates 1/4/8/12 | +19.7% / +17.8% / +21.7% / +66.4% | same |
+| C TTFT p50 on / off (ms) | 28.04 / 121.05; 32.82 / 126.21; 36.63 / 295.22 | results/clean/modes.csv |
+| C off / on TTFT p50 | 4.316x / 3.844x / 8.057x | same |
+| D TPOT p50 base / k3 / k5 (ms) | 10.81 / 13.64 / 20.43; 11.41 / 14.16 / 20.27; 12.51 / 16.02 / (k5 not run at 8) | results/clean/spec/modes.csv |
+| D TPOT k3 vs base | +26.1% / +24.0% / +28.0% | same |
+| D TPOT k5 vs base | +88.9% / +77.6% / - | same |
+| D TTFT p50 k3 / base; k5 / base | 2.430x / 2.381x / 2.528x; 3.561x / 3.443x / - | same |
+| D draft acceptance (per rep, all levels) | k3 0.506 to 0.517; k5 0.367 to 0.382 | same |
+
+**k=5 saturation.** At level 8, k5 rep1 saturated: 367.45 tok/s (base median 1,108.55), 2.87 req/s achieved, TTFT p50 1,409.13 ms,
+p99 22,614.57 ms. k5 rep2 at level 8 did NOT saturate the same way: 970.72 tok/s, TTFT p50 330.55 ms, p99 686.60 ms (base median
+47.84 / 76.24), so it was degraded but not collapsed. Both had canary-after 1.37x canary-before (INVALID). So "k=5 saturates at 8 req/s"
+holds for 1 of 2 runs; "k=5 degrades the server at level 8" holds for 2 of 2. The new k5 reps (1, 4 only) were VALID, ratios 1.039 to 1.057.
+
+**GPU sidecar (results/clean/gpu_summary.md, summarize_gpu.py).** No run flagged: busy-sample median SM clock 2790 to 2805 MHz
+in every run (within 2% of sibling reps), and clocks_event_reasons.active was 0x400 in 100% of samples of every run (the value
+seen with only "Reliability" Active, section 25; no power-cap, thermal or slowdown bits). Max temperature 46 to 64 C.
+**Eager variance** (canary-before ITL p50 16.58 / 19.20 / 19.86 ms vs compiled 10.11 to 10.25; results/clean/runs.csv): the GPU logs
+do not explain it. In the 30 s after server start (the canary-before window, canary_gpu_windows.py), the 3 eager reps ran at SM median
+2805 to 2812 MHz with GPU utilization median 40 to 43%, vs compiled 80 to 82%. So in eager mode the GPU is idle over half the time and
+the spread does not come from GPU clocks, throttling or other GPU users. The eager step time is set by host-side work (Python kernel
+launches), so the likely source is the host CPU (clocks/scheduling on Windows + WSL2), which nothing logs. Not established.
+
+**Old 14.1x prefix-caching number.** It is level 8 of the single old run pair (results/modes.csv, prefix-off and prefix-on, 10-08
+21:37 and 21:40, both VALID): TTFT p50 543.94 / 38.34 ms = 14.188x. Clean: on 36.63 ms (old 38.34, similar), off 295.22 ms [280.96
+to 301.21]. The difference is entirely the "off" arm at level 8. The old off run at 8 was congested: ITL p50 142.35 ms (clean 21.80 to
+25.46), 7.42 req/s achieved (clean 7.61 to 7.64). Without caching, level 8 means ~8 x 1,543 prompt tokens/s of prefill, close to the
+server's limit, where queueing makes TTFT very sensitive to small slowdowns. The old session was ~9% slower at the lower levels too
+(off TTFT p50 133.04 / 138.25 at 2 / 4 vs clean 121.05 / 126.21; old prefix-off canary-before 10.97 ms vs clean 9.92 to 10.21).
+Likely cause: a slightly slower system that session (contamination status "unknown", section 21) pushed a near-saturated
+config into queueing, and n=1 could not show it. Not proven. n_req also differed (230 old vs 232 clean at level 8).
+
+**Old vs clean** (old = README / RESUME_BULLETS as of 2026-10-09; old values were means of runs, clean = median of 3, truncated)
+| Claim (where) | Old | Clean | Same / changed |
+|---|---|---|---|
+| Compiled vs eager ITL p50 speedup, rates 1-16 (README table, bullet 1) | 1.49x to 1.92x (16.9/11.3, 18.0/11.8, 19.9/12.2, 27.1/14.1 ms) | 1.61x to 1.95x (16.70/10.32, 20.16/10.51, 20.52/10.89, 24.31/12.40) | changed (higher; eager now flag-matched, section 24) |
+| Compiled TTFT p50 lower (README) | 28 to 35% | 33.0% to 39.0% | changed |
+| 3B BF16 ITL p50 1/4/8/16 (README quant table) | 11.3 / 11.8 / 12.2 / 14.3 ms | 10.32 / 10.51 / 10.89 / 12.40 | changed (faster) |
+| 3B FP8 ITL p50 1/4/8/16 (README) | 7.4 / 7.4 / 7.6 / 8.2 ms | 6.97 / 7.05 / 7.05 / 7.57 | changed (faster) |
+| 3B FP8 vs BF16 ITL speedup (README, bullet 2) | 1.53x to 1.74x (corrected 1.52x, section 20) | 1.47x to 1.63x | changed (lower) |
+| 3B FP8 TTFT lower (CLAUDE.md findings) | 34.7 to 41.6% | 30.2% to 37.9% | changed |
+| 7B FP8 ITL p50 1/4/8/16 (README) | 12.7 / 13.1 / 13.8 / 16.7 ms | 11.79 / 12.00 / 12.42 / 14.21 (12 req/s: 13.41) | changed (faster) |
+| 7B AWQ ITL p50 1/4/8, 12 (README) | 8.2 / 8.3 / 9.1, 16.8 at 12 (1 valid run) | 7.62 / 7.84 / 8.64, 13.23 at 12 (n=3) | changed (faster) |
+| AWQ faster at low load, TTFT worse (README) | qualitative | ITL p50 1.43x to 1.54x faster at 1-8, equal at 12 (1.013x); TTFT p50 +17.8% to +66.4% | same (now quantified) |
+| AWQ collapsed at 16 (README) | 2 runs | not rerun | not retested |
+| Prefix caching TTFT p50 reduction (README, bullet 7) | 3.9x to 14.3x (corrected 14.1x); 31/35/38 vs 133/138/544 ms | 3.84x to 8.05x; 28.04/32.82/36.63 vs 121.05/126.21/295.22 | changed (upper bound 14.1x -> 8.05x) |
+| Spec k=3 TPOT slower (README, bullet 6) | +28.1% to +34.6% | +24.0% to +28.0% (levels 1/4/8) | changed (smaller) |
+| Spec k=5 TPOT slower (README) | +90.9% to +99.2% | +77.6% to +88.9% (levels 1/4 only) | changed (smaller; level 8 not comparable) |
+| Spec TTFT worse (README) | 2.4x to 4.1x (corrected 2.3x lower bound) | 2.38x to 3.56x (k3 1/4/8, k5 1/4) | changed (upper bound) |
+| Draft acceptance k=3 (README) | 0.50 to 0.52 | 0.506 to 0.517 | same |
+| Spec "collapses at 16" (README) | both configs | not rerun at 16; k5 saturated at 8 in 1 of 2 runs | not retested at 16 |
+| Compiled 3B canary-before ITL p50 (LAB_LOG 20) | 10.57 to 11.97 ms | 10.11 to 10.25 | changed (faster, tighter) |
+Not rerun, unchanged as claims: perplexities, HF vs vLLM, mini_sched, overload collapse, profiling, chunked prefill.
+README.md and RESUME_BULLETS.md NOT edited (waiting for Alex).
