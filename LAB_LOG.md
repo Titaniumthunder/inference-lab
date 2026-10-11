@@ -714,3 +714,14 @@ stall counts were not re-measured.
 | Spec base 2,103 tok/s at 16, both spec configs collapse at 16 (README) | section 14 | not rerun (no overload) | not retested |
 | Overload collapse claims (README) | section 12 | not rerun (no overload) | not retested |
 README.md and RESUME_BULLETS.md NOT edited (waiting for Alex).
+
+## 33. Allocator A/B (block L, queue_clean3.sh, 2026-10-11)
+**Design.** mini_sched Poisson, rate 4 only, 2x2 interleaved: allocator {on = expandable_segments:True (the default, passed
+explicitly), off = expandable_segments:False} x policy order {cs = continuous,static | sc = static,continuous}, 2 reps per
+cell = 8 runs, each a fresh process via run_mini_sched.sh (preflight + sidecar). Order: on-cs, off-cs, on-sc, off-sc, off-sc,
+on-sc, off-cs, on-cs. Stall criterion (set before the run): continuous rate-4 tok/s well below the allocator-on runs.
+**Estimate (derived):** process time ~= sum of wall_s (sidecar duration matched the summed wall_s within ~4 s in blocks G/J);
+rate-4 walls: on 39.46 to 40.68 s continuous + 46.14 to 48.00 s static (~1.5 min per run), stalled off up to 95.13 + 80.71 s
+(~3.0 min). 8 runs ~12 to 18 min + preflight 1.3 to 9.3 min = ~13 to 27 min, under the 45 min limit, so the full 2x2 runs.
+**Caveat (design):** in blocks G/J rate 4 ran after rates 1 and 2 in the same process; here rate 4 runs in a fresh process.
+If the stall depends on allocations made at earlier rates, it may not reproduce here.
