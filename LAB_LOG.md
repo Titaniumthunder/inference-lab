@@ -725,3 +725,30 @@ rate-4 walls: on 39.46 to 40.68 s continuous + 46.14 to 48.00 s static (~1.5 min
 (~3.0 min). 8 runs ~12 to 18 min + preflight 1.3 to 9.3 min = ~13 to 27 min, under the 45 min limit, so the full 2x2 runs.
 **Caveat (design):** in blocks G/J rate 4 ran after rates 1 and 2 in the same process; here rate 4 runs in a fresh process.
 If the stall depends on allocations made at earlier rates, it may not reproduce here.
+**Results** (queue_clean3.sh, first sidecar sample 09:16:41, QUEUE FINISHED 09:38:12, results/queue_clean3.log; 8 of 8 runs;
+all preflights passed on attempt 1). Source: results/clean/mini_sched.csv (labels clean3-alloc-*), summary
+results/clean/summary_20261011_093900.md section L. Stall = continuous rate-4 tok/s below half of the lowest allocator-on value
+(318.74); the values are bimodal (stalled 12.58 to 140.63, others >= 318.74), so the threshold choice does not matter.
+| Cell | Run | continuous tok/s (finished/102) | continuous TPOT p50 ms | static tok/s (finished/102) | stalled |
+|---|---|---|---|---|---|
+| on, cont first | rep1 | 319.18 (102) | 94.04 | 278.99 (102) | no |
+| on, cont first | rep2 | 322.67 (102) | 94.03 | 262.78 (102) | no |
+| on, static first | rep1 | 323.48 (102) | 94.65 | 300.39 (102) | no |
+| on, static first | rep2 | 318.74 (102) | 93.87 | 306.01 (102) | no |
+| off, cont first | rep1 | 12.58 (15) | 225.64 | 0.84 (1) | **yes** |
+| off, cont first | rep2 | 13.56 (16) | 435.76 | 19.44 (23) | **yes** |
+| off, static first | rep1 | 320.76 (102) | 96.34 | 269.11 (102) | no |
+| off, static first | rep2 | 323.47 (102) | 89.94 | 264.54 (102) | no |
+**Counts:** allocator off + continuous first: stalled in **2 of 2** runs. Allocator off + static first: **0 of 2**. Allocator on:
+**0 of 4** (0 of 2 per order). Including blocks G/J (rates 1, 2, 4 in one process, section 32): off + continuous first 2 of 2
+(J rep1, rep3), off + static first 0 of 1 (J rep2), on 0 of 3 (G). Pooled: off + continuous first **4 of 4**, off + static first
+**0 of 3**, on **0 of 7**.
+- In both stalled L runs the static policy that followed in the same process also failed to finish (1 and 23 of 102 within the
+  30 s + 120 s drain limit). In J the stalled runs finished all 102; L's stalls were far more severe. Why: not measured.
+- Metrics other than tok/s in stalled runs cover only finished requests (biased); tok/s is the comparable number.
+- GPU sidecar (results/clean/gpu_summary_20261011_093900.md): stalled runs had utilization >= 50% in 284 and 290 of ~311 samples at
+  a busy median power of 72.6 and 73.5 W, vs 134.7 to 142.8 W in the other runs: the GPU reports busy while doing little work (same
+  signature as J). Clocks and event reasons unchanged (no flags).
+- What this supports: with expandable segments off, the rate-4 stall occurred whenever continuous ran first in the process
+  (4 of 4) and never when static ran first (0 of 3); with expandable segments on it never occurred (0 of 7). What it does not
+  support: any mechanism (cudaMalloc cost, fragmentation, etc.); the steps-over-0.5 s count was not re-measured. n is small.
