@@ -1,31 +1,70 @@
-# Resume bullet drafts (Alex edits these; every number is measured, source in brackets)
+# Resume bullet drafts (Alex edits these; every number is measured, source table below)
 
-Pick 3 to 4. Numbers are from `results/*.csv` via the LAB_LOG sections cited; ratios were computed from those values without rounding up.
+Pick 3 to 4. All numbers come from the clean reruns (LAB_LOG sections 28, 32, 33). Ratios are ratios of medians, truncated to one
+decimal, never rounded up. Hardware for all: RTX 5080 16 GB, Windows + WSL2, vLLM 0.31.0, Qwen2.5 models.
 
-1. Built a reproducible LLM-serving benchmark for vLLM on an RTX 5080 (open-loop Poisson load, fresh server per config, before/after
-   canary runs that reject degraded servers); showed torch.compile + CUDA graphs cut median inter-token latency 1.49x to 1.92x
-   versus eager mode across 1 to 16 req/s (3 interleaved repeats). [LAB_LOG 7; results/main.csv, runs.csv]
+1. Built a reproducible LLM-serving benchmark harness for vLLM on an RTX 5080 (idle-GPU preflight, 1 Hz GPU telemetry, fresh server
+   per config, before/after canaries that reject degraded servers, interleaved repeats); measured torch.compile + CUDA graphs cutting
+   median inter-token latency 1.6x to 1.9x and median time-to-first-token 33.0% to 39.0% versus eager mode on Qwen2.5-3B
+   (open-loop Poisson load, 1 to 16 req/s, n=3 runs per arm).
 
-2. Quantified quantization trade-offs on Qwen2.5 3B/7B: FP8 lowered median inter-token latency 1.53x to 1.74x at +0.92% WikiText-2
-   perplexity (3B); 7B FP8 cost +0.73% and AWQ 4-bit +5.46% perplexity against a BF16 baseline obtained via CPU offload.
-   [LAB_LOG 9, 11; results/main.csv, ppl.csv]
+2. Quantified quantization trade-offs on Qwen2.5 3B/7B in vLLM (n=3 runs per arm, 1 to 16 req/s): FP8 cut median inter-token
+   latency 1.4x to 1.6x versus BF16 on the 3B model; on 7B, AWQ 4-bit had 1.4x to 1.5x lower median inter-token latency than FP8 at
+   1 to 8 req/s but 17.8% to 66.4% higher median time-to-first-token (1 to 12 req/s).
 
 3. Implemented a continuous-batching inference engine with a paged KV cache in PyTorch (block allocator, preemption by recompute,
-   token-budget scheduling); greedy outputs match Hugging Face generate (differences only at exact logit ties, also under forced
-   preemption); continuous batching cut median time-to-first-token 28.4x to 42.5x versus static batching, and paged allocation used
-   12x less peak KV memory than max-length reservation. [LAB_LOG 17; results/mini_sched.csv]
+   token-budget scheduling); against my own static-batching baseline on the same model code it cut median time-to-first-token
+   37.0x to 38.7x (Poisson, 1 to 4 req/s, n=3 runs), and paged allocation used 11.7x to 12.8x fewer peak KV tokens than my own
+   max-length preallocation baseline (3 runs x 3 rates).
 
-4. Diagnosed a 1 s-per-step stall in that engine to CUDA allocator segment growth under WSL2 (32 of 313 steps over 0.5 s);
-   expandable segments removed it and raised throughput at 4 req/s from 112.7 to 310.6 tok/s. [LAB_LOG 17]
+4. Isolated an intermittent throughput stall in that engine with an interleaved A/B: with PyTorch's default CUDA allocator it
+   stalled in 4 of 7 runs at 4 req/s (12.5 to 140.6 tok/s vs 318.7 to 330.8 tok/s otherwise), always when continuous batching ran
+   first in the process (4 of 4); with expandable segments it stalled in 0 of 7 runs.
 
-5. Measured vLLM at 2.1x to 2.9x the throughput of Hugging Face generate (batch 1 to 64) with identical greedy outputs, and traced
-   the gap to decode (2.7x to 2.9x per-token time) rather than prefill. [LAB_LOG 15; results/hf_vs_vllm.csv]
+5. Measured vLLM at 2.1x to 2.9x the throughput of Hugging Face generate on Qwen2.5-3B (static batches 1 to 64, n=3 processes x 3
+   trials) with identical greedy outputs (128 of 128 tokens in 6 of 6 processes), and showed the gap is decode (per-token time 2.7x to
+   3.0x) rather than prefill (time-to-first-token 1.0x to 1.1x).
 
-6. Showed speculative decoding with a 0.5B draft model slows a 3B target by 28.1% to 34.6% per token on realistic text, and that the
-   common random-word benchmark prompt inflates draft acceptance (0.77 to 0.92 per position vs ~0.5); added a realistic-text
-   workload to the harness. [LAB_LOG 14; results/spec/modes.csv]
+6. Showed that speculative decoding with a 0.5B draft model slowed a 3B target on realistic text (negative result): median time per
+   output token +24.0% to +28.0% with k=3 (1, 4, 8 req/s) and +77.6% to +88.9% with k=5 (1, 4 req/s), n=3 runs per arm.
 
-7. Prefix caching: 3.9x to 14.3x lower median time-to-first-token on a shared 1,540-token prefix (best case). [LAB_LOG 10; results/modes.csv]
+7. Measured vLLM async scheduling as a latency trade-off on Qwen2.5-3B: on (the default) it lowered median inter-token latency 4.6%
+   to 6.0% but raised median time-to-first-token 28.2% to 30.2% versus off (1 to 16 req/s, n=3 interleaved runs per arm).
 
-Not usable as results: rate-32 overload numbers (not reproducible), TensorRT-LLM (never ran), and anything from an INVALID run
-except the two perplexities flagged in LAB_LOG 11.
+8. Prefix caching (best case, every prompt sharing one ~1,540-token prefix): 3.8x to 8.0x lower median time-to-first-token at
+   2 to 8 req/s (n=3 runs per arm).
+
+Not usable as results: overload / rate-16-collapse numbers, the "--max-num-seqs 128 fixes it" claim, anything TensorRT-LLM (it never
+ran), the post-overload GEMV slowdown, speculative decoding at 16 req/s, the old "32 of 313 steps" stall count, and any number from
+an INVALID run. Quantized-model perplexities were not rerun under the clean protocol (LAB_LOG 9, 11).
+
+## Sources
+Summary file for all rows: `results/clean/summary_20261011_093900.md` (generated by `summarize_clean.py`; block letter = section
+heading in that file). Unrounded values are in the CSVs named per row.
+
+| Bullet | Number | Value before truncation | LAB_LOG | Summary file block, row | CSV / labels |
+|---|---|---|---|---|---|
+| 1 | ITL 1.6x to 1.9x | eager/compiled ITL p50 1.618 (rate 1), 1.917 (4), 1.884 (8), 1.959 (16) | 28 | A, "Ratios eager / compiled", ITL p50 column | results/clean/main.csv, clean-eager-rep1..3, clean-compiled-rep1..3 |
+| 1 | TTFT 33.0% to 39.0% lower | compiled vs eager TTFT p50 -33.0 (1), -39.0 (4), -37.0 (8), -33.6 (16) % | 28 | A, "Ratios eager / compiled", TTFT p50 column | same |
+| 1 | n=3, 1 to 16 req/s | 3 VALID runs per arm | 28 | A, n column | results/clean/runs.csv |
+| 2 | FP8 1.4x to 1.6x | compiled/fp8-3b ITL p50 1.479, 1.490, 1.543, 1.638 | 28 | A, "Ratios compiled / fp8-3b", ITL p50 | results/clean/main.csv, clean-fp8-3b-rep1..3 |
+| 2 | AWQ 1.4x to 1.5x lower ITL at 1 to 8 | fp8-7b/awq-7b ITL p50 1.547 (1), 1.530 (4), 1.437 (8) | 28 | B, "Ratios fp8-7b / awq-7b", ITL p50, rates 1-8 | results/clean/main.csv, clean-fp8-7b-rep1..3, clean-awq-7b-rep1..3 |
+| 2 | AWQ TTFT +17.8% to +66.4% | awq vs fp8 TTFT p50 +19.7 (1), +17.8 (4), +21.7 (8), +66.4 (12) % | 28 | B, same table, TTFT p50 | same |
+| 3 | TTFT 37.0x to 38.7x | static/continuous TTFT p50 38.780 (1), 37.052 (2), 37.189 (4) | 32 | G, "Ratios static / continuous", TTFT p50 | results/clean/mini_sched.csv, clean-mini-rep1..3 |
+| 3 | KV 11.7x to 12.8x | contiguous_kv_tokens_same_peak / peak_kv_tokens per continuous rate measurement: min 11.79, max 12.83 (3 runs x 3 rates = 9) | 32 | G, rows "continuous", column reserved/paged KV [min-max] | same, policy=continuous |
+| 4 | 4 of 7 stalled (default allocator) | J: clean-mini-noxseg-rep1 140.63, rep3 137.24 tok/s; L: clean3-alloc-off-cs-rep1 12.58, rep2 13.56 | 32, 33 | J rows "cont-xseg-off" level 4; L rows "cont off cs" | results/clean/mini_sched.csv, policy=continuous, level 4.0 |
+| 4 | 3 of 7 not stalled (default allocator) | clean-mini-noxseg-rep2 320.90; clean3-alloc-off-sc-rep1 320.76, rep2 323.47 | 32, 33 | J "cont-xseg-off" max; L "cont off sc" | same |
+| 4 | 0 of 7 stalled (expandable segments) | clean-mini-rep1..3 326.24 to 330.88; clean3-alloc-on-{cs,sc}-rep1..2 318.74 to 323.48 | 32, 33 | G/J "cont-xseg-on"; L "cont on cs", "cont on sc" | same |
+| 4 | 12.5 to 140.6 vs 318.7 to 330.8 tok/s | stalled 12.58 to 140.63; others 318.74 to 330.88 | 32, 33 | as above | same |
+| 4 | 4 of 4 with continuous first | J rep1, rep3 (order continuous,static); L off-cs rep1, rep2 | 33 | LAB_LOG 33 counts | queue_clean2.sh, queue_clean3.sh (--policies) |
+| 5 | 2.1x to 2.9x throughput | vllm/hf tok/s 2.993 (B=1), 2.852 (8), 2.543 (32), 2.139 (64) | 32 | F, "Ratios vllm / hf", tok/s | results/clean/hf_vs_vllm.csv, clean-hf-rep1..3, clean-vllm-rep1..3 |
+| 5 | n=3 x 3 trials | 9 samples per cell | 32 | F, n column "3 / 9" | same |
+| 5 | 128 of 128 tokens, 6 of 6 processes | all six token lists identical | 32 | LAB_LOG 32 table | results/hf_vs_vllm_tokens_clean-{hf,vllm}-rep{1,2,3}.json |
+| 5 | TPOT 2.7x to 3.0x | hf/vllm TPOT 3.026, 3.032, 3.007, 2.742 | 32 | F, "Ratios hf / vllm", TPOT | results/clean/hf_vs_vllm.csv |
+| 5 | TTFT 1.0x to 1.1x | hf/vllm TTFT 1.141, 1.049, 1.141, 1.161 | 32 | F, "Ratios hf / vllm", TTFT | same |
+| 6 | k=3 TPOT +24.0% to +28.0% | k3/base TPOT p50 1.261 (1), 1.240 (4), 1.280 (8) | 28 | D, "Ratios k3 / base", TPOT p50 | results/clean/spec/modes.csv, clean-spec-base-rep1..3, clean-spec-k3-rep1..3 |
+| 6 | k=5 TPOT +77.6% to +88.9% | k5/base TPOT p50 1.889 (1), 1.776 (4) | 28 | D, "Ratios k5 / base", TPOT p50 | results/clean/spec/modes.csv, clean-spec-k5-l14-rep1..3 |
+| 7 | ITL 4.6% to 6.0% lower | async-default vs no-async ITL p50 -4.6 (1), -5.7 (4), -5.2 (8), -6.0 (16) % | 32 | E, "Ratios no-async / async-default", ITL p50 | results/clean/main.csv, clean2-async-default-rep1..3, clean2-no-async-rep1..3 |
+| 7 | TTFT 28.2% to 30.2% higher | async-default vs no-async TTFT p50 +30.2, +28.2, +28.5, +29.4 % | 32 | E, same table, TTFT p50 | same |
+| 8 | 3.8x to 8.0x | off/on TTFT p50 4.316 (2), 3.844 (4), 8.057 (8) | 28 | C, "Ratios prefix-off / prefix-on", TTFT p50 | results/clean/modes.csv, clean-prefix-on-rep1..3, clean-prefix-off-rep1..3 |
+| 8 | ~1,540-token prefix | prompt_tok_p50 of prefix-mode rows | 28 | C | results/clean/modes.csv, prompt_tok_p50 |
