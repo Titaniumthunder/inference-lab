@@ -1,0 +1,137 @@
+preflight attempt 1 sample 1: util 3%  mem 670 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 665 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 670 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 3%  mem 669 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 654 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 663 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 664 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 668 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 662 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 1%  mem 662 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-on-cs-rep1.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:   4%|▍         | 18/434 [00:00<00:02, 168.55it/s]Loading weights:   9%|▉         | 40/434 [00:00<00:02, 190.95it/s]Loading weights:  14%|█▍        | 60/434 [00:00<00:02, 157.31it/s]Loading weights:  21%|██        | 92/434 [00:00<00:01, 211.37it/s]Loading weights:  26%|██▋       | 115/434 [00:00<00:01, 191.68it/s]Loading weights:  32%|███▏      | 141/434 [00:00<00:01, 206.26it/s]Loading weights:  38%|███▊      | 163/434 [00:00<00:01, 205.23it/s]Loading weights:  43%|████▎     | 186/434 [00:00<00:01, 208.24it/s]Loading weights:  48%|████▊     | 208/434 [00:01<00:01, 196.54it/s]Loading weights:  53%|█████▎    | 229/434 [00:01<00:01, 195.65it/s]Loading weights:  57%|█████▋    | 249/434 [00:01<00:00, 188.60it/s]Loading weights:  62%|██████▏   | 269/434 [00:01<00:00, 178.58it/s]Loading weights:  67%|██████▋   | 291/434 [00:01<00:00, 188.33it/s]Loading weights:  72%|███████▏  | 313/434 [00:01<00:00, 192.80it/s]Loading weights:  77%|███████▋  | 333/434 [00:01<00:00, 191.57it/s]Loading weights:  81%|████████▏ | 353/434 [00:01<00:00, 191.67it/s]Loading weights:  86%|████████▌ | 373/434 [00:01<00:00, 182.93it/s]Loading weights:  90%|█████████ | 392/434 [00:02<00:00, 176.17it/s]Loading weights:  95%|█████████▍| 412/434 [00:02<00:00, 176.58it/s]Loading weights: 100%|██████████| 434/434 [00:02<00:00, 195.56it/s]
+rate  4.0 continuous finished 102/102    319.2 tok/s  TTFT p50/p99      165/    1518 ms  TPOT p50   94.0 ms  peak batch 55  preempt 0
+rate  4.0 static     finished 102/102    279.0 tok/s  TTFT p50/p99     5952/   11979 ms  TPOT p50   72.9 ms  peak batch 36  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+preflight attempt 1 sample 1: util 1%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 1%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 2%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 1%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 698 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 1%  mem 698 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-off-cs-rep1.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  43%|████▎     | 188/434 [00:00<00:00, 1874.40it/s]Loading weights:  87%|████████▋ | 376/434 [00:00<00:00, 1828.75it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 2108.43it/s]
+rate  4.0 continuous finished 15/102     12.6 tok/s  TTFT p50/p99      205/    1391 ms  TPOT p50  225.6 ms  peak batch 64  preempt 0
+rate  4.0 static     finished 1/102      0.8 tok/s  TTFT p50/p99      419/     419 ms  TPOT p50  169.9 ms  peak batch 64  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+preflight attempt 1 sample 1: util 0%  mem 459 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 1%  mem 459 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 3%  mem 459 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 459 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 2%  mem 527 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 1%  mem 527 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 527 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 3%  mem 527 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 1%  mem 527 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 527 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-on-sc-rep1.csv
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  41%|████▏     | 180/434 [00:00<00:00, 1796.46it/s]Loading weights:  83%|████████▎ | 360/434 [00:00<00:00, 1675.12it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 1920.85it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+rate  4.0 static     finished 102/102    300.4 tok/s  TTFT p50/p99     5033/   11510 ms  TPOT p50   81.3 ms  peak batch 46  preempt 0
+rate  4.0 continuous finished 102/102    323.5 tok/s  TTFT p50/p99      149/     249 ms  TPOT p50   94.7 ms  peak batch 57  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+preflight attempt 1 sample 1: util 0%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 1%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 2%  mem 590 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 1%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 0%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 1%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 3%  mem 578 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 578 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-off-sc-rep1.csv
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  43%|████▎     | 187/434 [00:00<00:00, 1861.98it/s]Loading weights:  86%|████████▌ | 374/434 [00:00<00:00, 1838.66it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 2070.68it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+rate  4.0 static     finished 102/102    269.1 tok/s  TTFT p50/p99     5229/   12621 ms  TPOT p50   76.9 ms  peak batch 45  preempt 0
+rate  4.0 continuous finished 102/102    320.8 tok/s  TTFT p50/p99      165/     275 ms  TPOT p50   96.3 ms  peak batch 58  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+preflight attempt 1 sample 1: util 2%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 2%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 1%  mem 588 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-off-sc-rep2.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  38%|███▊      | 163/434 [00:00<00:00, 1628.72it/s]Loading weights:  76%|███████▌  | 328/434 [00:00<00:00, 1638.53it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 1983.11it/s]
+rate  4.0 static     finished 102/102    264.5 tok/s  TTFT p50/p99     4771/   11218 ms  TPOT p50   81.7 ms  peak batch 46  preempt 0
+rate  4.0 continuous finished 102/102    323.5 tok/s  TTFT p50/p99      149/     255 ms  TPOT p50   89.9 ms  peak batch 53  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+preflight attempt 1 sample 1: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 3%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 3%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 1%  mem 588 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-on-sc-rep2.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  41%|████▏     | 180/434 [00:00<00:00, 1789.64it/s]Loading weights:  83%|████████▎ | 359/434 [00:00<00:00, 1785.17it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 2096.28it/s]
+rate  4.0 static     finished 102/102    306.0 tok/s  TTFT p50/p99     5044/   11386 ms  TPOT p50   80.8 ms  peak batch 45  preempt 0
+rate  4.0 continuous finished 102/102    318.7 tok/s  TTFT p50/p99      148/     249 ms  TPOT p50   93.9 ms  peak batch 56  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+preflight attempt 1 sample 1: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 1%  mem 588 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 0%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 3%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 1%  mem 584 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 2%  mem 584 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-off-cs-rep2.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  44%|████▍     | 191/434 [00:00<00:00, 1907.44it/s]Loading weights:  88%|████████▊ | 383/434 [00:00<00:00, 1912.76it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 2046.79it/s]
+rate  4.0 continuous finished 16/102     13.6 tok/s  TTFT p50/p99      247/    1360 ms  TPOT p50  435.8 ms  peak batch 64  preempt 0
+rate  4.0 static     finished 23/102     19.4 tok/s  TTFT p50/p99    19558/   22993 ms  TPOT p50   92.7 ms  peak batch 64  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+preflight attempt 1 sample 1: util 3%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 0%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 0%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 2%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 0%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 2%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 1%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 0%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 3%  mem 437 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 0%  mem 437 MiB  dec 0%  enc 0%
+preflight PASSED on attempt 1
+GPU sidecar -> results/clean/gpu_clean3-alloc-on-cs-rep2.csv
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:  41%|████      | 177/434 [00:00<00:00, 1766.71it/s]Loading weights:  84%|████████▎ | 363/434 [00:00<00:00, 1819.73it/s]Loading weights: 100%|██████████| 434/434 [00:00<00:00, 2138.94it/s]
+rate  4.0 continuous finished 102/102    322.7 tok/s  TTFT p50/p99      175/    1115 ms  TPOT p50   94.0 ms  peak batch 57  preempt 0
+rate  4.0 static     finished 102/102    262.8 tok/s  TTFT p50/p99     5058/   11825 ms  TPOT p50   85.6 ms  peak batch 48  preempt 0
+appended 2 rows to results/clean/mini_sched.csv
+QUEUE FINISHED Sun Oct 11 09:38:12 AM PDT 2026
