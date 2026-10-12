@@ -5,7 +5,8 @@ batching policy and speculative decoding change latency and throughput, measured
 and rejects runs where the server degraded. Plus a small continuous-batching engine with a paged KV cache written from scratch
 (`mini_sched/`).
 
-Every number below comes from the clean reruns of 2026-10-10/11 (`results/clean/`, LAB_LOG sections 28, 32 and 33). Values are
+Every timing number below comes from the clean reruns of 2026-10-10/11 (`results/clean/`, LAB_LOG sections 28, 32 and 33);
+perplexities come from VALID runs in `results/ppl.csv` and `results/clean/ppl.csv` (LAB_LOG 34). Values are
 **median [min-max] over n runs**; ratios are ratios of medians, **truncated, never rounded up**. Full tables:
 `results/clean/summary_20261011_093900.md`. `LAB_LOG.md` has the complete record, including failed attempts, refuted hypotheses
 and invalid runs. Hardware for everything: RTX 5080 16 GB, Windows + WSL2, vLLM 0.31.0 (details under Environment).
