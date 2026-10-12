@@ -1,0 +1,37 @@
+preflight attempt 1 sample 1: util 6%  mem 628 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 2: util 6%  mem 628 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 3: util 6%  mem 625 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 4: util 6%  mem 628 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 5: util 6%  mem 628 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 6: util 10%  mem 623 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 7: util 6%  mem 604 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 8: util 6%  mem 589 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 9: util 0%  mem 589 MiB  dec 0%  enc 0%
+preflight attempt 1 sample 10: util 6%  mem 589 MiB  dec 0%  enc 0%
+preflight attempt 1 FAILED: sample 1 util 6% > 3%; sample 2 util 6% > 3%; sample 3 util 6% > 3%; sample 4 util 6% > 3%; sample 5 util 6% > 3%; sample 6 util 10% > 3%; sample 7 util 6% > 3%; sample 8 util 6% > 3%; sample 10 util 6% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 2 sample 1: util 7%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 2: util 6%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 3: util 7%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 4: util 6%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 5: util 5%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 6: util 6%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 7: util 6%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 8: util 2%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 9: util 6%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 2 sample 10: util 8%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 2 FAILED: sample 1 util 7% > 3%; sample 2 util 6% > 3%; sample 3 util 7% > 3%; sample 4 util 6% > 3%; sample 5 util 5% > 3%; sample 6 util 6% > 3%; sample 7 util 6% > 3%; sample 9 util 6% > 3%; sample 10 util 8% > 3%; 
+waiting 20 s before re-sampling
+preflight attempt 3 sample 1: util 6%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 2: util 2%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 3: util 6%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 4: util 8%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 5: util 2%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 6: util 6%  mem 577 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 7: util 9%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 8: util 0%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 9: util 11%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 3 sample 10: util 6%  mem 592 MiB  dec 0%  enc 0%
+preflight attempt 3 FAILED: sample 1 util 6% > 3%; sample 3 util 6% > 3%; sample 4 util 8% > 3%; sample 6 util 6% > 3%; sample 7 util 9% > 3%; sample 9 util 11% > 3%; sample 10 util 6% > 3%; 
+preflight REFUSED: GPU not idle in all 3 attempts
+Not running clean3-awq-7b-ppl: GPU not idle (preflight exit 75).

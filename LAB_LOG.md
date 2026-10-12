@@ -752,3 +752,25 @@ results/clean/summary_20261011_093900.md section L. Stall = continuous rate-4 to
 - What this supports: with expandable segments off, the rate-4 stall occurred whenever continuous ran first in the process
   (4 of 4) and never when static ran first (0 of 3); with expandable segments on it never occurred (0 of 7). What it does not
   support: any mechanism (cudaMalloc cost, fragmentation, etc.); the steps-over-0.5 s count was not re-measured. n is small.
+
+## 34. Perplexity check (2026-10-11, in progress, stopped)
+**Rows** (results/ppl.csv, results/clean/ppl.csv; ppl.csv has no timestamp column, times are server-log start times; verdicts from
+runs.csv). All: ppl.py defaults 40 chunks x 2,048 tokens = 81,880 scored tokens, WikiText-2 raw test, vLLM 0.31.0 (each server log).
+| label | model | perplexity | tokens | server start | quantization / mode | verdict |
+|---|---|---|---|---|---|---|
+| bf16-3b | Qwen2.5-3B-Instruct | 7.9808 | 81880 | 10-08 12:14:51 | none, bf16, compiled | VALID (0.956) |
+| fp8-3b | Qwen2.5-3B-Instruct | 8.0540 | 81880 | 10-08 12:20:17 | fp8, compiled | VALID (1.009) |
+| awq-7b | Qwen2.5-7B-Instruct-AWQ | 7.2758 | 81880 | 10-08 12:25:59 | auto_awq, fp16, compiled | **INVALID (15.959)** |
+| fp8-7b | Qwen2.5-7B-Instruct | 6.9494 | 81880 | 10-08 12:47:50 | fp8, compiled | VALID (0.998) |
+| bf16-7b-offload-eager | Qwen2.5-7B-Instruct | 6.8988 | 81880 | 10-08 22:28:39 | none, bf16, eager, 6 GB CPU offload | INVALID (1.320) |
+| bf16-3b-eager-ppl | Qwen2.5-3B-Instruct | 7.9753 | 81880 | 10-08 22:38:42 | none, bf16, eager (control) | VALID (0.963) |
+| clean2-bf16-7b-offload-eager | Qwen2.5-7B-Instruct | 6.8988 | 81880 | 10-10 15:34:01 | none, bf16, eager, 6 GB CPU offload | VALID (1.038) |
+7B BF16 old and clean values are identical (6.8988). ppl.py has one commit (10-08 22:10), after the 10-08 12:14 to 12:53 runs; the
+identical token counts are consistent with the same chunking, but the file content at 12:14 is not recorded.
+**AWQ rerun attempt:** the awq-7b row comes from an INVALID run, so only it was to be rerun (run_config.sh, OUTDIR=results/clean,
+PPL=1 RATES=1 DURATION=10, label clean3-awq-7b-ppl). It never ran: gpu_preflight.sh refused at ~12:16 to 12:17 (all 3 attempts;
+utilization.gpu 2 to 11% in most samples, decoder 0%, memory 577 to 592 MiB: some other GPU user), exit 75
+(results/clean3_awq_ppl.log). It was launched without a queue wrapper, so nothing retried it. My wait loop then never exited
+(its `pgrep -f "run_config.sh clean3-awq"` matched its own command line), so this went unnoticed for ~8.5 h until Alex stopped it at
+~20:53. No server started, no row was written to runs.csv or ppl.csv, no sidecar file was created. At 20:53 the GPU read util 4%,
+memory 835 MiB. README/RESUME_BULLETS perplexity numbers NOT restored yet; steps 2 to 5 of that request not started.
