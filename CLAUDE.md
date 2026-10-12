@@ -31,28 +31,37 @@ bench.py (open-loop Poisson), bench_modes.py (shared-prefix, closed-loop, realis
 run_config.sh, serve_eager.sh, serve_compiled.sh, serve_generic.sh, queue_*.sh, hf_vs_vllm.py, run_hf_vs_vllm.sh, run_trtllm.sh,
 profile_run.sh, profile_analyze.py, mini_sched/, RESUME_BULLETS.md, results/, LAB_LOG.md (running log), README.md.
 
-## Findings so far (details in LAB_LOG.md sections 1-19; corrections in section 20, contamination audit in section 21)
-Ratios below are truncated, never rounded up.
-- Compiled vs eager (3 repeats each): ITL p50 1.49x to 1.91x faster, TTFT 28.3 to 34.2% lower.
-- 3B FP8 vs BF16: ITL 1.52x to 1.74x faster, TTFT 34.7 to 41.6% lower, perplexity +0.91% (8.0540 / 7.9808 truncated; +0.92% was rounded up, LAB_LOG 35).
-- 7B perplexity vs 7B BF16 (6.8988, eager + CPU offload, canary INVALID): FP8 +0.73%, AWQ +5.46% (AWQ perplexity run also INVALID).
-  AWQ is faster at low load, TTFT worse, and collapsed at rate 16 with default settings.
-- Prefix caching (best-case shared prefix): TTFT 3.9x to 14.1x lower.
-- Overload collapse: ROOT CAUSE UNKNOWN. "--max-num-seqs 128 fixes it" is NOT confirmed: the closed-loop evidence was n=1 per cap,
-  and one of two later Poisson runs with cap 128 still collapsed (LAB_LOG section 12). It did not reproduce in 2 profiled attempts
-  at cap 256 on 2026-10-09 (section 19). After a heavy overload, batch-1 cuBLAS GEMV kernels ran ~15% slower (section 19); untested lead.
+## Findings so far (clean reruns: LAB_LOG 28, 32, 33; perplexity 34-36; older sections 1-21 are superseded where they differ)
+Ratios below are ratios of medians, truncated, never rounded up; n=3 runs per arm unless stated. Same numbers as README.md /
+RESUME_BULLETS.md (Sources table there).
+- Compiled vs eager (3B BF16, 1-16 req/s): ITL p50 1.61x to 1.95x lower, TTFT p50 33.0% to 39.0% lower. Eager canary ITL p50
+  spread 16.58 to 19.86 ms across reps (compiled 10.11 to 10.25); cause not established.
+- 3B FP8 vs BF16: ITL p50 1.47x to 1.63x lower, TTFT p50 30.2% to 37.9% lower, perplexity +0.91% (8.0540 / 7.9808, truncated;
+  LAB_LOG 35 corrects an earlier rounded-up value).
+- 7B: FP8 perplexity +0.73% vs 7B BF16 (6.8988, eager + CPU offload, canary VALID in the clean rerun). AWQ perplexity NOT reported
+  (its only run was INVALID; reruns refused by the preflight on 10-11 and 10-12). AWQ ITL p50 1.43x to 1.54x lower than FP8 at 1-8
+  req/s, equal at 12; TTFT p50 +17.8% to +66.4% (1-12 req/s). AWQ not measured at 16 in the clean rerun.
+- Prefix caching (best case, shared ~1,540-token prefix): TTFT p50 3.84x to 8.05x lower at 2-8 req/s.
+- Async scheduling (on by default in vLLM 0.31.0): ITL p50 4.6% to 6.0% lower, TTFT p50 28.2% to 30.2% higher vs
+  --no-async-scheduling. Cause not measured.
+- Chunked prefill: no difference at 1-8 req/s; at 16 the ranges do not overlap (on ITL p50 11.74 vs off 12.24 ms).
+- HF generate vs vLLM: vLLM 2.13x to 2.99x throughput (batch 1-64), identical greedy outputs (6 of 6 processes).
+- mini_sched: continuous vs own static baseline TTFT p50 37.05x to 38.78x; paged vs own preallocation KV 11.79x to 12.83x.
+  Allocator stall with expandable segments off: 4 of 7 runs (all with continuous first), 0 of 7 with them on; cause not established.
+- Speculative decoding (0.5B draft, realistic text): TPOT +24.0% to +28.0% (k=3, 1/4/8 req/s), +77.6% to +88.9% (k=5, 1/4 req/s).
+- Profiling (1 clean run, batch-1 decode, async on): step 10.83 ms, GPU busy 8.12, GPU idle 2.61 ms. Measurement only.
+- Overload collapse: ROOT CAUSE UNKNOWN, not rerun under the clean protocol. "--max-num-seqs 128 fixes it" is NOT confirmed
+  (LAB_LOG 12, 19). Do not use overload or rate-32 numbers as results.
 - The PC crashed (hard, needed reboot) during a collapsed overload run on 2026-10-08 ~23:07. Treat deliberate collapse runs as risky.
-- Wallpaper Engine (video decode on the GPU) slowed some runs on 2026-10-08: fresh compiled-3B canaries ~23% slower (section 21 says
-  exactly how that was measured and which runs it affects).
-- Profiling: in a batch-1 decode step (11.70 ms) the GPU sits idle ~3.4 ms while the CPU prepares the next step (no overlap);
-  this plus kernels below peak bandwidth explains the old "unexplained ~4.3 ms" (section 19).
-- Speculative decoding with a 0.5B draft is slower than none on realistic text (TPOT +28.1% to +34.6% at k=3).
-- Rate-32 overload numbers are not reproducible. Do not use them as results. TensorRT-LLM never ran (section 16).
+- Video decode on the GPU (Wallpaper Engine) contaminated some 2026-10-08 runs (LAB_LOG 21); the preflight now refuses it
+  (decoder > 0%). It refused on 10-11 and twice on 10-12 for that reason.
+- TensorRT-LLM never ran (section 16).
 
 ## Remaining work
 Items 1-9 of the original list are done (TensorRT-LLM stopped without numbers). Open:
-1. Fix README.md / RESUME_BULLETS.md numbers flagged in LAB_LOG sections 20-21 (waiting for Alex).
-2. Log GPU clocks/power/temps at 1 Hz through canary -> overload -> canary (tests the GEMV-slowdown lead).
+1. Done 2026-10-11/12: README.md / RESUME_BULLETS.md rewritten from the clean reruns (LAB_LOG 28-36).
+   Pending a GPU with no other users (preflight refused 10-11, 10-12): 7B AWQ perplexity rerun; python -m mini_sched.test_mini rerun.
+2. 1 Hz GPU logging exists (run_config.sh / lab_gpu.sh sidecar); not yet run through canary -> overload -> canary (GEMV-slowdown lead).
 3. Does GPU contention trigger the collapse? Needs deliberate overload runs (crash risk); Alex decides.
 4. Optional: long-prompt chunked-prefill test; TensorRT-LLM with Ray.
 

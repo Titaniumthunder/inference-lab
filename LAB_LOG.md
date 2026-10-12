@@ -811,3 +811,16 @@ started. git config core.fileMode false set, so the 7 mode-only changes (queue_*
 - GPU work not done: gpu_preflight.sh run once at ~11:40 refused (exit 75): 30 samples, utilization.gpu 3 to 11% (26 of 30 > 3%),
   utilization.decoder up to 8% (30 of 30 > 0%: video decode on the GPU, as in section 35), encoder 0%, memory 1,404 to 1,422 MiB.
   No retry. AWQ perplexity not rerun (stays out of the docs); python -m mini_sched.test_mini not run.
+
+## 37. CLAUDE.md findings updated to the clean numbers (2026-10-12)
+CLAUDE.md (tracked in git) "Findings so far" now carries the clean values from README.md / RESUME_BULLETS.md (sections 28, 32-36),
+truncated: compiled vs eager ITL p50 1.61x to 1.95x lower, TTFT 33.0% to 39.0% lower; 3B FP8 ITL 1.47x to 1.63x lower, TTFT 30.2% to
+37.9% lower, perplexity +0.91%; 7B FP8 perplexity +0.73% vs the VALID clean 7B BF16 run; AWQ perplexity not reported; prefix caching
+3.84x to 8.05x; async, chunked prefill, HF vs vLLM, mini_sched, allocator stall, speculative decoding and the clean profile added.
+Removed from CLAUDE.md: 1.52x to 1.74x, 34.7 to 41.6%, 1.49x to 1.91x, 28.3 to 34.2%, AWQ +5.46%, 3.9x to 14.1x, 11.70 / ~3.4 ms,
+TPOT +28.1% to +34.6%, the GEMV +15% lead from the findings list (still in "Remaining work" item 2 as an untested lead), and the
+"~23% slower" canary figure. "Remaining work" item 1 marked done; AWQ perplexity and mini_sched tests listed as pending an idle GPU.
+Stale-string check (number-bounded grep for 1.52x, 1.74x, 1.53x, 34.7, 41.6, 12.0x, 14.1x, 14.3x, 5.46, 0.92%, 1.49x, 1.92x, 28.4x,
+42.5x, 42.6x, 28.1%, 34.6%, 11.70, 3.41, 2.87x, 2.12x) over all tracked files except LAB_LOG.md and results/: no hits after the
+edit. Under results/, the only hit is "-34.6%" in the generated clean summaries (block B: AWQ ITL p50 vs 7B FP8 at 4 req/s), a clean
+measurement that coincides with the old spec-decoding string; left as is. LAB_LOG keeps superseded values with their tags.
