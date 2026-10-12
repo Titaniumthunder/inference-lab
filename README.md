@@ -42,8 +42,22 @@ vs 10.11 to 10.25 ms for compiled (n=3). The GPU sidecar showed the same SM cloc
 - 7B AWQ vs 7B FP8: ITL p50 1.4x to 1.5x lower at 1 to 8 req/s and equal at 12 (1.01x), but TTFT p50 17.8% to 21.7% higher at
   1 to 8 req/s and 66.4% higher at 12, and ITL p99 higher at every rate (+3.4% at 1 req/s, +50.7% to +86.2% at 4 to 12).
   AWQ was measured up to 12 req/s.
-- 7B BF16 does not fit in 16 GB; with 6 GB offloaded to the CPU (eager) its WikiText-2 perplexity is 6.8988 over 81,880 tokens
-  (1 run, canary VALID). Perplexities of the quantized models were not rerun under the clean protocol; see LAB_LOG 9 and 11.
+
+**Perplexity** (WikiText-2 raw test, 40 chunks x 2,048 tokens = 81,880 scored tokens, through the vLLM server; 1 run per model,
+all canaries VALID; LAB_LOG 34). Perplexity is a fixed computation over fixed text, so it is not affected by GPU contention.
+
+| Model | Perplexity | vs BF16 of the same size | Source row |
+|---|---|---|---|
+| 3B BF16 (compiled) | 7.9808 | baseline | results/ppl.csv `bf16-3b` |
+| 3B FP8 (compiled) | 8.0540 | +0.91% | results/ppl.csv `fp8-3b` |
+| 7B BF16 (eager, 6 GB CPU offload; does not fit in 16 GB) | 6.8988 | baseline | results/clean/ppl.csv `clean2-bf16-7b-offload-eager` |
+| 7B FP8 (compiled) | 6.9494 | +0.73% | results/ppl.csv `fp8-7b` |
+| 7B AWQ 4-bit | not reported | | its only run was INVALID (canary 15.95x) |
+
+Percent changes are truncated. The 7B BF16 baseline runs eager while 7B FP8 runs compiled; a 3B control measured eager vs compiled
+numerics at -0.06% perplexity (7.9753 vs 7.9808, results/ppl.csv `bf16-3b-eager-ppl`). The old (10-08, canary INVALID) and clean
+(10-10, canary VALID) 7B BF16 runs gave the identical value 6.8988. The 3B and 7B FP8 rows predate the clean protocol (10-08,
+GPU contention status unknown, LAB_LOG 21); they are kept because perplexity does not depend on timing.
 
 ### Async scheduling: a latency trade-off (3B BF16 compiled, n=3 interleaved runs per arm; LAB_LOG 32)
 ![Async scheduling](results/clean_d_async_scheduling_20261011_094053.png)

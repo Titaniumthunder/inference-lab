@@ -774,3 +774,25 @@ utilization.gpu 2 to 11% in most samples, decoder 0%, memory 577 to 592 MiB: som
 (its `pgrep -f "run_config.sh clean3-awq"` matched its own command line), so this went unnoticed for ~8.5 h until Alex stopped it at
 ~20:53. No server started, no row was written to runs.csv or ppl.csv, no sidecar file was created. At 20:53 the GPU read util 4%,
 memory 835 MiB. README/RESUME_BULLETS perplexity numbers NOT restored yet; steps 2 to 5 of that request not started.
+
+## 35. Docs: perplexity restored, bullets 2-4 revised, pre-push audit; GPU work refused (2026-10-12)
+**Perplexity restored** in README.md (table) and RESUME_BULLETS.md (bullet 2) from VALID rows only: 3B BF16 7.9808 and 3B FP8 8.0540
+(results/ppl.csv `bf16-3b`, `fp8-3b`), 7B FP8 6.9494 (results/ppl.csv `fp8-7b`), 7B BF16 6.8988 (results/clean/ppl.csv
+`clean2-bf16-7b-offload-eager`). results/clean/ppl.csv holds only the 7B BF16 row; the other three come from results/ppl.csv.
+Deltas, truncated: 3B FP8 8.0540 / 7.9808 = 1.009172 -> **+0.91%** (the +0.92% used earlier, including in CLAUDE.md, was rounded
+up); 7B FP8 6.9494 / 6.8988 = 1.007335 -> +0.73%. AWQ perplexity left out (only run INVALID, canary 15.959x).
+**Bullets:** bullet 4 now says "Characterized ..." and "The cause is not established." Bullet 3 no longer claims token-budget
+scheduling: the code exists (mini_sched/scheduler.py `Scheduler._schedule`, `used + n > self.budget`) but no test exercises it (the
+test prompts total 1,313 tokens vs the 4,096 budget). Paged KV cache, block allocator, preemption by recompute and continuous
+batching each map to code and a test (table in RESUME_BULLETS.md). Note: test_mini.py accepts a divergence from HF as a "tie" if the
+logit gap is <= 0.25, not only exact ties; README's "except at exact logit ties" rests on the gaps observed in section 17 (0.000).
+**Pre-push audit (read-only):** no file > 50 MB outside .git; .git 69M, results 88M; author/committer identities "Alex Salamati
+<alexsal621836@gmail.com>" and "Titaniumthunder <Alexsal621836@gmail.com>"; remote origin https://github.com/Titaniumthunder/
+inference-lab.git; no token/key patterns (hf_, ghp_, github_pat_, sk-, AKIA, xox, private keys) in tracked files or in any revision,
+no .env files tracked or on disk ("token" filenames are results/hf_vs_vllm_tokens_*.json, greedy token-id lists). .gitignore covers
+__pycache__/, *.pyc, .venv/ but not venv/, model weights (*.safetensors, *.bin, *.pt, *.gguf), caches (.cache/), .env, wandb/;
+nothing of that kind is tracked. results/ files > 5 MB: 8 tracked profiler traces in results/profiles/ (8.3 to 11.7 MB each).
+**GPU work (block B) not done:** gpu_preflight.sh run once at ~09:48 refused (exit 75): 30 samples, utilization.gpu 3 to 6%
+(28 of 30 > 3%), utilization.decoder 2 to 5% (30 of 30 > 0%; video decode on the GPU, the Wallpaper Engine signature of section 21),
+encoder 0%, memory 1,437 to 1,454 MiB. Per instructions no retry; the AWQ perplexity rerun and the mini_sched test rerun were not
+started. git config core.fileMode false set, so the 7 mode-only changes (queue_*.sh, serve_*.sh) no longer show as modified.
