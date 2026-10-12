@@ -106,8 +106,9 @@ baseline, not vLLM. Poisson arrivals for 30 s per rate, n=3 runs (policy order r
 - Continuous batching cuts TTFT p50 37.0x to 38.7x against the static baseline (n=3 per rate).
 - Paged KV used 11.7x to 12.8x fewer KV tokens at peak than my own preallocation baseline (reserving 4,096 tokens per running
   sequence), over all 9 continuous measurements (3 runs x 3 rates). This compares two allocation policies inside one engine, not two engines.
-- Greedy outputs match HF `generate` except at exact logit ties, including under forced preemption (`mini_sched/test_mini.py`,
-  LAB_LOG 17; a correctness test, not rerun).
+- Greedy outputs vs HF `generate` on 6 test prompts (32 tokens each; `mini_sched/test_mini.py`, LAB_LOG 17): token for token
+  on 5 of 6 with requests joining mid-batch and on 3 of 6 under forced preemption. The test tolerates a divergence only where HF's
+  own top-2 logit gap at that position is <= 0.25; at every observed divergence the gap was 0.000. A correctness test, not rerun.
 
 ### Allocator stall in `mini_sched` (LAB_LOG 32 and 33)
 With PyTorch's default CUDA allocator (`PYTORCH_CUDA_ALLOC_CONF=expandable_segments:False`) the engine **stalled in 4 of 7 runs**

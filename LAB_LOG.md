@@ -395,7 +395,7 @@ So the earlier runs may also have been slowed by something; whether they were is
 |---|---|---|---|
 | Compiled vs eager 1.49x to 1.92x (README, bullet 1) | section 7 | unknown | upper bound should be 1.91x |
 | FP8 ITL table, 1.53x to 1.74x, 7B FP8 / AWQ ITL (README, bullet 2) | section 9 | unknown | lower bound should be 1.52x |
-| Perplexities 6.8988 / +0.73% / +5.46% / +0.92% (README, bullet 2) | sections 9, 11 | 7B BF16 run likely contaminated; perplexity is not a timing number | 7B BF16 and AWQ runs INVALID |
+| Perplexities 6.8988 / +0.73% / +5.46% / +0.92% **[superseded 2026-10-12: 3B FP8 delta is +0.91%, section 35]** (README, bullet 2) | sections 9, 11 | 7B BF16 run likely contaminated; perplexity is not a timing number | 7B BF16 and AWQ runs INVALID |
 | HF vs vLLM 2.12x to 2.87x, TPOT 2.7x to 2.9x (README, bullet 5) | section 15 | unknown | none |
 | mini_sched tok/s, TTFT 28.4x to 42.5x, 12x KV memory (README, bullet 3) | section 17 | unknown | upper bound should be 42.6x; KV memory ratio does not depend on timing |
 | Allocator stall 112.7 -> 310.6 tok/s (bullet 4) | section 17, two separate runs 10 min apart | unknown for both | cross-run comparison |
@@ -594,7 +594,7 @@ timestamps (server-log name = start, file mtime = end; or gaps between consecuti
 | mini_sched allocator stall (17) | bullet 4: 112.7 -> 310.6 tok/s, 32 of 313 steps > 0.5 s | unknown, two runs 10 min apart | n/a | no | not rerun: needs a run without expandable_segments (code change), decision for Alex |
 | Profiling breakdown (19) | README: 11.70 / 8.51 / 3.41 ms, GEMV +15% after overload | contaminated (minor) | healthy: server log 12:49:18 -> mtime 12:52:20 = 3.0 min; collapse attempts ~4 min each | no | profile_run.sh: yes. Only PHASE=healthy planned (collapse = crash risk) |
 | Chunked prefill (13) | README "no measurable difference" | contaminated | 6 runs 23:18:08 -> 23:47:53 = 29.7 min (4.85 to 5.3 each) | yes (run_config.sh) | unchanged; not in queue_clean2.sh |
-| Perplexity (9, 11) | README ppl column; bullet 2: 6.8988, +0.73%, +5.46%, +0.92% | 7B BF16 run INVALID and likely contaminated; AWQ ppl run INVALID; perplexity is not a timing number | 7B BF16 offload: 22:28:39 -> 22:38:41 = 10.0 min; 3B eager control 3.5 min | yes (run_config.sh PPL=1) | unchanged; 7B BF16 in queue_clean2.sh |
+| Perplexity (9, 11) | README ppl column; bullet 2: 6.8988, +0.73%, +5.46%, +0.92% **[superseded 2026-10-12: 3B FP8 delta is +0.91%, section 35]** | 7B BF16 run INVALID and likely contaminated; AWQ ppl run INVALID; perplexity is not a timing number | 7B BF16 offload: 22:28:39 -> 22:38:41 = 10.0 min; 3B eager control 3.5 min | yes (run_config.sh PPL=1) | unchanged; 7B BF16 in queue_clean2.sh |
 | TensorRT-LLM (16) | none (README says it never ran) | no numbers | n/a | no | run_trtllm.sh: yes |
 
 **Methodology change (runners only; no measurement code changed except one optional argument):**
@@ -796,3 +796,18 @@ nothing of that kind is tracked. results/ files > 5 MB: 8 tracked profiler trace
 (28 of 30 > 3%), utilization.decoder 2 to 5% (30 of 30 > 0%; video decode on the GPU, the Wallpaper Engine signature of section 21),
 encoder 0%, memory 1,437 to 1,454 MiB. Per instructions no retry; the AWQ perplexity rerun and the mini_sched test rerun were not
 started. git config core.fileMode false set, so the 7 mode-only changes (queue_*.sh, serve_*.sh) no longer show as modified.
+
+## 36. Docs wording, +0.91% correction, .gitignore; GPU work refused again (2026-10-12)
+- README mini_sched correctness line now states what LAB_LOG 17 measured: token for token on 5 of 6 test prompts with mid-batch
+  joins and 3 of 6 under forced preemption; the test tolerates a divergence only where HF's top-2 logit gap is <= 0.25; every
+  observed divergence had gap 0.000. Still marked "not rerun". (The wording "matched token-for-token on the test prompts" was not
+  used: it would overstate the 5/6 and 3/6 counts.)
+- 3B FP8 perplexity delta corrected to +0.91% in CLAUDE.md; the two +0.92% mentions in LAB_LOG (sections 21 and 29 tables) are
+  tagged superseded, not deleted. The other "0.92" in LAB_LOG (section 14, draft acceptance 0.77 to 0.92) is unrelated.
+- .gitignore: added venv/, .env, wandb/, .cache/, *.safetensors, *.bin, *.pt, *.gguf. No tracked file matches (git ls-files -ci
+  empty; the tracked profiler traces end in .pt.trace.json.gz and are not matched).
+- Deleted the 6 untracked draft figures results/clean_{a..f}_*.png without the _20261011_094053 suffix (Alex's instruction; they were
+  never committed; the committed _20261011_094053 versions remain).
+- GPU work not done: gpu_preflight.sh run once at ~11:40 refused (exit 75): 30 samples, utilization.gpu 3 to 11% (26 of 30 > 3%),
+  utilization.decoder up to 8% (30 of 30 > 0%: video decode on the GPU, as in section 35), encoder 0%, memory 1,404 to 1,422 MiB.
+  No retry. AWQ perplexity not rerun (stays out of the docs); python -m mini_sched.test_mini not run.

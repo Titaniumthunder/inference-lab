@@ -34,7 +34,7 @@ profile_run.sh, profile_analyze.py, mini_sched/, RESUME_BULLETS.md, results/, LA
 ## Findings so far (details in LAB_LOG.md sections 1-19; corrections in section 20, contamination audit in section 21)
 Ratios below are truncated, never rounded up.
 - Compiled vs eager (3 repeats each): ITL p50 1.49x to 1.91x faster, TTFT 28.3 to 34.2% lower.
-- 3B FP8 vs BF16: ITL 1.52x to 1.74x faster, TTFT 34.7 to 41.6% lower, perplexity +0.92%.
+- 3B FP8 vs BF16: ITL 1.52x to 1.74x faster, TTFT 34.7 to 41.6% lower, perplexity +0.91% (8.0540 / 7.9808 truncated; +0.92% was rounded up, LAB_LOG 35).
 - 7B perplexity vs 7B BF16 (6.8988, eager + CPU offload, canary INVALID): FP8 +0.73%, AWQ +5.46% (AWQ perplexity run also INVALID).
   AWQ is faster at low load, TTFT worse, and collapsed at rate 16 with default settings.
 - Prefix caching (best-case shared prefix): TTFT 3.9x to 14.1x lower.

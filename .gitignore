@@ -3,3 +3,12 @@ __pycache__/
 .venv/
 # clobbered by a duplicate launch (contains null bytes); see LAB_LOG.md
 results/server_compiled-bf16-3b.log
+# venvs, secrets, caches, model weights (LAB_LOG 36)
+venv/
+.env
+wandb/
+.cache/
+*.safetensors
+*.bin
+*.pt
+*.gguf
