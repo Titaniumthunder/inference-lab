@@ -824,3 +824,21 @@ Stale-string check (number-bounded grep for 1.52x, 1.74x, 1.53x, 34.7, 41.6, 12.
 42.5x, 42.6x, 28.1%, 34.6%, 11.70, 3.41, 2.87x, 2.12x) over all tracked files except LAB_LOG.md and results/: no hits after the
 edit. Under results/, the only hit is "-34.6%" in the generated clean summaries (block B: AWQ ITL p50 vs 7B FP8 at 4 req/s), a clean
 measurement that coincides with the old spec-decoding string; left as is. LAB_LOG keeps superseded values with their tags.
+
+## 38. Status before push (2026-10-12)
+**Docs:** README.md, RESUME_BULLETS.md (8 bullets plus Sources table) and CLAUDE.md use clean numbers only. Latest commit before this
+section: 98734f5. Nothing has been pushed.
+**Not done, with reason:**
+- AWQ perplexity rerun: not run. gpu_preflight.sh refused 3 times: 10-11 ~12:16 (utilization.gpu 2 to 11%, decoder 0%; section 34),
+  10-12 ~09:48 (utilization 3 to 6%, decoder active in 30 of 30 samples; section 35), 10-12 ~11:40 (utilization 3 to 11%, decoder
+  active in 30 of 30 samples, up to 8%; section 36). README says "not reported".
+- mini_sched test rerun (python -m mini_sched.test_mini): not run; it was gated on the same preflight, which refused on 10-12
+  (sections 35, 36). README says "not rerun".
+**Open items before push:**
+1. The 6 figures (results/clean_*_20261011_094053.png) have not been reviewed by Alex for readability.
+2. Decide which commit email is public: commits use two author names ("Alex Salamati", "Titaniumthunder"), both with the same
+   Gmail address (section 35 audit).
+3. Push through GitHub Desktop.
+**Resume update:** deferred on purpose; to be done once, after the push, by compressing the 8 bullets to 1-2 lines each.
+RESUME_BULLETS.md is the source of truth for the numbers.
+**Optional, skipped:** Event Viewer check, GPU idle P0 investigation, 256-client overload test.
